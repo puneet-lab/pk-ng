@@ -1,0 +1,46 @@
+<mat-sidenav-container class="dashboard-container">
+  <mat-sidenav mode="side" opened>
+    <div class="text-xl text-center p-3 bg-slate-200">PK Dashboard</div>
+    <mat-list>
+      <ng-container *ngFor="let sideNavItems of dashboardSideNavItems">
+        <mat-list-item>
+          <div
+            class="flex justify-between"
+            (click)="onSideMainItem(sideNavItems)"
+          >
+            {{ sideNavItems.title }}
+            <ng-container *ngIf="sideNavItems?.subItems?.length">
+              <ng-container *ngIf="!sideNavItems?.showSubItems; else downImage">
+                <img
+                  class="arrow h-5"
+                  src="assets/images/right-arrow.svg"
+                  alt=""
+                  srcset=""
+                />
+              </ng-container>
+              <ng-template #downImage>
+                <img
+                  class="arrow h-5"
+                  src="assets/images/down-arrow.svg"
+                  alt=""
+                  srcset=""
+                />
+              </ng-template>
+            </ng-container>
+          </div>
+        </mat-list-item>
+        <mat-list *ngIf="sideNavItems?.showSubItems">
+          <div *ngFor="let subItem of sideNavItems.subItems">
+            <mat-list-item [routerLink]="['experience']">{{
+              subItem.title
+            }}</mat-list-item>
+          </div>
+        </mat-list>
+      </ng-container>
+    </mat-list>
+  </mat-sidenav>
+  <mat-sidenav-content
+    >Main content
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>

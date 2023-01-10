@@ -1,0 +1,74 @@
+<div
+  class="min-h-screen flex bg-gray-300 bg-gradient-to-br items-center justify-center py-12 px-4 sm:px-6 lg:px-8"
+>
+  <div class="max-w-md w-full rounded overflow-hidden shadow-lg p-10 bg-white">
+    <div>
+      <h2
+        class="mt-6 text-center text-3xl leading-9 font-extrabold text-gray-900"
+      >
+        Sign in Puneet Kushwah Admin
+      </h2>
+    </div>
+    <form [formGroup]="loginForm" class="mt-8" (ngSubmit)="onLogin()">
+      <input type="hidden" name="remember" value="true" />
+      <div class="rounded-lg">
+        <mat-form-field class="w-full">
+          <mat-label>Email</mat-label>
+          <input
+            formControlName="email"
+            matInput
+            type="email"
+            autocomplete="false"
+          />
+          <mat-error
+            class="text-sm"
+            *ngIf="
+              (loginForm.get('email')?.touched ||
+                loginForm.get('email')?.dirty) &&
+              !loginForm.get('email')?.valid
+            "
+          >
+            Not a valid Email Address
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label>Password</mat-label>
+          <input formControlName="password" matInput type="password" />
+          <mat-error
+            class="text-sm"
+            *ngIf="
+              (loginForm.get('password')?.touched ||
+                loginForm.get('password')?.dirty) &&
+              !loginForm.get('password')?.valid
+            "
+          >
+            Not a valid password
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="mt-6">
+        <button
+          type="submit"
+          class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+        >
+          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
+            <svg
+              class="h-5 w-5 text-indigo-500 group-hover:text-indigo-400 transition ease-in-out duration-150"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                fill-rule="evenodd"
+                d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                clip-rule="evenodd"
+              />
+            </svg>
+          </span>
+          Sign in
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

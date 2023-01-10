@@ -10,6 +10,11 @@ const routes: Routes = [
       ),
   },
   {
+    path: "admin",
+    loadChildren: () =>
+      import("../app/admin/admin.module").then((m) => m.AdminModule),
+  },
+  {
     path: "",
     redirectTo: "landing",
     pathMatch: "full",
