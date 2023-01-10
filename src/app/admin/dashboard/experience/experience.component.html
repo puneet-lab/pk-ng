@@ -1,0 +1,108 @@
+<div class="p-5 w-4/6">
+  {{ experienceFormGroup?.value | json }}
+  <div [formGroup]="experienceFormGroup">
+    <ng-container formArrayName="experience">
+      <div
+        *ngFor="
+          let experienceForm of experienceFormArray.controls;
+          let index = index
+        "
+      >
+        <ng-container [formGroupName]="index">
+          <div class="text-xl mb-2 flex justify-between">
+            <div>Experience {{ index + 1 }}</div>
+            <div class="cursor-pointer flex">
+              <img
+                class="h-5"
+                (click)="openResponsibility(index)"
+                src="assets/images/list.svg"
+                alt="close"
+              />
+              <img
+                class="h-5"
+                (click)="openCloseExp(index)"
+                *ngIf="experienceForm.get('isOpen')?.value; else expClose"
+                src="assets/images/down-arrow.svg"
+                alt="close"
+              />
+              <ng-template #expClose>
+                <img
+                  (click)="openCloseExp(index)"
+                  class="h-5"
+                  src="assets/images/right-arrow.svg"
+                  alt="open"
+                />
+              </ng-template>
+              <div>
+                <img
+                  (click)="removeExp(index)"
+                  *ngIf="index > 0"
+                  class="h-5"
+                  src="assets/images/delete.svg"
+                  alt="open"
+                />
+              </div>
+              <div
+                *ngIf="index === experienceFormArray.controls.length - 1"
+                (click)="addExperience()"
+              >
+                <img class="h-5" src="assets/images/plus.svg" alt="add" />
+              </div>
+            </div>
+          </div>
+          <div class="grid" *ngIf="experienceForm.get('isOpen')?.value">
+            <mat-form-field appearance="fill">
+              <mat-label>Position</mat-label>
+              <input matInput formControlName="position" />
+              <mat-error></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Company Name</mat-label>
+              <input matInput formControlName="companyName" />
+              <mat-error></mat-error>
+            </mat-form-field>
+
+            <div class="grid grid-cols-2 gap-2">
+              <mat-form-field appearance="fill">
+                <mat-label>Start Date</mat-label>
+                <input matInput formControlName="startDate" />
+                <mat-error></mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>End Date</mat-label>
+                <input matInput formControlName="endDate" />
+                <mat-error></mat-error>
+              </mat-form-field>
+            </div>
+            <div class="grid grid-cols-3 gap-2">
+              <mat-form-field appearance="fill">
+                <mat-label>Duration</mat-label>
+                <input matInput formControlName="duration" />
+                <mat-error></mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Country</mat-label>
+                <input matInput formControlName="country" />
+                <mat-error></mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Order</mat-label>
+                <input number matInput formControlName="order" />
+                <mat-error></mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <button
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+      >
+        Save
+      </button>
+    </ng-container>
+  </div>
+</div>
