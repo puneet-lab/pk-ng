@@ -1,10 +1,11 @@
-import { AngularFireStorageReference } from '@angular/fire/compat/storage';
-import { UploadTaskSnapshot } from '@angular/fire/compat/storage/interfaces';
-import { WhereFilterOp } from '@firebase/firestore-types';
-import { Observable } from 'rxjs';
+import { AngularFireStorageReference } from "@angular/fire/compat/storage";
+import { UploadTaskSnapshot } from "@angular/fire/compat/storage/interfaces";
+import { WhereFilterOp } from "@firebase/firestore-types";
+import { Observable } from "rxjs";
 
 export enum FCollectionName {
-  USERS = 'users',
+  USERS = "users",
+  EXPERIENCE = "experience",
 }
 export interface IFirebaseStore {
   colName: FCollectionName;

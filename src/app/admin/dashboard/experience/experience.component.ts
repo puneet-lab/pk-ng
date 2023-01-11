@@ -1,10 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { OperationModes } from "src/models";
+import { FCollectionName, OperationModes } from "src/models";
 import { IExperience, IOrderText } from "src/models/admin.model";
 import { ResponsibilityDialogComponent } from "./responsibility-dialog/responsibility-dialog.component";
 import { tap } from "rxjs";
+import { FirebaseApiService } from "src/services/firebase-api.service";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 @Component({
   selector: "pk-experience",
@@ -24,7 +26,12 @@ export class ExperienceComponent implements OnInit {
     return this.experienceFormGroup.get("experience") as FormArray;
   }
 
-  constructor(private fb: FormBuilder, public dialog: MatDialog) {}
+  constructor(
+    private fb: FormBuilder,
+    public dialog: MatDialog,
+    private firebaseApi: FirebaseApiService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     if (this.operationMode === OperationModes.ADD) {
@@ -32,8 +39,6 @@ export class ExperienceComponent implements OnInit {
     } else {
       throw new Error("EDIT mode implement");
     }
-
-    this.openResponsibility(0);
   }
 
   initForAddExperience(): void {
@@ -49,11 +54,12 @@ export class ExperienceComponent implements OnInit {
       companyName: ["", Validators.required],
       startDate: ["", Validators.required],
       endDate: ["", Validators.required],
-      duration: ["", Validators.required],
+      durationYear: [null, Validators.required],
+      durationMonth: [null, Validators.required],
       country: ["", Validators.required],
       order: [null, Validators.required],
       isOpen: [true],
-      responsibilities: this.fb.array([]),
+      responsibilities: this.fb.array([], Validators.required),
     });
   }
 
@@ -118,4 +124,28 @@ export class ExperienceComponent implements OnInit {
       )
       .subscribe();
   }
+
+  async saveExperience(): Promise<void> {
+    if (this.experienceFormGroup.invalid) {
+      this.snackBar.open("Experience form is invalid");
+    } else {
+      try {
+        const experiences = this.experienceFormGroup.value
+          .experience as IExperience[];
+        for (let index = 0; index < experiences.length; index++) {
+          const experience = experiences[index];
+          const res = await this.firebaseApi.addFirebaseDocument(
+            FCollectionName.EXPERIENCE,
+            experience
+          );
+        }
+        this.snackBar.open("Experience saved!");
+      } catch (error) {
+        this.snackBar.open("Error in saving experience");
+        console.error("Error in saving experience ", error);
+      }
+    }
+  }
 }
+
+const x = [];

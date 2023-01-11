@@ -16,7 +16,8 @@ export interface IExperience {
   companyName: string;
   startDate: string;
   endDate: string;
-  duration: string;
+  durationYear: number;
+  durationMonth: number;
   country: string;
   order: number;
   isOpen: boolean;

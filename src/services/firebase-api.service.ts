@@ -1,19 +1,19 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import {
   AngularFirestore,
   DocumentReference,
-} from '@angular/fire/compat/firestore';
-import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+} from "@angular/fire/compat/firestore";
+import { AngularFireStorage } from "@angular/fire/compat/storage";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 import {
   FCollectionName,
   IFirebaseStore,
   IFirebaseUploadResponse,
   IFirebaseWhere,
-} from '../models';
+} from "../models";
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class FirebaseApiService {
   constructor(
@@ -24,7 +24,7 @@ export class FirebaseApiService {
   getFirebaseAllDocuments<T>(collection: FCollectionName): Observable<T[]> {
     return this.afFirestore
       .collection<T>(collection)
-      .valueChanges({ idField: 'id' })
+      .valueChanges({ idField: "id" })
       .pipe(map((data) => data));
   }
 
@@ -49,7 +49,7 @@ export class FirebaseApiService {
         .add(collectionData);
       return collection;
     } catch (error) {
-      console.error('Error at Firebase add collection API :>> ', error);
+      console.error("Error at Firebase add collection API :>> ", error);
       throw error;
     }
   }
@@ -67,7 +67,7 @@ export class FirebaseApiService {
       return true;
     } catch (error) {
       console.error(
-        'Error at Firebase add collection by docID API :>> ',
+        "Error at Firebase add collection by docID API :>> ",
         error
       );
       return false;
@@ -87,7 +87,7 @@ export class FirebaseApiService {
       return true;
     } catch (error) {
       console.error(
-        'Error at Firebase update collection by docID API :>> ',
+        "Error at Firebase update collection by docID API :>> ",
         error
       );
       return false;
@@ -106,7 +106,7 @@ export class FirebaseApiService {
       return true;
     } catch (error) {
       console.error(
-        'Error at Firebase delete collection by docID API :>> ',
+        "Error at Firebase delete collection by docID API :>> ",
         error
       );
       return false;
@@ -136,7 +136,7 @@ export class FirebaseApiService {
 
         return fireRef.valueChanges().pipe(map((data) => data));
       default:
-        throw new Error('NOT_A_VALID_GET_FIREBASE_CASE');
+        throw new Error("NOT_A_VALID_GET_FIREBASE_CASE");
     }
   }
 
@@ -148,8 +148,8 @@ export class FirebaseApiService {
     const storagePath = `${storageName}/${fileName}`;
     const fileRef = this.afStorage.ref(storagePath);
     const uploadTask = fileRef
-      .putString(fileBlob, 'data_url', {
-        contentType: 'image/png',
+      .putString(fileBlob, "data_url", {
+        contentType: "image/png",
       })
       .snapshotChanges();
     return { uploadTask, fileRef };
