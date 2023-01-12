@@ -16,7 +16,7 @@ const routes: Routes = [
   },
   {
     path: "",
-    redirectTo: "landing",
+    redirectTo: "landing/portfolio",
     pathMatch: "full",
   },
 ];

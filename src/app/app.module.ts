@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { environment } from "src/environments/environment";
 import { SharedModule } from "../shared/shared.module";
 import { initializeApp } from "firebase/app";
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 const firebaseSetting = environment.firebase;
 const app = initializeApp(firebaseSetting);
 @NgModule({
@@ -34,6 +35,7 @@ const app = initializeApp(firebaseSetting);
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
     SharedModule,
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

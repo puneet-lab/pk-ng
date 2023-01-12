@@ -1,20 +1,21 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
 
-import { LandingPageRoutingModule } from './landing-page-routing.module';
-import { LandingPageComponent } from './landing-page.component';
-
-
+import { LandingPageRoutingModule } from "./landing-page-routing.module";
+import { LandingPageComponent } from "./landing-page.component";
+import { MatSidenavModule } from "@angular/material/sidenav";
+import { MatListModule } from "@angular/material/list";
+import { PortfolioComponent } from './portfolio/portfolio.component';
+import { ContactComponent } from './contact/contact.component';
+import { CvComponent } from './cv/cv.component';
 @NgModule({
-  declarations: [
-    LandingPageComponent
-  ],
+  declarations: [LandingPageComponent, PortfolioComponent, ContactComponent, CvComponent],
   imports: [
     CommonModule,
-    LandingPageRoutingModule
+    MatSidenavModule,
+    LandingPageRoutingModule,
+    MatListModule,
   ],
-  exports: [
-    LandingPageComponent
-  ]
+  exports: [LandingPageComponent],
 })
-export class LandingPageModule { }
+export class LandingPageModule {}
