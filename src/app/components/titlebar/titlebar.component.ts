@@ -27,7 +27,7 @@ export class TitlebarComponent {
     this.notifyToggle.emit({ toggle: this.isOpen, index: this.index });
   }
 
-  onAction(id: TitlebarActionTypes): void {
-    this.notifyAction.emit({ id, index: this.index });
+  onAction({ id, actionFunc }: ITitlebarActions): void {
+    this.notifyAction.emit({ id, index: this.index, actionFunc });
   }
 }

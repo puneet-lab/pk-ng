@@ -23,10 +23,17 @@ export interface ITitlebarToggle {
 export interface ITitlebarNotifyAction {
   id: TitlebarActionTypes;
   index: number;
+  actionFunc?: Function;
 }
 
 export interface ITitlebarActions {
   id: TitlebarActionTypes;
   icon: string;
   isShow: boolean;
+  actionFunc?: Function;
+}
+
+export interface ITitlebarActionFunc {
+  add: Function;
+  remove: Function;
 }

@@ -14,6 +14,10 @@ import { ResponsibilityDialogComponent } from "./responsibility-dialog/responsib
 import { tap } from "rxjs";
 import { FirebaseApiService } from "src/services/firebase-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import {
+  getFormArraySharedButtons,
+  notifyCommonTitleBarActions,
+} from "src/shared";
 
 @Component({
   selector: "pk-experience",
@@ -70,19 +74,11 @@ export class ExperienceComponent implements OnInit {
     });
   }
 
-  notifyAction({ id, index }: ITitlebarNotifyAction): void {
-    switch (id) {
-      case TitlebarActionTypes.ADD:
-        this.addExperience();
-        break;
-      case TitlebarActionTypes.DELETE:
-        this.removeExp(index);
-        break;
-      case TitlebarActionTypes.EXP_RES:
-        this.openResponsibility(index);
-        break;
-      default:
-        throw new Error("Not a valid Title bar action");
+  notifyAction({ id, index, actionFunc }: ITitlebarNotifyAction): void {
+    if (id === TitlebarActionTypes.EXP_RES) {
+      this.openResponsibility(index);
+    } else {
+      notifyCommonTitleBarActions({ id, index, actionFunc });
     }
   }
 
@@ -91,7 +87,6 @@ export class ExperienceComponent implements OnInit {
   }
 
   openCloseExp({ index, toggle }: ITitlebarToggle): void {
-    // const isOpen = !this.experienceFormArray.at(index).get("isOpen")?.value;
     this.experienceFormArray.at(index).patchValue({ isOpen: toggle });
   }
 
@@ -177,16 +172,10 @@ export class ExperienceComponent implements OnInit {
         icon: "fa-solid fa-list",
         isShow: true,
       },
-      {
-        id: TitlebarActionTypes.ADD,
-        icon: "fa-solid fa-plus",
-        isShow: index === this.experienceFormArray.controls?.length - 1,
-      },
-      {
-        id: TitlebarActionTypes.DELETE,
-        icon: "fa-solid fa-trash-can",
-        isShow: index > 0,
-      },
+      ...getFormArraySharedButtons(index, this.experienceFormArray, {
+        add: this.addExperience.bind(this),
+        remove: this.removeExp.bind(this),
+      }),
     ];
   }
 }
