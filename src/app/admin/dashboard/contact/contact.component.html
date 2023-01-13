@@ -1,0 +1,56 @@
+<div>{{ contactForm.value | json }}</div>
+<div>
+  <div [formGroup]="contactForm">
+    <ng-container formGroupName="contacts">
+      <ng-container
+        *ngFor="let contact of contactFormArray.controls; let index = index"
+      >
+        <div [formArrayName]="index" class="grid gap-2">
+          <div>Contact {{ index + 1 }}</div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <mat-form-field appearance="fill">
+              <mat-label>Id</mat-label>
+              <input matInput formControlName="id" />
+              <mat-error></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Type</mat-label>
+              <input matInput formControlName="type" />
+              <mat-error></mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <mat-form-field appearance="fill">
+              <mat-label>Title</mat-label>
+              <input matInput formControlName="title" />
+              <mat-error></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Icon</mat-label>
+              <input matInput formControlName="icon" />
+              <mat-error></mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2">
+            <mat-form-field appearance="fill">
+              <mat-label>HREF</mat-label>
+              <input matInput formControlName="href" />
+              <mat-error></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+              <mat-label>Order</mat-label>
+              <input matInput formControlName="order" [value]="index + 1" />
+              <mat-error></mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

@@ -31,7 +31,7 @@
         </mat-list-item>
         <mat-list *ngIf="sideNavItems?.showSubItems">
           <div *ngFor="let subItem of sideNavItems.subItems">
-            <mat-list-item [routerLink]="['experience']">{{
+            <mat-list-item [routerLink]="[subItem.route]">{{
               subItem.title
             }}</mat-list-item>
           </div>
@@ -39,8 +39,9 @@
       </ng-container>
     </mat-list>
   </mat-sidenav>
-  <mat-sidenav-content
-    >Main content
-    <router-outlet></router-outlet>
+  <mat-sidenav-content>
+    <div class="p-5 w-4/6">
+      <router-outlet></router-outlet>
+    </div>
   </mat-sidenav-content>
 </mat-sidenav-container>

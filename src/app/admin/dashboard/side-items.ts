@@ -27,6 +27,6 @@ export const dashboardSideNavItems: IAdminSideNavItems[] = [
   {
     id: 2,
     title: "Contact",
-    route: "contact",
+    route: "admin/dashboard/contact",
   },
 ];

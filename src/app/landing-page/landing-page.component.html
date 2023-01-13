@@ -7,20 +7,26 @@
           src="assets/images/puneet.jpeg"
           alt="puneet"
         />
-        <div class="text-2xl">Puneet Kushwah</div>
-        <div class="text-lg font-thin">Full Stack Software Engineer</div>
+        <div class="text-2xl text-white">Puneet Kushwah</div>
+        <div class="text-lg font-thin text-slate-200">
+          Full Stack Software Engineer
+        </div>
       </div>
     </div>
 
     <div>
       <mat-list>
         <mat-list-item *ngFor="let menu of sideBarMenu">
-          <div [routerLink]="menu.route">{{ menu.name }}</div>
+          <div [routerLinkActive]="'active-link'" [routerLink]="menu.route">
+            {{ menu.name }}
+          </div>
         </mat-list-item>
       </mat-list>
     </div>
   </mat-drawer>
   <mat-drawer-content>
-    <router-outlet></router-outlet>
+    <div class="p-5">
+      <router-outlet></router-outlet>
+    </div>
   </mat-drawer-content>
 </mat-drawer-container>

@@ -14,6 +14,8 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { LoginComponent } from "./login/login.component";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
+import { ContactComponent } from "./dashboard/contact/contact.component";
+import { TitlebarComponent } from "../components/titlebar/titlebar.component";
 
 @NgModule({
   declarations: [
@@ -22,6 +24,8 @@ import { MatInputModule } from "@angular/material/input";
     DashboardComponent,
     ExperienceComponent,
     ResponsibilityDialogComponent,
+    ContactComponent,
+    TitlebarComponent,
   ],
   imports: [
     CommonModule,
