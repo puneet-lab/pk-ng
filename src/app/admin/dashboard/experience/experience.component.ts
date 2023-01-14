@@ -152,7 +152,7 @@ export class ExperienceComponent implements OnInit {
           .experience as IExperience[];
         for (let index = 0; index < experiences.length; index++) {
           const experience = experiences[index];
-          const res = await this.firebaseApi.addFirebaseDocument(
+          await this.firebaseApi.addFirebaseDocument(
             FCollectionName.EXPERIENCE,
             experience
           );

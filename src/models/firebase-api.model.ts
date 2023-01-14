@@ -6,6 +6,13 @@ import { Observable } from "rxjs";
 export enum FCollectionName {
   USERS = "users",
   EXPERIENCE = "experience",
+  CONTACTS = "contacts",
+  EDUCATION = "education",
+}
+
+export enum FirebaseOrderTypes {
+  "asc" = "asc",
+  "desc" = "desc",
 }
 export interface IFirebaseStore {
   colName: FCollectionName;
@@ -26,4 +33,9 @@ export interface IFirebaseUploadResponse {
 export interface IFirebaseDate {
   seconds: number;
   nanoseconds: number;
+}
+
+export interface IFirebaseOrder {
+  order: string;
+  direction: FirebaseOrderTypes;
 }

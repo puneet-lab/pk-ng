@@ -1,0 +1,19 @@
+<div class="mt-10">
+  <div class="text-2xl">Education:</div>
+  <mat-card>
+    <div class="p-5">
+      <div
+        class="timeline-item"
+        [attr.date-is]="education.date"
+        *ngFor="let education of educationList"
+      >
+        <div class="text-2xl">
+          {{ education.title }}
+        </div>
+        <div class="font-thin text-sm">
+          {{ education.desc }}
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>

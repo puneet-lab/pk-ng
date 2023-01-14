@@ -1,0 +1,40 @@
+<mat-accordion class="expand-headers-align">
+  <div class="text-2xl">Experiences:</div>
+  <mat-expansion-panel
+    hideToggle="true"
+    *ngFor="let experience of experiences; let i = index"
+  >
+    <mat-expansion-panel-header>
+      <div>
+        <div class="text-2xl">
+          {{ experience.position }}
+        </div>
+        <div class="text-lg">
+          {{ experience.companyName }}
+          <span class="text-slate-400 text-sm italic">
+            {{ experience.startDate }} - {{ experience.endDate }}
+
+            <span *ngIf="experience.durationMonth + experience.durationYear"
+              >(
+              <span *ngIf="experience.durationYear">
+                {{ experience.durationYear }} YEARS</span
+              >
+              <span *ngIf="experience.durationMonth">
+                {{ experience.durationMonth }} MONTHS</span
+              >
+              )
+            </span>
+          </span>
+        </div>
+      </div>
+    </mat-expansion-panel-header>
+    <mat-list>
+      <mat-list-item
+        style="height: unset"
+        *ngFor="let res of experience.responsibilities; let i = index"
+      >
+        <div class="text-sm mb-1">&#x2022; {{ res.text }}</div>
+      </mat-list-item>
+    </mat-list>
+  </mat-expansion-panel>
+</mat-accordion>

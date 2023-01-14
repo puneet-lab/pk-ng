@@ -8,6 +8,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import {
   FCollectionName,
+  IFirebaseOrder,
   IFirebaseStore,
   IFirebaseUploadResponse,
   IFirebaseWhere,
@@ -21,11 +22,22 @@ export class FirebaseApiService {
     private afStorage: AngularFireStorage
   ) {}
 
-  getFirebaseAllDocuments<T>(collection: FCollectionName): Observable<T[]> {
-    return this.afFirestore
-      .collection<T>(collection)
-      .valueChanges({ idField: "id" })
-      .pipe(map((data) => data));
+  getFirebaseAllDocuments<T>(
+    collection: FCollectionName,
+    orderParams: IFirebaseOrder | null = null
+  ): Observable<T[]> {
+    if (orderParams) {
+      const { order, direction } = orderParams;
+      return this.afFirestore
+        .collection<T>(collection, (ref) => ref.orderBy(order, direction))
+        .valueChanges({ idField: "id" })
+        .pipe(map((data) => data));
+    } else {
+      return this.afFirestore
+        .collection<T>(collection)
+        .valueChanges({ idField: "id" })
+        .pipe(map((data) => data));
+    }
   }
 
   getFirebaseDocumentByName<T>({

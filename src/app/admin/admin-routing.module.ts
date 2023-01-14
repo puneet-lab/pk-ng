@@ -5,6 +5,7 @@ import { PageUrlTypes } from "src/models";
 import { ExperienceComponent } from "./dashboard/experience/experience.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { ContactComponent } from "./dashboard/contact/contact.component";
+import { EducationComponent } from "./dashboard/education/education.component";
 
 const routes: Routes = [
   {
@@ -16,6 +17,7 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [
       { path: "experience", component: ExperienceComponent },
+      { path: "education", component: EducationComponent },
       { path: "contact", component: ContactComponent },
     ],
   },

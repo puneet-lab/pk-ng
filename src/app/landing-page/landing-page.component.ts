@@ -1,5 +1,6 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { ISideBarMenu } from "src/models";
+import { SharedService } from "src/shared";
 
 @Component({
   selector: "pk-landing-page",
@@ -7,6 +8,10 @@ import { ISideBarMenu } from "src/models";
   styleUrls: ["./landing-page.component.scss"],
 })
 export class LandingPageComponent {
+  contacts$ = this.sharedService.getContactList();
+
+  constructor(private sharedService: SharedService) {}
+
   sideBarMenu: ISideBarMenu[] = [
     {
       name: "Portfolio",

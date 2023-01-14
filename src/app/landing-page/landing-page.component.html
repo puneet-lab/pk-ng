@@ -23,6 +23,10 @@
         </mat-list-item>
       </mat-list>
     </div>
+
+    <div>
+      <ng-container *ngFor="let contact of contacts$ | async"></ng-container>
+    </div>
   </mat-drawer>
   <mat-drawer-content>
     <div class="p-5">

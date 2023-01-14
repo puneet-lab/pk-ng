@@ -19,14 +19,12 @@ export class DashboardComponent implements OnInit {
     const sideNavItem = dashboardSideNavItems.find(
       (navItem) => navItem.id === sideNav.id
     );
-    console.log("👉 ~ onSideMainItem ~ sideNavItem", sideNavItem);
     if (sideNavItem?.subItems?.length)
       sideNavItem.showSubItems = !sideNav.showSubItems;
     else this.navigateToMainRoute(sideNav);
   }
 
   navigateToMainRoute({ route }: IAdminSideNavItems): void {
-    console.log("👉 ~ navigateToMainRoute ~ route", route);
     void this.router.navigate([route]);
   }
 }
