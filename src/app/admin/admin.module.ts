@@ -15,8 +15,7 @@ import { LoginComponent } from "./login/login.component";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { ContactComponent } from "./dashboard/contact/contact.component";
-import { TitlebarComponent } from "../components/titlebar/titlebar.component";
-import { EducationComponent } from './dashboard/education/education.component';
+import { EducationComponent } from "./dashboard/education/education.component";
 
 @NgModule({
   declarations: [
@@ -26,7 +25,6 @@ import { EducationComponent } from './dashboard/education/education.component';
     ExperienceComponent,
     ResponsibilityDialogComponent,
     ContactComponent,
-    TitlebarComponent,
     EducationComponent,
   ],
   imports: [

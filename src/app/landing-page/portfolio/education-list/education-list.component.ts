@@ -16,6 +16,7 @@ import { FirebaseApiService } from "src/services/firebase-api.service";
 export class EducationListComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
   educationList: IEducation[];
+  title = "Education";
 
   constructor(private firebaseApi: FirebaseApiService) {}
 

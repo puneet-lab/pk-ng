@@ -8,6 +8,8 @@ export enum FCollectionName {
   EXPERIENCE = "experience",
   CONTACTS = "contacts",
   EDUCATION = "education",
+  SELF_PROJECTS = "self_projects",
+  CERTIFICATES = "certificates",
 }
 
 export enum FirebaseOrderTypes {

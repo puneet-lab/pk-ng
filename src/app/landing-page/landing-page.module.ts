@@ -13,6 +13,10 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatExpansionModule } from "@angular/material/expansion";
 import { EducationListComponent } from "./portfolio/education-list/education-list.component";
 import { MatCardModule } from "@angular/material/card";
+import { SelfProjectsListComponent } from "./portfolio/self-projects-list/self-projects-list.component";
+import { CertificateListComponent } from "./portfolio/certificate-list/certificate-list.component";
+import { SharedModule } from "src/shared/shared.module";
+import { AboutComponent } from './portfolio/about/about.component';
 @NgModule({
   declarations: [
     LandingPageComponent,
@@ -21,6 +25,9 @@ import { MatCardModule } from "@angular/material/card";
     CvListComponent,
     ExperienceListComponent,
     EducationListComponent,
+    SelfProjectsListComponent,
+    CertificateListComponent,
+    AboutComponent,
   ],
   imports: [
     CommonModule,
@@ -30,6 +37,7 @@ import { MatCardModule } from "@angular/material/card";
     MatExpansionModule,
     MatCardModule,
     MatIconModule,
+    SharedModule,
   ],
   exports: [LandingPageComponent],
 })

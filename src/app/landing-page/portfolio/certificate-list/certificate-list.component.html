@@ -1,0 +1,19 @@
+<pk-landing-title [title]="title"></pk-landing-title>
+<div>
+  <mat-card>
+    <div class="grid grid-cols-2 gap-3 p-5 items-end">
+      <ng-container *ngFor="let certificate of certificates">
+        <div>
+          <div class="text-lg">{{ certificate.title }}</div>
+          <div class="xs:w-full lg:w-full flex-shrink-0">
+            <img
+              class="object-fill"
+              [src]="certificate.image"
+              [alt]="certificate.title"
+            />
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </mat-card>
+</div>

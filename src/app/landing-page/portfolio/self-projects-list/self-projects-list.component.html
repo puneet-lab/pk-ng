@@ -1,0 +1,37 @@
+<pk-landing-title [title]="title"></pk-landing-title>
+<div>
+  <mat-card>
+    <ng-container *ngFor="let project of selfProjects">
+      <div class="grid grid-cols-2 p-5">
+        <div class="flex flex-col gap-4">
+          <div class="text-2xl">{{ project.title }}</div>
+          <div class="text-sm font-thin">{{ project.desc }}</div>
+          <div>
+            <a
+              class="bg-rose-800 hover:bg-rose-900 text-white font-bold py-2 px-4 my-10 border-rose-700 rounded"
+              [href]="project.url"
+              target="_blank"
+            >
+              <i class="fa-solid fa-arrow-up-right-from-square"></i> View Online
+            </a>
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <div
+              class="text-white bg-rose-800 px-2 py-1 font-thin text-sm uppercase"
+              *ngFor="let stack of project.stack"
+            >
+              {{ stack }}
+            </div>
+          </div>
+        </div>
+        <div class="xs:w-full lg:w-full flex-shrink-0">
+          <img
+            class="object-fill"
+            [src]="project.image"
+            [alt]="project.title"
+          />
+        </div>
+      </div>
+    </ng-container>
+  </mat-card>
+</div>

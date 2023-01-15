@@ -7,6 +7,7 @@ import {
   ITitlebarNotifyAction,
   FCollectionName,
   IEducation,
+  ICertificates,
 } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
 import {
@@ -14,28 +15,33 @@ import {
   notifyCommonTitleBarActions,
 } from "src/shared";
 
-const x: IEducation[] = [
+const x: ICertificates[] = [
   {
-    title: "Bachelor of Engineering | Computer Science / Indore, India",
-    date: "2009-2013",
-    desc: "Bachelor of Engineering from Sri Aurobindo Institute of Technology, Indore affiliated to RGPV, Bhopal with specialization in Computer Science (2009-2013) (Aggregate: 70%)",
-    order: 3,
-    isOpen: true,
-  },
-  {
-    title:
-      "Higher Secondary School Certificate (12th) | Mathematics / Dewas, India",
-    date: "2008-2009",
-    desc: "Higher Secondary School Certificate from B.C.M Junior College Dewas, M.P 2008-2009 (Percentage 83%)",
-    order: 2,
-    isOpen: true,
-  },
-  {
-    title: "Secondary School Certificate (10th) | Dewas, India",
-    date: "2006-2007",
-    desc: "Secondary School Certificate from B.C.M Junior College Dewas, M.P 2006-2007 (Percentage 89%)",
+    title: "Microsoft Certified Associate -DB Admin Fundamentals",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/puneeetkushwah.appspot.com/o/certificates%2Fmsdb.png?alt=media&token=c18e490f-27e2-4819-a50a-2e311cdae68a",
     order: 1,
-    isOpen: true,
+  },
+
+  {
+    title: "Microsoft Certified Associate - Web Dev Fundamentals",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/puneeetkushwah.appspot.com/o/certificates%2Fmsweb.png?alt=media&token=7c26228e-e9b9-4290-bd49-c2567639b5be",
+    order: 2,
+  },
+
+  {
+    title: "Microsoft Certified Professional (MCP)",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/puneeetkushwah.appspot.com/o/certificates%2Fmsprofessional.png?alt=media&token=c9219c7b-a1e0-45e4-9752-d0cabadee91f",
+    order: 3,
+  },
+
+  {
+    title: "Oracle PL/SQL Developer Certified Associate (OCA)",
+    image:
+      "https://firebasestorage.googleapis.com/v0/b/puneeetkushwah.appspot.com/o/certificates%2Foracleoca.png?alt=media&token=4c7699fb-8360-44bd-85e2-237ea9fb4a59",
+    order: 4,
   },
 ];
 
@@ -104,9 +110,8 @@ export class EducationComponent implements OnInit {
       const educations = x; //this.educationForm.value.educations as IEducation[];
       for (let index = 0; index < educations.length; index++) {
         const education = educations[index];
-        delete education.isOpen;
         await this.firebaseApi.addFirebaseDocument(
-          FCollectionName.EDUCATION,
+          FCollectionName.CERTIFICATES,
           education
         );
       }

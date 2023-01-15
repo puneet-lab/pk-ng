@@ -3,21 +3,20 @@ import { Subject, takeUntil, tap } from "rxjs";
 import {
   FCollectionName,
   FirebaseOrderTypes,
-  IExperience,
+  ICertificates,
   IFirebaseOrder,
 } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
 
 @Component({
-  selector: "pk-experience-list",
-  templateUrl: "./experience-list.component.html",
-  styleUrls: ["./experience-list.component.scss"],
+  selector: "pk-certificates",
+  templateUrl: "./certificate-list.component.html",
+  styleUrls: ["./certificate-list.component.scss"],
 })
-export class ExperienceListComponent implements OnInit, OnDestroy {
+export class CertificateListComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
-  experiences: IExperience[];
-  title = "Experiences";
-
+  title = "Certificates";
+  certificates: ICertificates[];
   constructor(private firebaseApi: FirebaseApiService) {}
 
   ngOnInit(): void {
@@ -26,14 +25,14 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
       direction: FirebaseOrderTypes.desc,
     };
     this.firebaseApi
-      .getFirebaseAllDocuments<IExperience>(
-        FCollectionName.EXPERIENCE,
+      .getFirebaseAllDocuments<ICertificates>(
+        FCollectionName.CERTIFICATES,
         orderQuery
       )
       .pipe(
         takeUntil(this.destroy$),
-        tap((experiences) => {
-          this.experiences = experiences;
+        tap((certificates) => {
+          this.certificates = certificates;
         })
       )
       .subscribe();

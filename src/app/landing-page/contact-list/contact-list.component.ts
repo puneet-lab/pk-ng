@@ -16,7 +16,19 @@ export class ContactListComponent implements OnInit, OnDestroy {
   constructor(private sharedService: SharedService) {}
 
   ngOnInit(): void {
-    this.contacts = this.sharedService.contacts;
+    if (this.sharedService.contacts) {
+      this.contacts = this.sharedService.contacts;
+    } else {
+      this.sharedService
+        .getContactList()
+        .pipe(
+          takeUntil(this.destroy$),
+          tap((contacts) => {
+            this.contacts = contacts;
+          })
+        )
+        .subscribe();
+    }
   }
 
   ngOnDestroy(): void {

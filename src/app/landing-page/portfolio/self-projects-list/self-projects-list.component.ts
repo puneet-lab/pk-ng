@@ -3,20 +3,20 @@ import { Subject, takeUntil, tap } from "rxjs";
 import {
   FCollectionName,
   FirebaseOrderTypes,
-  IExperience,
   IFirebaseOrder,
+  ISelfProjects,
 } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
 
 @Component({
-  selector: "pk-experience-list",
-  templateUrl: "./experience-list.component.html",
-  styleUrls: ["./experience-list.component.scss"],
+  selector: "pk-self-projects",
+  templateUrl: "./self-projects-list.component.html",
+  styleUrls: ["./self-projects-list.component.scss"],
 })
-export class ExperienceListComponent implements OnInit, OnDestroy {
+export class SelfProjectsListComponent implements OnInit, OnDestroy {
   destroy$ = new Subject<void>();
-  experiences: IExperience[];
-  title = "Experiences";
+  selfProjects: ISelfProjects[];
+  title = "Self-Projects";
 
   constructor(private firebaseApi: FirebaseApiService) {}
 
@@ -26,14 +26,14 @@ export class ExperienceListComponent implements OnInit, OnDestroy {
       direction: FirebaseOrderTypes.desc,
     };
     this.firebaseApi
-      .getFirebaseAllDocuments<IExperience>(
-        FCollectionName.EXPERIENCE,
+      .getFirebaseAllDocuments<ISelfProjects>(
+        FCollectionName.SELF_PROJECTS,
         orderQuery
       )
       .pipe(
         takeUntil(this.destroy$),
-        tap((experiences) => {
-          this.experiences = experiences;
+        tap((selfProjects) => {
+          this.selfProjects = selfProjects;
         })
       )
       .subscribe();

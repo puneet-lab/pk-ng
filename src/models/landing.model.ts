@@ -21,3 +21,18 @@ export interface IEducation {
   order: number;
   isOpen?: boolean;
 }
+
+export interface ISelfProjects {
+  title: string;
+  desc: string;
+  image: string;
+  url: string;
+  stack: string[];
+  order: number;
+}
+
+export interface ICertificates {
+  title: string;
+  image: string;
+  order: number;
+}

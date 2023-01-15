@@ -3,7 +3,7 @@
     <div class="mt-12">
       <div class="flex items-center flex-col gap-2">
         <img
-          class="w-40 h-40 rounded-full"
+          class="w-40 h-40 rounded-full object-cover"
           src="assets/images/puneet.jpeg"
           alt="puneet"
         />
@@ -17,19 +17,34 @@
     <div>
       <mat-list>
         <mat-list-item *ngFor="let menu of sideBarMenu">
-          <div [routerLinkActive]="'active-link'" [routerLink]="menu.route">
+          <div
+            [routerLinkActive]="'active-link font-bold'"
+            [routerLink]="menu.route"
+          >
             {{ menu.name }}
           </div>
         </mat-list-item>
       </mat-list>
-    </div>
 
-    <div>
-      <ng-container *ngFor="let contact of contacts$ | async"></ng-container>
+      <div class="contact mt-20">
+        <div class="flex justify-center">Get in touch</div>
+        <div class="flex gap-2 justify-center">
+          <ng-container *ngFor="let contact of contacts$ | async">
+            <a
+              class="hover:text-white"
+              [href]="contact.href"
+              [title]="contact.title"
+              target="_blank"
+            >
+              <i class="social-icon fa-xl" [class]="contact.icon"></i>
+            </a>
+          </ng-container>
+        </div>
+      </div>
     </div>
   </mat-drawer>
   <mat-drawer-content>
-    <div class="p-5">
+    <div>
       <router-outlet></router-outlet>
     </div>
   </mat-drawer-content>

@@ -1,4 +1,4 @@
-<div>
+<div class="p-2">
   <div class="text-4xl">CONTACT ME</div>
   <div class="text-lg mt-5 font-thin">
     I am available for hire and open to any ideas of cooperation.
@@ -8,9 +8,11 @@
     <div *ngFor="let contact of contacts" class="grid grid-cols-2">
       <div>{{ contact.type }}:</div>
       <div class="flex gap-1 items-center">
-        <i class="text-cyan-600" [class]="contact.icon"></i>
-        <div class="text-cyan-600">
-          <a [href]="contact.href" target="_blank">{{ contact.title }}</a>
+        <i class="text-rose-700" [class]="contact.icon"></i>
+        <div class="text-rose-700">
+          <a [href]="contact.href" class="w-48 flex" target="_blank">{{
+            contact.title
+          }}</a>
         </div>
       </div>
     </div>
