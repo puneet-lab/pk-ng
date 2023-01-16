@@ -1,51 +1,87 @@
-<mat-drawer-container class="drawer-container">
-  <mat-drawer class="drawer" mode="side" opened>
-    <div class="mt-12">
-      <div class="flex items-center flex-col gap-2">
-        <img
-          class="w-40 h-40 rounded-full object-cover"
-          src="assets/images/puneet.jpeg"
-          alt="puneet"
-        />
-        <div class="text-2xl text-white">Puneet Kushwah</div>
-        <div class="text-lg font-thin text-slate-200">
-          Full Stack Software Engineer
-        </div>
-      </div>
-    </div>
-
-    <div>
-      <mat-list>
-        <mat-list-item *ngFor="let menu of sideBarMenu">
-          <div
-            [routerLinkActive]="'active-link font-bold'"
-            [routerLink]="menu.route"
-          >
-            {{ menu.name }}
+<div class="hidden md:block">
+  <mat-drawer-container class="drawer-container">
+    <mat-drawer class="drawer" mode="side" opened>
+      <div class="mt-12">
+        <div class="flex items-center flex-col gap-2">
+          <img
+            class="w-40 h-40 rounded-full object-cover"
+            src="assets/images/puneet.jpeg"
+            alt="puneet"
+          />
+          <div class="text-2xl text-white">{{ name }}</div>
+          <div class="text-lg font-thin text-slate-200">
+            {{ title }}
           </div>
-        </mat-list-item>
-      </mat-list>
-
-      <div class="contact mt-20">
-        <div class="flex justify-center">Get in touch</div>
-        <div class="flex gap-2 justify-center">
-          <ng-container *ngFor="let contact of contacts$ | async">
-            <a
-              class="hover:text-white"
-              [href]="contact.href"
-              [title]="contact.title"
-              target="_blank"
-            >
-              <i class="social-icon fa-xl" [class]="contact.icon"></i>
-            </a>
-          </ng-container>
         </div>
       </div>
+
+      <div>
+        <mat-list>
+          <mat-list-item *ngFor="let menu of sideBarMenu">
+            <div
+              [routerLinkActive]="'active-link font-bold'"
+              [routerLink]="menu.route"
+            >
+              {{ menu.name }}
+            </div>
+          </mat-list-item>
+        </mat-list>
+
+        <div class="contact mt-20">
+          <div class="flex justify-center">Get in touch</div>
+          <div class="flex gap-2 justify-center">
+            <ng-container *ngFor="let contact of contacts$ | async">
+              <a
+                class="hover:text-white"
+                [href]="contact.href"
+                [title]="contact.title"
+                target="_blank"
+              >
+                <i class="social-icon fa-xl" [class]="contact.icon"></i>
+              </a>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </mat-drawer>
+    <mat-drawer-content>
+      <div>
+        <router-outlet></router-outlet>
+      </div>
+    </mat-drawer-content>
+  </mat-drawer-container>
+</div>
+
+<div class="md:hidden sm:block">
+  <div class="py-10 bg-rose-800">
+    <div class="flex items-center flex-col gap-2">
+      <img
+        class="w-32 h-32 rounded-full object-cover"
+        src="assets/images/puneet.jpeg"
+        alt="puneet"
+      />
+      <div class="text-2xl text-white">{{ name }}</div>
+      <div class="text-lg font-thin text-slate-200">
+        {{ title }}
+      </div>
     </div>
-  </mat-drawer>
-  <mat-drawer-content>
-    <div>
-      <router-outlet></router-outlet>
+
+    <div class="contact mt-5">
+      <div class="flex gap-2 justify-center">
+        <ng-container *ngFor="let contact of contacts$ | async">
+          <a
+            class="hover:text-white"
+            [href]="contact.href"
+            [title]="contact.title"
+            target="_blank"
+          >
+            <i class="social-icon fa-xl" [class]="contact.icon"></i>
+          </a>
+        </ng-container>
+      </div>
     </div>
-  </mat-drawer-content>
-</mat-drawer-container>
+  </div>
+  <div>
+    <pk-portfolio></pk-portfolio>
+  </div>
+</div>

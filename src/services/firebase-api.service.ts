@@ -13,6 +13,7 @@ import {
   IFirebaseUploadResponse,
   IFirebaseWhere,
 } from "../models";
+import { getStorage, ref, getBlob } from "firebase/storage";
 @Injectable({
   providedIn: "root",
 })
@@ -165,5 +166,27 @@ export class FirebaseApiService {
       })
       .snapshotChanges();
     return { uploadTask, fileRef };
+  }
+
+  async downloadFileFromURL(
+    url: string,
+    fileName: string,
+    fileType: string
+  ): Promise<boolean> {
+    try {
+      const storage = getStorage();
+      const httpsReference = ref(storage, url);
+      const blobRef = await getBlob(httpsReference);
+      const blob = new Blob([blobRef], { type: fileType });
+      const urlRef = window.URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.download = fileName;
+      anchor.href = urlRef;
+      anchor.click();
+      return true;
+    } catch (error) {
+      console.error("Error in download file by url", error);
+      return false;
+    }
   }
 }

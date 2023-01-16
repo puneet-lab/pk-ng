@@ -5,6 +5,7 @@ import {
   FirebaseOrderTypes,
   IFirebaseOrder,
   ISelfProjects,
+  ISkills,
 } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
 

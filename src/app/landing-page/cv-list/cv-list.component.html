@@ -1,1 +1,19 @@
-<p>cv works!</p>
+<div class="p-4 relative">
+  <mat-tab-group [color]="'warn'">
+    <mat-tab *ngFor="let cvType of cv">
+      <div class="absolute right-1 top-1">
+        <div title="Download CV" (click)="downloadCV(cvType.type)">
+          <i
+            class="fa-solid cursor-pointer fa-download fa-2xl text-rose-800"
+          ></i>
+        </div>
+      </div>
+      <ng-template mat-tab-label>
+        {{ cvType.title }}
+      </ng-template>
+      <ng-container *ngFor="let img of cvType.images">
+        <img [src]="img" [alt]="cvType.title" />
+      </ng-container>
+    </mat-tab>
+  </mat-tab-group>
+</div>

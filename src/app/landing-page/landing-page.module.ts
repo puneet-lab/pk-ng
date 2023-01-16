@@ -16,7 +16,9 @@ import { MatCardModule } from "@angular/material/card";
 import { SelfProjectsListComponent } from "./portfolio/self-projects-list/self-projects-list.component";
 import { CertificateListComponent } from "./portfolio/certificate-list/certificate-list.component";
 import { SharedModule } from "src/shared/shared.module";
-import { AboutComponent } from './portfolio/about/about.component';
+import { AboutComponent } from "./portfolio/about/about.component";
+import { MatTabsModule } from "@angular/material/tabs";
+import { MatSnackBarModule } from "@angular/material/snack-bar";
 @NgModule({
   declarations: [
     LandingPageComponent,
@@ -38,6 +40,8 @@ import { AboutComponent } from './portfolio/about/about.component';
     MatCardModule,
     MatIconModule,
     SharedModule,
+    MatTabsModule,
+    MatSnackBarModule,
   ],
   exports: [LandingPageComponent],
 })

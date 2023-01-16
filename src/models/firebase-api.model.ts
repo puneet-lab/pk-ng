@@ -10,6 +10,9 @@ export enum FCollectionName {
   EDUCATION = "education",
   SELF_PROJECTS = "self_projects",
   CERTIFICATES = "certificates",
+  SKILLS = "skills",
+  SKILL_TYPES = "skill_types",
+  CV = "cv",
 }
 
 export enum FirebaseOrderTypes {

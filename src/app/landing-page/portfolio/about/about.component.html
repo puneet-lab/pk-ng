@@ -1,5 +1,5 @@
 <div>
-  <pk-landing-title [title]="title"></pk-landing-title>
+  <pk-landing-title class="hidden md:block" [title]="title"></pk-landing-title>
   <mat-card>
     <div class="p-5 grid gap-4 text-lg">
       <div class="font-extrabold">
@@ -31,8 +31,24 @@
 
       <div class="pl-2 text-slate-500">
         <ul>
-          <li *ngFor="let skill of skills">&#x2022; {{ skill }}</li>
+          <li *ngFor="let res of responsibilities">&#x2022; {{ res }}</li>
         </ul>
+      </div>
+    </div>
+
+    <div class="p-5 text-slate-500">
+      <div class="mb-2" *ngFor="let skillType of skillTypes">
+        {{ skillType.title }}:
+        <div class="flex gap-2 flex-wrap">
+          <div *ngFor="let skill of skillTypesMap[skillType.type]">
+            <div
+              class="flex gap-2 items-center border border-rose-800 px-2 py-1 font-thin text-sm"
+            >
+              <img class="h-5" [src]="skill.logo" alt="" />
+              <div>{{ skill.skill }}</div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </mat-card>

@@ -9,6 +9,8 @@ import { SharedService } from "src/shared";
 })
 export class LandingPageComponent {
   contacts$ = this.sharedService.getContactList();
+  name = "Puneet Kushwah";
+  title = "Full Stack Software Engineer";
 
   constructor(private sharedService: SharedService) {}
 
