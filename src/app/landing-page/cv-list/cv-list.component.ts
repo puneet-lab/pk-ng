@@ -24,12 +24,12 @@ export class CvListComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const orderQueryAsc: IFirebaseOrder = {
+    const orderQueryDesc: IFirebaseOrder = {
       order: "order",
-      direction: FirebaseOrderTypes.asc,
+      direction: FirebaseOrderTypes.desc,
     };
     this.firebaseApi
-      .getFirebaseAllDocuments<ICV>(FCollectionName.CV, orderQueryAsc)
+      .getFirebaseAllDocuments<ICV>(FCollectionName.CV, orderQueryDesc)
       .pipe(
         takeUntil(this.destroy$),
         tap((cv) => {
