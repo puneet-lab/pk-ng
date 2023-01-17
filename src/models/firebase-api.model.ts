@@ -13,6 +13,7 @@ export enum FCollectionName {
   SKILLS = "skills",
   SKILL_TYPES = "skill_types",
   CV = "cv",
+  PRIVACY_POLICY = "privacy_policy",
 }
 
 export enum FirebaseOrderTypes {

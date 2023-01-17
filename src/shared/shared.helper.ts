@@ -1,5 +1,7 @@
 import { FormArray } from "@angular/forms";
 import {
+  FirebaseOrderTypes,
+  IFirebaseOrder,
   ITitlebarActionFunc,
   ITitlebarActions,
   ITitlebarNotifyAction,
@@ -43,4 +45,18 @@ export const notifyCommonTitleBarActions = ({
     default:
       throw new Error("No valid Title bar common action");
   }
+};
+
+export const getOrderQueryDesc = (): IFirebaseOrder => {
+  return {
+    order: "order",
+    direction: FirebaseOrderTypes.desc,
+  };
+};
+
+export const getOrderQueryAsc = (): IFirebaseOrder => {
+  return {
+    order: "order",
+    direction: FirebaseOrderTypes.asc,
+  };
 };

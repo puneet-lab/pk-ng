@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { PrivacyPolicyComponent } from "src/shared/components/privacy-policy/privacy-policy.component";
 
 const routes: Routes = [
   {
@@ -14,6 +15,11 @@ const routes: Routes = [
     loadChildren: () =>
       import("../app/admin/admin.module").then((m) => m.AdminModule),
   },
+  {
+    path: "privacy-policy",
+    component: PrivacyPolicyComponent,
+  },
+
   {
     path: "",
     redirectTo: "landing/portfolio",

@@ -8,6 +8,7 @@ import {
   ISkills,
 } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
+import { getOrderQueryDesc } from "src/shared";
 
 @Component({
   selector: "pk-self-projects",
@@ -22,14 +23,11 @@ export class SelfProjectsListComponent implements OnInit, OnDestroy {
   constructor(private firebaseApi: FirebaseApiService) {}
 
   ngOnInit(): void {
-    const orderQuery: IFirebaseOrder = {
-      order: "order",
-      direction: FirebaseOrderTypes.desc,
-    };
+    const orderQueryDesc = getOrderQueryDesc();
     this.firebaseApi
       .getFirebaseAllDocuments<ISelfProjects>(
         FCollectionName.SELF_PROJECTS,
-        orderQuery
+        orderQueryDesc
       )
       .pipe(
         takeUntil(this.destroy$),

@@ -37,3 +37,8 @@ export interface ITitlebarActionFunc {
   add: Function;
   remove: Function;
 }
+
+export interface IPrivacyPolicy {
+  title: string;
+  order: number;
+}
