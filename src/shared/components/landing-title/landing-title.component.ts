@@ -7,5 +7,5 @@ import { Component, Input } from "@angular/core";
 })
 export class LandingTitleComponent {
   @Input() title: string = "";
-  @Input() isColon = true;
+  @Input() isShowColon = true;
 }
