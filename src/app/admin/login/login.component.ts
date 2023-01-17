@@ -18,11 +18,8 @@ import { AuthService } from "src/services/auth.service";
 })
 export class LoginComponent implements OnInit {
   loginForm = this.formBuilder.group({
-    email: [
-      "rj.puneet.t800@gmail.com",
-      [Validators.required, Validators.email],
-    ],
-    password: ["12345678", Validators.required],
+    email: ["", [Validators.required, Validators.email]],
+    password: ["", Validators.required],
   }) as FormGroup;
   isLoading = false;
   loadingText = "Loading...";

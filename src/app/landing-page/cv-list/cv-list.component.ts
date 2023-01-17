@@ -9,19 +9,25 @@ import {
 } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { Router } from "@angular/router";
 @Component({
-  selector: "pk-cv",
+  selector: "pk-cv-list",
   templateUrl: "./cv-list.component.html",
   styleUrls: ["./cv-list.component.scss"],
 })
 export class CvListComponent implements OnInit, OnDestroy {
   cv: ICV[];
   destroy$ = new Subject<void>();
+  isPortfolioPage = true;
 
   constructor(
     private firebaseApi: FirebaseApiService,
-    private snackBar: MatSnackBar
-  ) {}
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {
+    const currentUrl = this.router.url;
+    this.isPortfolioPage = currentUrl.includes("portfolio") ? true : false;
+  }
 
   ngOnInit(): void {
     const orderQueryDesc: IFirebaseOrder = {
