@@ -27,6 +27,7 @@ export class CvListComponent implements OnInit, OnDestroy {
   ) {
     const currentUrl = this.router.url;
     this.isPortfolioPage = currentUrl.includes("portfolio") ? true : false;
+    console.log("👉 ~ this.isPortfolioPage", this.isPortfolioPage);
   }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
-<div class="md:hidden">
-  <ng-container *ngIf="isPortfolioPage; else cvPage">
+<ng-container *ngIf="isPortfolioPage; else cvPage">
+  <div class="md:hidden">
     <div class="grid grid-cols-2 gap-2 p-2">
       <ng-container *ngFor="let cvType of cv">
         <button
@@ -10,8 +10,8 @@
         </button>
       </ng-container>
     </div>
-  </ng-container>
-</div>
+  </div>
+</ng-container>
 
 <ng-template #cvPage>
   <div class="p-4 relative">
