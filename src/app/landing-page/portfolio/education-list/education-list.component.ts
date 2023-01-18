@@ -7,6 +7,7 @@ import {
   FCollectionName,
 } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
+import { getOrderQueryDesc } from "src/shared";
 
 @Component({
   selector: "pk-education-list",
@@ -21,10 +22,7 @@ export class EducationListComponent implements OnInit, OnDestroy {
   constructor(private firebaseApi: FirebaseApiService) {}
 
   ngOnInit(): void {
-    const orderQuery: IFirebaseOrder = {
-      order: "order",
-      direction: FirebaseOrderTypes.desc,
-    };
+    const orderQuery = getOrderQueryDesc();
     this.firebaseApi
       .getFirebaseAllDocuments<IEducation>(
         FCollectionName.EDUCATION,

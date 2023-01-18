@@ -10,6 +10,7 @@ import {
 import { FirebaseApiService } from "src/services/firebase-api.service";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
+import { getOrderQueryDesc } from "src/shared";
 @Component({
   selector: "pk-cv-list",
   templateUrl: "./cv-list.component.html",
@@ -27,14 +28,10 @@ export class CvListComponent implements OnInit, OnDestroy {
   ) {
     const currentUrl = this.router.url;
     this.isPortfolioPage = currentUrl.includes("portfolio") ? true : false;
-    console.log("👉 ~ this.isPortfolioPage", this.isPortfolioPage);
   }
 
   ngOnInit(): void {
-    const orderQueryDesc: IFirebaseOrder = {
-      order: "order",
-      direction: FirebaseOrderTypes.desc,
-    };
+    const orderQueryDesc = getOrderQueryDesc();
     this.firebaseApi
       .getFirebaseAllDocuments<ICV>(FCollectionName.CV, orderQueryDesc)
       .pipe(

@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { IAdminSideNavItems } from "src/models";
+import { IAdminSideNavItems, PageUrlTypes } from "src/models";
 import { dashboardSideNavItems } from "./side-items";
 import { Router } from "@angular/router";
+import { AuthService } from "src/services/auth.service";
 
 @Component({
   selector: "pk-dashboard",
@@ -11,7 +12,7 @@ import { Router } from "@angular/router";
 export class DashboardComponent implements OnInit {
   dashboardSideNavItems = dashboardSideNavItems;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private auth: AuthService) {}
 
   ngOnInit(): void {}
 
@@ -26,5 +27,10 @@ export class DashboardComponent implements OnInit {
 
   navigateToMainRoute({ route }: IAdminSideNavItems): void {
     void this.router.navigate([route]);
+  }
+
+  async logout(): Promise<void> {
+    await this.auth.logout();
+    this.router.navigate([PageUrlTypes.ADMIN]);
   }
 }

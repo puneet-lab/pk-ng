@@ -12,6 +12,7 @@ export class AuthService {
   private _isSignedIn = false;
   private isSignedIn = new BehaviorSubject(this._isSignedIn);
   isSignedIn$ = this.isSignedIn.asObservable();
+
   constructor(public afAuth: AngularFireAuth) {
     this.afAuth.authState.subscribe((user) => {
       if (user) {
@@ -29,8 +30,7 @@ export class AuthService {
     password: string
   ): Promise<boolean> {
     try {
-      const user = await signInWithEmailAndPassword(this.auth, email, password);
-      console.log("👉 ~ user", user);
+      await signInWithEmailAndPassword(this.auth, email, password);
       return true;
     } catch (error) {
       console.error("AUTHERROR::", error);

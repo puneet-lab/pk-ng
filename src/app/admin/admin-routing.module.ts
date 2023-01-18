@@ -6,6 +6,7 @@ import { ExperienceComponent } from "./dashboard/experience/experience.component
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { ContactComponent } from "./dashboard/contact/contact.component";
 import { EducationComponent } from "./dashboard/education/education.component";
+import { AuthGuard } from "../auth.guard";
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
   },
   {
     path: PageUrlTypes.DASHBOARD,
+    canActivate: [AuthGuard],
     component: DashboardComponent,
     children: [
       { path: "experience", component: ExperienceComponent },

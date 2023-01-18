@@ -1,13 +1,8 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject, combineLatest, takeUntil, tap } from "rxjs";
-import {
-  FCollectionName,
-  FirebaseOrderTypes,
-  IFirebaseOrder,
-  ISkillTypes,
-  ISkills,
-} from "src/models";
+import { FCollectionName, ISkillTypes, ISkills } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
+import { getOrderQueryAsc } from "src/shared";
 
 @Component({
   selector: "pk-about",
@@ -21,10 +16,7 @@ export class AboutComponent implements OnInit, OnDestroy {
   skillTypes: ISkillTypes[];
   skills: ISkills[];
 
-  orderQueryAsc: IFirebaseOrder = {
-    order: "order",
-    direction: FirebaseOrderTypes.asc,
-  };
+  orderQueryAsc = getOrderQueryAsc();
 
   skillTypes$ = this.firebaseApi.getFirebaseAllDocuments<ISkillTypes>(
     FCollectionName.SKILL_TYPES,

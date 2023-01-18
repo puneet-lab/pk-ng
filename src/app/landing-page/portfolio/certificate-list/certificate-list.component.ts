@@ -7,6 +7,7 @@ import {
   IFirebaseOrder,
 } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
+import { getOrderQueryDesc } from "src/shared";
 
 @Component({
   selector: "pk-certificates",
@@ -20,10 +21,7 @@ export class CertificateListComponent implements OnInit, OnDestroy {
   constructor(private firebaseApi: FirebaseApiService) {}
 
   ngOnInit(): void {
-    const orderQuery: IFirebaseOrder = {
-      order: "order",
-      direction: FirebaseOrderTypes.desc,
-    };
+    const orderQuery = getOrderQueryDesc();
     this.firebaseApi
       .getFirebaseAllDocuments<ICertificates>(
         FCollectionName.CERTIFICATES,

@@ -18,3 +18,12 @@ mat-expansion-panel-header{
   .mat-expansion-indicator::after {
     fill:red;
     }
+
+    .h-unset{
+      height: initial;
+    }
+
+    ul {
+      list-style: circle outside none;
+      margin-left: 10px;
+    }

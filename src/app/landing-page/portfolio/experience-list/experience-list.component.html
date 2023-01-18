@@ -27,13 +27,13 @@
         </div>
       </mat-panel-title>
     </mat-expansion-panel-header>
-    <mat-list>
-      <mat-list-item
-        style="height: unset"
+    <ul>
+      <li
+        class="h-unset"
         *ngFor="let res of experience.responsibilities; let i = index"
       >
-        <div class="text-sm mb-1">&#x2022; {{ res.text }}</div>
-      </mat-list-item>
-    </mat-list>
+        <div class="text-sm mb-1">{{ res.text }}</div>
+      </li>
+    </ul>
   </mat-expansion-panel>
 </mat-accordion>
