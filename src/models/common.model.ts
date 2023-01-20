@@ -3,6 +3,7 @@ export enum PageUrlTypes {
   DASHBOARD = "dashboard",
   ADMIN = "admin",
   LANDING = "landing",
+  ADMIN_EXPERIENCE = "admin/dashboard/experience",
 }
 
 export enum TitlebarActionTypes {

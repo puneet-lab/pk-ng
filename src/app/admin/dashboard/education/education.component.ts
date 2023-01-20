@@ -1,214 +1,37 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
+import { Subject, takeUntil, tap } from "rxjs";
 import {
-  ITitlebarActions,
-  ITitlebarToggle,
-  ITitlebarNotifyAction,
   FCollectionName,
   IEducation,
-  ICertificates,
+  ITitlebarActions,
+  ITitlebarNotifyAction,
+  ITitlebarToggle,
+  OperationModes,
 } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
 import {
+  SharedService,
   getFormArraySharedButtons,
+  getOrderQueryAsc,
   notifyCommonTitleBarActions,
 } from "src/shared";
-const x = [
-  {
-    skill: "Angular",
-    logo: "https://cdn.worldvectorlogo.com/logos/angular-icon-1.svg",
-    group: "js",
-    order: 1,
-  },
-  {
-    skill: "Vue",
-    logo: "https://cdn.worldvectorlogo.com/logos/vue-9.svg",
-    group: "js",
-    order: 2,
-  },
-  {
-    skill: "Vuex",
-    logo: "https://cdn.worldvectorlogo.com/logos/vue-9.svg",
-    group: "js",
-    order: 3,
-  },
-  {
-    skill: "RxJS",
-    logo: "https://cdn.worldvectorlogo.com/logos/rxjs-1.svg",
-    group: "js",
-    order: 4,
-  },
-  {
-    skill: "Node JS",
-    logo: "https://cdn.worldvectorlogo.com/logos/alpine-13.svg",
-    group: "js",
-    order: 5,
-  },
-  {
-    skill: "TypeScript",
-    logo: "https://cdn.worldvectorlogo.com/logos/typescript.svg",
-    group: "js",
-    order: 6,
-  },
-
-  {
-    skill: "Javascript",
-    logo: "https://cdn.worldvectorlogo.com/logos/logo-javascript.svg",
-    group: "js",
-    order: 7,
-  },
-  {
-    skill: "jQuery",
-    logo: "https://cdn.worldvectorlogo.com/logos/jquery-4.svg",
-    group: "js",
-    order: 8,
-  },
-  {
-    skill: "Alpine JS",
-    logo: "https://cdn.worldvectorlogo.com/logos/alpine-13.svg",
-    group: "js",
-    order: 9,
-  },
-  {
-    skill: "Ionic",
-    logo: "https://pics.freeicons.io/uploads/icons/png/6219238431580802964-512.png",
-    group: "js",
-    order: 10,
-  },
-
-  {
-    skill: "HTML",
-    logo: "https://cdn.worldvectorlogo.com/logos/html-1.svg",
-    group: "fe",
-    order: 1,
-  },
-  {
-    skill: "CSS",
-    logo: "https://cdn.worldvectorlogo.com/logos/css-3.svg",
-    group: "fe",
-    order: 2,
-  },
-  {
-    skill: "SCSS",
-    logo: "https://cdn.worldvectorlogo.com/logos/sass-1.svg",
-    group: "fe",
-    order: 3,
-  },
-  {
-    skill: "Tailwind",
-    logo: "https://cdn.worldvectorlogo.com/logos/tailwindcss.svg",
-    group: "fe",
-    order: 4,
-  },
-  {
-    skill: "Bootstrap",
-    logo: "https://cdn.worldvectorlogo.com/logos/bootstrap-5-1.svg",
-    group: "5",
-    order: 5,
-  },
-
-  {
-    skill: "Laravel",
-    logo: "https://cdn.worldvectorlogo.com/logos/laravel-2.svg",
-    group: "be",
-    order: 1,
-  },
-  {
-    skill: "C#",
-    logo: "https://cdn.worldvectorlogo.com/logos/c--4.svg",
-    group: "be",
-    order: 2,
-  },
-  {
-    skill: "PHP",
-    logo: "https://cdn.worldvectorlogo.com/logos/php-logo-only-letter.svg",
-    group: "be",
-    order: 3,
-  },
-  {
-    skill: "PL/SQL",
-    logo: "https://cdn.worldvectorlogo.com/logos/oracle-6.svg",
-    group: "be",
-    order: 4,
-  },
-
-  {
-    skill: "Oracle DB",
-    logo: "https://cdn.worldvectorlogo.com/logos/oracle-6.svg",
-    group: "db",
-    order: 1,
-  },
-  {
-    skill: "PostgresSQL",
-    logo: "https://cdn.worldvectorlogo.com/logos/postgresql.svg",
-    group: "db",
-    order: 2,
-  },
-  {
-    skill: "MySQL",
-    logo: "https://cdn.worldvectorlogo.com/logos/mysql-6.svg",
-    group: "db",
-    order: 3,
-  },
-  {
-    skill: "MongoDB",
-    logo: "https://cdn.worldvectorlogo.com/logos/mongodb-icon-1.svg",
-    group: "db",
-    order: 4,
-  },
-  {
-    skill: "Redis",
-    logo: "https://cdn.worldvectorlogo.com/logos/redis.svg",
-    group: "db",
-    order: 5,
-  },
-  {
-    skill: "Firebase",
-    logo: "https://cdn.worldvectorlogo.com/logos/firebase-1.svg",
-    group: "db",
-    order: 6,
-  },
-  {
-    skill: "GraphQL",
-    logo: "https://cdn.worldvectorlogo.com/logos/graphql-logo-2.svg",
-    group: "other",
-    order: 1,
-  },
-  {
-    skill: "Apollo",
-    logo: "https://cdn.worldvectorlogo.com/logos/apollo-graphql-compact.svg",
-    group: "other",
-    order: 2,
-  },
-  {
-    skill: "Git",
-    logo: "https://cdn.worldvectorlogo.com/logos/git-icon.svg",
-    group: "other",
-    order: 3,
-  },
-  {
-    skill: "docker",
-    logo: "https://cdn.worldvectorlogo.com/logos/docker.svg",
-    group: "other",
-    order: 4,
-  },
-  {
-    skill: "Kubernets",
-    logo: "https://cdn.worldvectorlogo.com/logos/kubernets.svg",
-    group: "other",
-    order: 5,
-  },
-];
 
 @Component({
   selector: "pk-education",
   templateUrl: "./education.component.html",
   styleUrls: ["./education.component.scss"],
 })
-export class EducationComponent implements OnInit {
+export class EducationComponent implements OnInit, OnDestroy {
   educationForm: FormGroup;
-
+  order = getOrderQueryAsc();
+  operationMode = OperationModes.ADD;
+  education$ = this.sharedService.getContentList<IEducation>(
+    FCollectionName.EDUCATION,
+    this.order
+  );
+  destroy$ = new Subject<void>();
   get educationFormArray(): FormArray {
     return this.educationForm.get("education") as FormArray;
   }
@@ -216,10 +39,45 @@ export class EducationComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private snackBar: MatSnackBar,
-    private firebaseApi: FirebaseApiService
+    private firebaseApi: FirebaseApiService,
+    private sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
+    this.education$
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((education) => {
+          this.operationMode = education?.length
+            ? OperationModes.EDIT
+            : OperationModes.ADD;
+          if (this.operationMode === OperationModes.ADD) {
+            this.initAddEducation();
+          } else {
+            this.initEditEducation(education);
+          }
+        })
+      )
+      .subscribe();
+  }
+
+  initEditEducation(educations: IEducation[]): void {
+    const educationFormArray = this.fb.array([]);
+    this.educationForm = this.fb.group({
+      education: educationFormArray,
+    });
+
+    educations.forEach((education, index) => {
+      const educationFormGroup = this.getEducationFormGroup();
+      educationFormGroup.patchValue({
+        ...education,
+        isOpen: index < educations?.length - 1 ? false : true,
+      });
+      this.educationFormArray.push(educationFormGroup);
+    });
+  }
+
+  initAddEducation(): void {
     this.educationForm = this.fb.group({
       education: this.fb.array([this.getEducationFormGroup()]),
     });
@@ -259,24 +117,28 @@ export class EducationComponent implements OnInit {
   }
 
   async saveEducation(): Promise<void> {
-    // if (this.educationForm.invalid) {
-    //   this.snackBar.open("Education form is invalid");
-    // } else {
-    try {
-      const educations = x; //this.educationForm.value.educations as IEducation[];
-      for (let index = 0; index < educations.length; index++) {
-        const education = educations[index];
-        console.log("👉 ~ saveEducation ~ education", education?.skill);
-        await this.firebaseApi.addFirebaseDocument(
-          FCollectionName.SKILLS,
-          education
-        );
+    if (this.educationForm.invalid) {
+      this.snackBar.open("Education form is invalid");
+    } else {
+      try {
+        const educations = this.educationForm.value.educations as IEducation[];
+        for (let index = 0; index < educations.length; index++) {
+          const education = educations[index];
+          await this.firebaseApi.addFirebaseDocument(
+            FCollectionName.SKILLS,
+            education
+          );
+        }
+        this.snackBar.open("Education(s) saved!");
+      } catch (error) {
+        this.snackBar.open("Error in saving Education(s)");
+        console.error("Error in saving Education(s) ", error);
       }
-      this.snackBar.open("Education(s) saved!");
-    } catch (error) {
-      this.snackBar.open("Error in saving Education(s)");
-      console.error("Error in saving Education(s) ", error);
     }
   }
-  // }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

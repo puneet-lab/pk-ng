@@ -7,38 +7,20 @@ import {
   FCollectionName,
 } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
-import { getOrderQueryDesc } from "src/shared";
+import { SharedService, getOrderQueryDesc } from "src/shared";
 
 @Component({
   selector: "pk-education-list",
   templateUrl: "./education-list.component.html",
   styleUrls: ["./education-list.component.scss"],
 })
-export class EducationListComponent implements OnInit, OnDestroy {
-  destroy$ = new Subject<void>();
-  educationList: IEducation[];
+export class EducationListComponent {
   title = "Education";
+  order = getOrderQueryDesc();
+  education$ = this.sharedService.getContentList<IEducation>(
+    FCollectionName.EDUCATION,
+    this.order
+  );
 
-  constructor(private firebaseApi: FirebaseApiService) {}
-
-  ngOnInit(): void {
-    const orderQuery = getOrderQueryDesc();
-    this.firebaseApi
-      .getFirebaseAllDocuments<IEducation>(
-        FCollectionName.EDUCATION,
-        orderQuery
-      )
-      .pipe(
-        takeUntil(this.destroy$),
-        tap((education) => {
-          this.educationList = education;
-        })
-      )
-      .subscribe();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  constructor(private sharedService: SharedService) {}
 }

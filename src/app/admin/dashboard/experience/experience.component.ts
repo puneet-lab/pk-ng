@@ -1,6 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { Subject, takeUntil, tap } from "rxjs";
 import {
   FCollectionName,
   ITitlebarActions,
@@ -10,28 +12,35 @@ import {
   TitlebarActionTypes,
 } from "src/models";
 import { IExperience, IOrderText } from "src/models/admin.model";
-import { ResponsibilityDialogComponent } from "./responsibility-dialog/responsibility-dialog.component";
-import { tap } from "rxjs";
 import { FirebaseApiService } from "src/services/firebase-api.service";
-import { MatSnackBar } from "@angular/material/snack-bar";
 import {
+  SharedService,
   getFormArraySharedButtons,
+  getOrderQueryAsc,
   notifyCommonTitleBarActions,
 } from "src/shared";
+import { ResponsibilityDialogComponent } from "./responsibility-dialog/responsibility-dialog.component";
 
 @Component({
   selector: "pk-experience",
   templateUrl: "./experience.component.html",
   styleUrls: ["./experience.component.scss"],
 })
-export class ExperienceComponent implements OnInit {
-  responsibilitiesFormArray = this.fb.array([]);
-
+export class ExperienceComponent implements OnInit, OnDestroy {
+  order = getOrderQueryAsc();
+  experiences$ = this.sharedService.getContentList<IExperience>(
+    FCollectionName.EXPERIENCE,
+    this.order
+  );
   experienceFormGroup: FormGroup;
 
   operationMode = OperationModes.ADD;
 
   experienceList: IExperience[] = [];
+
+  responsibilitiesFormArray = this.fb.array([]);
+
+  destroy$ = new Subject<void>();
 
   get experienceFormArray(): FormArray {
     return this.experienceFormGroup.get("experience") as FormArray;
@@ -41,21 +50,61 @@ export class ExperienceComponent implements OnInit {
     private fb: FormBuilder,
     public dialog: MatDialog,
     private firebaseApi: FirebaseApiService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private sharedService: SharedService
   ) {}
 
   ngOnInit(): void {
-    if (this.operationMode === OperationModes.ADD) {
-      this.initForAddExperience();
-    } else {
-      throw new Error("EDIT mode implement");
-    }
+    this.experiences$
+      .pipe(
+        takeUntil(this.destroy$),
+        tap((experiences) => {
+          this.operationMode = experiences?.length
+            ? OperationModes.EDIT
+            : OperationModes.ADD;
+          if (this.operationMode === OperationModes.ADD) {
+            this.initAddExperience();
+          } else {
+            this.initEditExperience(experiences);
+          }
+        })
+      )
+      .subscribe();
   }
 
-  initForAddExperience(): void {
+  initAddExperience(): void {
     const experienceFormArray = this.fb.array([this.getExperienceForm()]);
     this.experienceFormGroup = this.fb.group({
       experience: experienceFormArray,
+    });
+  }
+
+  initEditExperience(experiences: IExperience[]): void {
+    const experienceFormArray = this.fb.array([]);
+    this.experienceFormGroup = this.fb.group({
+      experience: experienceFormArray,
+    });
+    experiences.forEach((experience, index) => {
+      const experienceFormGroup = this.getExperienceForm();
+      experienceFormGroup.patchValue({
+        ...experience,
+        isOpen: index < experiences?.length - 1 ? false : true,
+      });
+      this.editResponsibilities(experienceFormGroup, experience);
+      this.experienceFormArray.push(experienceFormGroup);
+    });
+  }
+
+  editResponsibilities(
+    experienceFormGroup: FormGroup,
+    experience: IExperience
+  ) {
+    const resFormArray = experienceFormGroup.get(
+      "responsibilities"
+    ) as FormArray;
+    experience.responsibilities.forEach(({ order, text }) => {
+      const resFormGroup = this.patchResponsibilityFormGroup({ order, text });
+      resFormArray.push(resFormGroup);
     });
   }
 
@@ -132,15 +181,21 @@ export class ExperienceComponent implements OnInit {
         tap((responsibilities: string[] | undefined) => {
           if (!responsibilities?.length) return;
           resFormArray.clear();
-          responsibilities.map((res, i) => {
-            const responsibilitiesFormGroup =
-              this.getResponsibilitiesFormGroup();
-            responsibilitiesFormGroup.patchValue({ order: i, text: res });
+          responsibilities.map((text, order) => {
+            const responsibilitiesFormGroup = this.patchResponsibilityFormGroup(
+              { order, text }
+            );
             resFormArray?.push(responsibilitiesFormGroup);
           });
         })
       )
       .subscribe();
+  }
+
+  patchResponsibilityFormGroup({ order, text }: IOrderText): FormGroup {
+    const responsibilitiesFormGroup = this.getResponsibilitiesFormGroup();
+    responsibilitiesFormGroup.patchValue({ order, text });
+    return responsibilitiesFormGroup;
   }
 
   async saveExperience(): Promise<void> {
@@ -177,5 +232,10 @@ export class ExperienceComponent implements OnInit {
         remove: this.removeExp.bind(this),
       }),
     ];
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

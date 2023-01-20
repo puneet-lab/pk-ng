@@ -1,5 +1,4 @@
 <div class="p-5">
-  {{ resonsibilityFormGroup.value | json }}
   <div class="text-xl">Responsibilities</div>
   <div [formGroup]="resonsibilityFormGroup">
     <ng-container formArrayName="responsibilities">
@@ -12,23 +11,18 @@
             <mat-error></mat-error>
           </mat-form-field>
           <div>
-            <img
-              (click)="removeField(index)"
-              *ngIf="index > 0"
-              class="h-5 cursor-pointer"
-              src="assets/images/delete.svg"
-              alt="open"
-            />
+            <div (click)="removeField(index)">
+              <i
+                class="fa-solid fa-trash-can cursor-pointer"
+                *ngIf="index > 0"
+              ></i>
+            </div>
           </div>
           <div
             *ngIf="index === resonsibilityFormArray.controls.length - 1"
             (click)="addResponsibility()"
           >
-            <img
-              class="h-5 cursor-pointer"
-              src="assets/images/plus.svg"
-              alt="add"
-            />
+            <i class="fa-solid fa-plus cursor-pointer"></i>
           </div>
         </div>
       </div>

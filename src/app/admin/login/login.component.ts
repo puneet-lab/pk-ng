@@ -1,13 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  FormGroup,
-  FormBuilder,
-  Validators,
-  UntypedFormGroup,
-} from "@angular/forms";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import * as firebase from "firebase/compat";
 import { PageUrlTypes } from "src/models";
 import { AuthService } from "src/services/auth.service";
 
@@ -18,8 +12,11 @@ import { AuthService } from "src/services/auth.service";
 })
 export class LoginComponent implements OnInit {
   loginForm = this.formBuilder.group({
-    email: ["", [Validators.required, Validators.email]],
-    password: ["", Validators.required],
+    email: [
+      "rj.puneet.t800@gmail.com",
+      [Validators.required, Validators.email],
+    ],
+    password: ["12345678", Validators.required],
   }) as FormGroup;
   isLoading = false;
   loadingText = "Loading...";
@@ -33,15 +30,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.authService.isSignedIn$.subscribe((isLoggedIn) => {
       if (isLoggedIn) {
-        console.log(
-          "👉 ~ this.authService.isSignedIn$.subscribe ~ isLoggedIn",
-          isLoggedIn
-        );
-        // const user = firebase.auth().currentUser.email;
-        // const adminEmail = env.environment.adminEmail;
-        // user !== adminEmail
-        //   ? this.router.navigate([PagesLinkType.USER_DETAILS])
-        //   : this.router.navigate([PagesLinkType.ADMIN_USER_LIST]);
+        this.router.navigate([PageUrlTypes.ADMIN_EXPERIENCE]);
       }
     });
   }

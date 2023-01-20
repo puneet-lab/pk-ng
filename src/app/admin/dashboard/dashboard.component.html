@@ -11,26 +11,19 @@
             {{ sideNavItems.title }}
             <ng-container *ngIf="sideNavItems?.subItems?.length">
               <ng-container *ngIf="!sideNavItems?.showSubItems; else downImage">
-                <img
-                  class="arrow h-5"
-                  src="assets/images/right-arrow.svg"
-                  alt=""
-                  srcset=""
-                />
+                <i class="fa-solid fa-chevron-right"></i>
               </ng-container>
               <ng-template #downImage>
-                <img
-                  class="arrow h-5"
-                  src="assets/images/down-arrow.svg"
-                  alt=""
-                  srcset=""
-                />
+                <i class="fa-solid fa-chevron-down"></i>
               </ng-template>
             </ng-container>
           </div>
         </mat-list-item>
         <mat-list *ngIf="sideNavItems?.showSubItems">
-          <div *ngFor="let subItem of sideNavItems.subItems">
+          <div
+            class="ml-5 text-sm"
+            *ngFor="let subItem of sideNavItems.subItems"
+          >
             <mat-list-item [routerLink]="[subItem.route]">{{
               subItem.title
             }}</mat-list-item>

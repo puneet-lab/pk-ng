@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="experienceFormGroup">
   <div [formGroup]="experienceFormGroup">
     <ng-container formArrayName="experience">
       <div
@@ -11,7 +11,7 @@
           <pk-titlebar
             [title]="'Experience'"
             [index]="index"
-            [isOpen]="experienceForm.get('isOpen')?.value"
+            [isOpen]="experienceForm.get('isOpen').value"
             [actionButtons]="getExperienceActions(index)"
             (notifyToggle)="openCloseExp($event)"
             (notifyAction)="notifyAction($event)"

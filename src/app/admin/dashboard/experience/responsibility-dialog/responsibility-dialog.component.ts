@@ -9,6 +9,7 @@ import {
 import { MatDialogRef } from "@angular/material/dialog";
 import { Inject } from "@angular/core";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
+import { getFormArraySharedButtons } from "src/shared";
 
 @Component({
   selector: "pk-responsibility-dialog",

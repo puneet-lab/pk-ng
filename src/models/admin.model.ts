@@ -25,6 +25,6 @@ export interface IExperience {
 }
 
 export interface IOrderText {
-  order: string;
+  order: number;
   text: string;
 }

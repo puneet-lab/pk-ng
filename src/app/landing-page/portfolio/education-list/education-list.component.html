@@ -5,7 +5,7 @@
       <div
         class="timeline-item"
         [attr.date-is]="education.date"
-        *ngFor="let education of educationList"
+        *ngFor="let education of education$ | async"
       >
         <div class="text-2xl">
           {{ education.title }}

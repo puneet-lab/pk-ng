@@ -1,43 +1,20 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject, takeUntil, tap } from "rxjs";
-import {
-  FCollectionName,
-  FirebaseOrderTypes,
-  ICertificates,
-  IFirebaseOrder,
-} from "src/models";
+import { FCollectionName, ICertificates } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
-import { getOrderQueryDesc } from "src/shared";
+import { SharedService, getOrderQueryDesc } from "src/shared";
 
 @Component({
   selector: "pk-certificates",
   templateUrl: "./certificate-list.component.html",
   styleUrls: ["./certificate-list.component.scss"],
 })
-export class CertificateListComponent implements OnInit, OnDestroy {
-  destroy$ = new Subject<void>();
+export class CertificateListComponent {
   title = "Certificates";
-  certificates: ICertificates[];
-  constructor(private firebaseApi: FirebaseApiService) {}
-
-  ngOnInit(): void {
-    const orderQuery = getOrderQueryDesc();
-    this.firebaseApi
-      .getFirebaseAllDocuments<ICertificates>(
-        FCollectionName.CERTIFICATES,
-        orderQuery
-      )
-      .pipe(
-        takeUntil(this.destroy$),
-        tap((certificates) => {
-          this.certificates = certificates;
-        })
-      )
-      .subscribe();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  orderQuery = getOrderQueryDesc();
+  certificates$ = this.sharedService.getContentList<ICertificates>(
+    FCollectionName.CERTIFICATES,
+    this.orderQuery
+  );
+  constructor(private sharedService: SharedService) {}
 }

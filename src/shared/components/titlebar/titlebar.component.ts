@@ -23,7 +23,6 @@ export class TitlebarComponent {
   //@Input() openClose: any;
 
   toggleTitle(): void {
-    console.log("this.isOpen :>> ", this.isOpen);
     this.isOpen = !this.isOpen;
     this.notifyToggle.emit({ toggle: this.isOpen, index: this.index });
   }

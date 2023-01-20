@@ -1,45 +1,18 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subject, takeUntil, tap } from "rxjs";
-import {
-  FCollectionName,
-  FirebaseOrderTypes,
-  IFirebaseOrder,
-  ISelfProjects,
-  ISkills,
-} from "src/models";
-import { FirebaseApiService } from "src/services/firebase-api.service";
-import { getOrderQueryDesc } from "src/shared";
+import { Component } from "@angular/core";
+import { FCollectionName, ISelfProjects } from "src/models";
+import { SharedService, getOrderQueryDesc } from "src/shared";
 
 @Component({
-  selector: "pk-self-projects",
+  selector: "pk-self-project-list",
   templateUrl: "./self-projects-list.component.html",
   styleUrls: ["./self-projects-list.component.scss"],
 })
-export class SelfProjectsListComponent implements OnInit, OnDestroy {
-  destroy$ = new Subject<void>();
-  selfProjects: ISelfProjects[];
+export class SelfProjectsListComponent {
   title = "Self-Projects";
-
-  constructor(private firebaseApi: FirebaseApiService) {}
-
-  ngOnInit(): void {
-    const orderQueryDesc = getOrderQueryDesc();
-    this.firebaseApi
-      .getFirebaseAllDocuments<ISelfProjects>(
-        FCollectionName.SELF_PROJECTS,
-        orderQueryDesc
-      )
-      .pipe(
-        takeUntil(this.destroy$),
-        tap((selfProjects) => {
-          this.selfProjects = selfProjects;
-        })
-      )
-      .subscribe();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  order = getOrderQueryDesc();
+  selfProjects$ = this.sharedService.getContentList<ISelfProjects>(
+    FCollectionName.SELF_PROJECTS,
+    this.order
+  );
+  constructor(private sharedService: SharedService) {}
 }

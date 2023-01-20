@@ -1,7 +1,7 @@
 <pk-landing-title [title]="title"></pk-landing-title>
 <div>
   <mat-card>
-    <ng-container *ngFor="let project of selfProjects">
+    <ng-container *ngFor="let project of selfProjects$ | async">
       <div class="grid md:grid-cols-2 p-5 gap-2">
         <div class="flex flex-col gap-4">
           <div class="text-2xl">{{ project.title }}</div>

@@ -9,7 +9,7 @@
             [title]="'Education'"
             [index]="index"
             [actionButtons]="getFormArraySharedButtons(index)"
-            [isOpen]="education.get('isOpen')?.value"
+            [isOpen]="education.get('isOpen').value"
             (notifyToggle)="notifyToggle($event)"
             (notifyAction)="notifyAction($event)"
           ></pk-titlebar>
