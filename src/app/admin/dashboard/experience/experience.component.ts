@@ -32,18 +32,14 @@ export class ExperienceComponent implements OnInit, OnDestroy {
     FCollectionName.EXPERIENCE,
     this.order
   );
-  experienceFormGroup: FormGroup;
-
+  experienceForm: FormGroup;
   operationMode = OperationModes.ADD;
-
   experienceList: IExperience[] = [];
-
   responsibilitiesFormArray = this.fb.array([]);
-
   destroy$ = new Subject<void>();
 
   get experienceFormArray(): FormArray {
-    return this.experienceFormGroup.get("experience") as FormArray;
+    return this.experienceForm.get("experience") as FormArray;
   }
 
   constructor(
@@ -73,19 +69,19 @@ export class ExperienceComponent implements OnInit, OnDestroy {
   }
 
   initAddExperience(): void {
-    const experienceFormArray = this.fb.array([this.getExperienceForm()]);
-    this.experienceFormGroup = this.fb.group({
+    const experienceFormArray = this.fb.array([this.getExperienceFormGroup()]);
+    this.experienceForm = this.fb.group({
       experience: experienceFormArray,
     });
   }
 
   initEditExperience(experiences: IExperience[]): void {
     const experienceFormArray = this.fb.array([]);
-    this.experienceFormGroup = this.fb.group({
+    this.experienceForm = this.fb.group({
       experience: experienceFormArray,
     });
     experiences.forEach((experience, index) => {
-      const experienceFormGroup = this.getExperienceForm();
+      const experienceFormGroup = this.getExperienceFormGroup();
       experienceFormGroup.patchValue({
         ...experience,
         isOpen: index < experiences?.length - 1 ? false : true,
@@ -108,7 +104,7 @@ export class ExperienceComponent implements OnInit, OnDestroy {
     });
   }
 
-  getExperienceForm(): FormGroup {
+  getExperienceFormGroup(): FormGroup {
     return this.fb.group({
       position: ["", Validators.required],
       companyName: ["", Validators.required],
@@ -132,7 +128,7 @@ export class ExperienceComponent implements OnInit, OnDestroy {
   }
 
   addExperience(): void {
-    this.experienceFormArray.push(this.getExperienceForm());
+    this.experienceFormArray.push(this.getExperienceFormGroup());
   }
 
   openCloseExp({ index, toggle }: ITitlebarToggle): void {
@@ -199,11 +195,11 @@ export class ExperienceComponent implements OnInit, OnDestroy {
   }
 
   async saveExperience(): Promise<void> {
-    if (this.experienceFormGroup.invalid) {
+    if (this.experienceForm.invalid) {
       this.snackBar.open("Experience form is invalid");
     } else {
       try {
-        const experiences = this.experienceFormGroup.value
+        const experiences = this.experienceForm.value
           .experience as IExperience[];
         for (let index = 0; index < experiences.length; index++) {
           const experience = experiences[index];

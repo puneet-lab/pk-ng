@@ -1,0 +1,65 @@
+<div *ngIf="selfProjectsForm">
+  <div [formGroup]="selfProjectsForm">
+    <ng-container formGroupName="selfProjects">
+      <ng-container
+        *ngFor="
+          let selfProject of selfProjectsFormArray.controls;
+          let index = index
+        "
+      >
+        <div [formArrayName]="index" class="grid gap-2">
+          <pk-titlebar
+            [title]="'Self-Projects'"
+            [index]="index"
+            [actionButtons]="getFormArraySharedButtons(index)"
+            [isOpen]="selfProject.get('isOpen').value"
+            (notifyToggle)="notifyToggle($event)"
+            (notifyAction)="notifyAction($event)"
+          ></pk-titlebar>
+          <ng-container *ngIf="selfProject.get('isOpen')?.value">
+            <div class="grid">
+              <mat-form-field appearance="fill">
+                <mat-label>Title</mat-label>
+                <input matInput formControlName="title" />
+                <mat-error></mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Description</mat-label>
+                <input matInput formControlName="desc" />
+                <mat-error></mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Url</mat-label>
+                <input matInput formControlName="url" />
+                <mat-error></mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="fill">
+                <mat-label>Order</mat-label>
+                <input matInput formControlName="order" [value]="index + 1" />
+                <mat-error></mat-error>
+              </mat-form-field>
+              <div>
+                <ng-container
+                  *ngIf="operationMode === OperationModes.EDIT; else addMode"
+                >
+                  <div class="sm:w-2/4 lg:w-2/4 flex-shrink-0">
+                    <img
+                      class="object-fill"
+                      [src]="selfProject.get('image').value"
+                      [alt]="'Self Projects ' + index"
+                    />
+                  </div>
+                </ng-container>
+
+                <ng-template #addMode> </ng-template>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
