@@ -1,82 +1,113 @@
-<div *ngIf="experienceForm">
-  <div [formGroup]="experienceForm">
-    <ng-container formArrayName="experience">
-      <div
-        *ngFor="
-          let experienceForm of experienceFormArray.controls;
-          let index = index
-        "
-      >
-        <ng-container [formGroupName]="index">
-          <pk-titlebar
-            [title]="'Experience'"
-            [index]="index"
-            [isOpen]="experienceForm.get('isOpen').value"
-            [actionButtons]="getExperienceActions(index)"
-            (notifyToggle)="openCloseExp($event)"
-            (notifyAction)="notifyAction($event)"
-          ></pk-titlebar>
+<div class="grid gap-2">
+  <pk-admin-title
+    [title]="'Self Projects'"
+    [isShowForm]="isShowForm"
+    [addFunc]="onAddExperience.bind(this)"
+  ></pk-admin-title>
 
-          <div class="grid" *ngIf="experienceForm.get('isOpen')?.value">
-            <mat-form-field appearance="fill">
-              <mat-label>Position</mat-label>
-              <input matInput formControlName="position" />
-              <mat-error></mat-error>
-            </mat-form-field>
+  <div *ngIf="isShowForm">
+    <div [formGroup]="experienceForm">
+      <div class="grid">
+        <mat-form-field appearance="fill">
+          <mat-label>Position</mat-label>
+          <input matInput formControlName="position" />
+          <mat-error></mat-error>
+        </mat-form-field>
 
-            <mat-form-field appearance="fill">
-              <mat-label>Company Name</mat-label>
-              <input matInput formControlName="companyName" />
-              <mat-error></mat-error>
-            </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Company Name</mat-label>
+          <input matInput formControlName="companyName" />
+          <mat-error></mat-error>
+        </mat-form-field>
 
-            <div class="grid grid-cols-2 gap-2">
-              <mat-form-field appearance="fill">
-                <mat-label>Start Date</mat-label>
-                <input matInput formControlName="startDate" />
-                <mat-error></mat-error>
-              </mat-form-field>
+        <div class="grid grid-cols-2 gap-2">
+          <mat-form-field appearance="fill">
+            <mat-label>Start Date</mat-label>
+            <input matInput formControlName="startDate" />
+            <mat-error></mat-error>
+          </mat-form-field>
 
-              <mat-form-field appearance="fill">
-                <mat-label>End Date</mat-label>
-                <input matInput formControlName="endDate" />
-                <mat-error></mat-error>
-              </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>End Date</mat-label>
+            <input matInput formControlName="endDate" />
+            <mat-error></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="grid grid-cols-4 gap-2">
+          <mat-form-field appearance="fill">
+            <mat-label>Duration(Year)</mat-label>
+            <input matInput formControlName="durationYear" />
+            <mat-error></mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Duration(Month)</mat-label>
+            <input matInput formControlName="durationMonth" />
+            <mat-error></mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Country</mat-label>
+            <input matInput formControlName="country" />
+            <mat-error></mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Order</mat-label>
+            <input number matInput formControlName="order" />
+            <mat-error></mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+    <pk-admin-save-btn
+      [isButtonDisabled]="isButtonDisabled"
+      [saveFunc]="saveExperience.bind(this)"
+    ></pk-admin-save-btn>
+  </div>
+
+  <div class="grid gap-2" *ngIf="experiences$ | async as experiences">
+    <ng-container *ngFor="let experience of experiences">
+      <mat-card class="p-4">
+        <div class="flex justify-end items-center">
+          <div class="flex gap-2">
+            <div class="cursor-pointer" (click)="onEditExperience(experience)">
+              <i class="fa-solid fa-pen-to-square text-slate-500"></i>
             </div>
-            <div class="grid grid-cols-4 gap-2">
-              <mat-form-field appearance="fill">
-                <mat-label>Duration(Year)</mat-label>
-                <input matInput formControlName="durationYear" />
-                <mat-error></mat-error>
-              </mat-form-field>
-
-              <mat-form-field appearance="fill">
-                <mat-label>Duration(Month)</mat-label>
-                <input matInput formControlName="durationMonth" />
-                <mat-error></mat-error>
-              </mat-form-field>
-
-              <mat-form-field appearance="fill">
-                <mat-label>Country</mat-label>
-                <input matInput formControlName="country" />
-                <mat-error></mat-error>
-              </mat-form-field>
-
-              <mat-form-field appearance="fill">
-                <mat-label>Order</mat-label>
-                <input number matInput formControlName="order" />
-                <mat-error></mat-error>
-              </mat-form-field>
+            <div class="cursor-pointer" (click)="deleteExperience(experience)">
+              <i class="fa-solid fa-trash text-slate-500"></i>
             </div>
           </div>
-        </ng-container>
-      </div>
-      <button
-        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-        (click)="saveExperience()"
-      >
-        Save
-      </button>
+        </div>
+
+        <div class="grid gap-2">
+          <div class="text-xl">
+            {{ experience.position }}
+          </div>
+          <div class="text-lg">
+            {{ experience.companyName }} {{ experience.country }}
+            <span class="text-slate-400 text-sm italic">
+              {{ experience.startDate }} - {{ experience.endDate }}
+
+              <span *ngIf="experience.durationMonth + experience.durationYear"
+                >(
+                <span *ngIf="experience.durationYear">
+                  {{ experience.durationYear }} YEARS</span
+                >
+                <span *ngIf="experience.durationMonth">
+                  {{ experience.durationMonth }} MONTHS</span
+                >
+                )
+              </span>
+            </span>
+          </div>
+        </div>
+      </mat-card>
     </ng-container>
+    <input
+      #experienceLengthEle
+      type="hidden"
+      [value]="experiences?.length || 0"
+    />
   </div>
 </div>

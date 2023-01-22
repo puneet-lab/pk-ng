@@ -8,6 +8,7 @@ export interface IAdminSideNavItems extends IAdminListItem {
 }
 
 export interface IExperience {
+  id?: string;
   position: string;
   companyName: string;
   startDate: string;

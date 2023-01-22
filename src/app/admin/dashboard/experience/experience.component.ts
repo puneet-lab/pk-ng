@@ -1,13 +1,17 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
 import { MatDialog, MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Subject, takeUntil, tap } from "rxjs";
+import { tap } from "rxjs";
 import {
   FCollectionName,
-  ITitlebarActions,
   ITitlebarNotifyAction,
-  ITitlebarToggle,
   OperationModes,
   TitlebarActionTypes,
 } from "src/models";
@@ -15,7 +19,6 @@ import { IExperience, IOrderText } from "src/models/admin.model";
 import { FirebaseApiService } from "src/services/firebase-api.service";
 import {
   SharedService,
-  getFormArraySharedButtons,
   getOrderQueryAsc,
   notifyCommonTitleBarActions,
 } from "src/shared";
@@ -26,20 +29,22 @@ import { ResponsibilityDialogComponent } from "./responsibility-dialog/responsib
   templateUrl: "./experience.component.html",
   styleUrls: ["./experience.component.scss"],
 })
-export class ExperienceComponent implements OnInit, OnDestroy {
+export class ExperienceComponent implements OnInit {
   order = getOrderQueryAsc();
+  experienceForm: FormGroup;
+  isShowForm = false;
+  currOperationMode: OperationModes = null;
   experiences$ = this.sharedService.getContentList<IExperience>(
     FCollectionName.EXPERIENCE,
     this.order
   );
-  experienceForm: FormGroup;
   operationMode = OperationModes.ADD;
-  experienceList: IExperience[] = [];
+  isButtonDisabled = false;
   responsibilitiesFormArray = this.fb.array([]);
-  destroy$ = new Subject<void>();
+  @ViewChild("experienceLengthEle") experienceLengthEle: ElementRef;
 
-  get experienceFormArray(): FormArray {
-    return this.experienceForm.get("experience") as FormArray;
+  get resFormArray(): FormArray {
+    return this.experienceForm.get("responsibilities") as FormArray;
   }
 
   constructor(
@@ -51,43 +56,20 @@ export class ExperienceComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.experiences$
-      .pipe(
-        takeUntil(this.destroy$),
-        tap((experiences) => {
-          this.operationMode = experiences?.length
-            ? OperationModes.EDIT
-            : OperationModes.ADD;
-          if (this.operationMode === OperationModes.ADD) {
-            this.initAddExperience();
-          } else {
-            this.initEditExperience(experiences);
-          }
-        })
-      )
-      .subscribe();
+    this.experienceForm = this.getExperienceFormGroup();
   }
 
-  initAddExperience(): void {
-    const experienceFormArray = this.fb.array([this.getExperienceFormGroup()]);
-    this.experienceForm = this.fb.group({
-      experience: experienceFormArray,
-    });
-  }
-
-  initEditExperience(experiences: IExperience[]): void {
-    const experienceFormArray = this.fb.array([]);
-    this.experienceForm = this.fb.group({
-      experience: experienceFormArray,
-    });
-    experiences.forEach((experience, index) => {
-      const experienceFormGroup = this.getExperienceFormGroup();
-      experienceFormGroup.patchValue({
-        ...experience,
-        isOpen: index < experiences?.length - 1 ? false : true,
-      });
-      this.editResponsibilities(experienceFormGroup, experience);
-      this.experienceFormArray.push(experienceFormGroup);
+  getExperienceFormGroup(): FormGroup {
+    return this.fb.group({
+      position: ["", Validators.required],
+      companyName: ["", Validators.required],
+      startDate: ["", Validators.required],
+      endDate: ["", Validators.required],
+      durationYear: [null, Validators.required],
+      durationMonth: [null, Validators.required],
+      country: ["", Validators.required],
+      order: [null, Validators.required],
+      responsibilities: this.fb.array([], Validators.required),
     });
   }
 
@@ -104,39 +86,12 @@ export class ExperienceComponent implements OnInit, OnDestroy {
     });
   }
 
-  getExperienceFormGroup(): FormGroup {
-    return this.fb.group({
-      position: ["", Validators.required],
-      companyName: ["", Validators.required],
-      startDate: ["", Validators.required],
-      endDate: ["", Validators.required],
-      durationYear: [null, Validators.required],
-      durationMonth: [null, Validators.required],
-      country: ["", Validators.required],
-      order: [null, Validators.required],
-      isOpen: [true],
-      responsibilities: this.fb.array([], Validators.required),
-    });
-  }
-
   notifyAction({ id, index, actionFunc }: ITitlebarNotifyAction): void {
     if (id === TitlebarActionTypes.EXP_RES) {
       this.openResponsibility(index);
     } else {
       notifyCommonTitleBarActions({ id, index, actionFunc });
     }
-  }
-
-  addExperience(): void {
-    this.experienceFormArray.push(this.getExperienceFormGroup());
-  }
-
-  openCloseExp({ index, toggle }: ITitlebarToggle): void {
-    this.experienceFormArray.at(index).patchValue({ isOpen: toggle });
-  }
-
-  removeExp(index: number): void {
-    this.experienceFormArray.removeAt(index);
   }
 
   getResponsibilitiesFormGroup(): FormGroup {
@@ -146,11 +101,18 @@ export class ExperienceComponent implements OnInit, OnDestroy {
     });
   }
 
-  openResponsibility(formIndex: number): void {
-    const resFormArray = this.experienceFormArray
-      .at(formIndex)
-      .get("responsibilities") as FormArray;
+  onEditExperience(experience: IExperience): void {
+    this.isShowForm = true;
+    this.currOperationMode = OperationModes.EDIT;
+    this.experienceForm.patchValue({ ...experience });
+    this.resFormArray.clear();
+    experience.responsibilities.forEach((res) => {
+      this.resFormArray.push(new FormControl(res));
+    });
+  }
 
+  openResponsibility(formIndex: number): void {
+    const resFormArray = this.resFormArray;
     const resFormValue = resFormArray?.value as IOrderText[];
     const resFormText = resFormValue.map(({ text }) => text);
 
@@ -165,6 +127,14 @@ export class ExperienceComponent implements OnInit, OnDestroy {
     });
 
     this.patchResponsibilityData(dialogRef, resFormArray);
+  }
+
+  onAddExperience(): void {
+    this.experienceForm.reset();
+    const experinceLength = this.experienceLengthEle.nativeElement?.value || 0;
+    this.experienceForm.get("order").setValue(+experinceLength + 1);
+    this.isShowForm = !this.isShowForm;
+    this.currOperationMode = OperationModes.ADD;
   }
 
   patchResponsibilityData(
@@ -216,22 +186,19 @@ export class ExperienceComponent implements OnInit, OnDestroy {
     }
   }
 
-  getExperienceActions(index: number): ITitlebarActions[] {
-    return [
-      {
-        id: TitlebarActionTypes.EXP_RES,
-        icon: "fa-solid fa-list",
-        isShow: true,
-      },
-      ...getFormArraySharedButtons(index, this.experienceFormArray, {
-        add: this.addExperience.bind(this),
-        remove: this.removeExp.bind(this),
-      }),
-    ];
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  async deleteExperience({ id, companyName }: IExperience): Promise<void> {
+    try {
+      if (
+        window.confirm(`Are you sure to delete a experience: ${companyName}`)
+      ) {
+        await this.firebaseApi.deleteFirebaseDocumentByDocID(
+          FCollectionName.EXPERIENCE,
+          id
+        );
+      }
+    } catch (error) {
+      this.snackBar.open("Error in deleting skill, try again later");
+      throw error;
+    }
   }
 }
