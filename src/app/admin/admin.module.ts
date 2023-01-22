@@ -16,7 +16,6 @@ import { ContactComponent } from "./dashboard/contact/contact.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { EducationComponent } from "./dashboard/education/education.component";
 import { ExperienceComponent } from "./dashboard/experience/experience.component";
-import { ResponsibilityDialogComponent } from "./dashboard/experience/responsibility-dialog/responsibility-dialog.component";
 import { SelfProjectsComponent } from "./dashboard/self-projects/self-projects.component";
 import { SkillsComponent } from "./dashboard/skills/skills.component";
 import { LoginComponent } from "./login/login.component";
@@ -25,7 +24,6 @@ import { LoginComponent } from "./login/login.component";
     LoginComponent,
     DashboardComponent,
     ExperienceComponent,
-    ResponsibilityDialogComponent,
     ContactComponent,
     EducationComponent,
     SelfProjectsComponent,

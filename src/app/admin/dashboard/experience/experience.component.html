@@ -1,6 +1,6 @@
 <div class="grid gap-2">
   <pk-admin-title
-    [title]="'Self Projects'"
+    [title]="'Experiencs'"
     [isShowForm]="isShowForm"
     [addFunc]="onAddExperience.bind(this)"
   ></pk-admin-title>
@@ -57,6 +57,37 @@
             <input number matInput formControlName="order" />
             <mat-error></mat-error>
           </mat-form-field>
+        </div>
+        <div formArrayName="responsibilities">
+          <mat-label>Responsibilities</mat-label>
+          <div *ngFor="let res of resFormArray.controls; let index = index">
+            <div class="grid" [formGroupName]="index">
+              <mat-form-field appearance="fill">
+                <input matInput formControlName="text" />
+                <button
+                  (click)="addResponsibility()"
+                  *ngIf="index === resFormArray.controls?.length - 1"
+                  class="p-2"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                >
+                  <i class="fa-solid fa-plus fa-1x"></i>
+                </button>
+
+                <button
+                  (click)="removeResponsibility(index)"
+                  *ngIf="index > 0"
+                  class="p-2"
+                  matSuffix
+                  mat-icon-button
+                  aria-label="Clear"
+                >
+                  <i class="fa-solid fa-trash fa-1x"></i>
+                </button>
+              </mat-form-field>
+            </div>
+          </div>
         </div>
       </div>
     </div>

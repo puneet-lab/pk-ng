@@ -1,28 +1,11 @@
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import {
-  FormArray,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from "@angular/forms";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
+import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { tap } from "rxjs";
-import {
-  FCollectionName,
-  ITitlebarNotifyAction,
-  OperationModes,
-  TitlebarActionTypes,
-} from "src/models";
+import { FCollectionName, OperationModes } from "src/models";
 import { IExperience, IOrderText } from "src/models/admin.model";
 import { FirebaseApiService } from "src/services/firebase-api.service";
-import {
-  SharedService,
-  getOrderQueryAsc,
-  notifyCommonTitleBarActions,
-} from "src/shared";
-import { ResponsibilityDialogComponent } from "./responsibility-dialog/responsibility-dialog.component";
+import { SharedService, getOrderQueryAsc } from "src/shared";
 
 @Component({
   selector: "pk-experience",
@@ -59,8 +42,17 @@ export class ExperienceComponent implements OnInit {
     this.experienceForm = this.getExperienceFormGroup();
   }
 
+  removeResponsibility(index: number): void {
+    this.resFormArray.removeAt(index);
+  }
+
+  addResponsibility(): void {
+    this.resFormArray.push(this.getResponsibilitiesFormGroup());
+  }
+
   getExperienceFormGroup(): FormGroup {
     return this.fb.group({
+      id: [""],
       position: ["", Validators.required],
       companyName: ["", Validators.required],
       startDate: ["", Validators.required],
@@ -69,7 +61,10 @@ export class ExperienceComponent implements OnInit {
       durationMonth: [null, Validators.required],
       country: ["", Validators.required],
       order: [null, Validators.required],
-      responsibilities: this.fb.array([], Validators.required),
+      responsibilities: this.fb.array(
+        [this.getResponsibilitiesFormGroup()],
+        Validators.required
+      ),
     });
   }
 
@@ -86,14 +81,6 @@ export class ExperienceComponent implements OnInit {
     });
   }
 
-  notifyAction({ id, index, actionFunc }: ITitlebarNotifyAction): void {
-    if (id === TitlebarActionTypes.EXP_RES) {
-      this.openResponsibility(index);
-    } else {
-      notifyCommonTitleBarActions({ id, index, actionFunc });
-    }
-  }
-
   getResponsibilitiesFormGroup(): FormGroup {
     return this.fb.group({
       order: [null, Validators.required],
@@ -106,27 +93,10 @@ export class ExperienceComponent implements OnInit {
     this.currOperationMode = OperationModes.EDIT;
     this.experienceForm.patchValue({ ...experience });
     this.resFormArray.clear();
-    experience.responsibilities.forEach((res) => {
-      this.resFormArray.push(new FormControl(res));
+    experience.responsibilities.forEach(({ order, text }) => {
+      const resFormGroup = this.patchResponsibilityFormGroup({ order, text });
+      this.resFormArray.push(resFormGroup);
     });
-  }
-
-  openResponsibility(formIndex: number): void {
-    const resFormArray = this.resFormArray;
-    const resFormValue = resFormArray?.value as IOrderText[];
-    const resFormText = resFormValue.map(({ text }) => text);
-
-    let dialogRef = this.dialog.open<
-      ResponsibilityDialogComponent,
-      string[],
-      string[]
-    >(ResponsibilityDialogComponent, {
-      height: "600px",
-      width: "1200px",
-      data: resFormText,
-    });
-
-    this.patchResponsibilityData(dialogRef, resFormArray);
   }
 
   onAddExperience(): void {
@@ -137,27 +107,6 @@ export class ExperienceComponent implements OnInit {
     this.currOperationMode = OperationModes.ADD;
   }
 
-  patchResponsibilityData(
-    dialogRef: MatDialogRef<ResponsibilityDialogComponent, string[]>,
-    resFormArray: FormArray
-  ) {
-    dialogRef
-      .afterClosed()
-      .pipe(
-        tap((responsibilities: string[] | undefined) => {
-          if (!responsibilities?.length) return;
-          resFormArray.clear();
-          responsibilities.map((text, order) => {
-            const responsibilitiesFormGroup = this.patchResponsibilityFormGroup(
-              { order, text }
-            );
-            resFormArray?.push(responsibilitiesFormGroup);
-          });
-        })
-      )
-      .subscribe();
-  }
-
   patchResponsibilityFormGroup({ order, text }: IOrderText): FormGroup {
     const responsibilitiesFormGroup = this.getResponsibilitiesFormGroup();
     responsibilitiesFormGroup.patchValue({ order, text });
@@ -165,25 +114,42 @@ export class ExperienceComponent implements OnInit {
   }
 
   async saveExperience(): Promise<void> {
+    this.patchResOrder();
     if (this.experienceForm.invalid) {
       this.snackBar.open("Experience form is invalid");
     } else {
       try {
-        const experiences = this.experienceForm.value
-          .experience as IExperience[];
-        for (let index = 0; index < experiences.length; index++) {
-          const experience = experiences[index];
+        this.isButtonDisabled = true;
+        const experience = this.experienceForm.value as IExperience;
+        if (OperationModes.ADD === this.currOperationMode) {
           await this.firebaseApi.addFirebaseDocument(
             FCollectionName.EXPERIENCE,
             experience
           );
+        } else {
+          await this.firebaseApi.updateFirebaseDocumentByDocID(
+            FCollectionName.EXPERIENCE,
+            experience,
+            experience.id
+          );
         }
+        this.snackBar.open("SelfProjects saved!, Upload image if needed");
+        this.experienceForm.reset();
+        this.isShowForm = false;
         this.snackBar.open("Experience saved!");
       } catch (error) {
         this.snackBar.open("Error in saving experience");
         console.error("Error in saving experience ", error);
+      } finally {
+        this.isButtonDisabled = false;
       }
     }
+  }
+
+  patchResOrder(): void {
+    this.resFormArray.controls.forEach((ctrl, index) => {
+      ctrl.get("order").setValue(index);
+    });
   }
 
   async deleteExperience({ id, companyName }: IExperience): Promise<void> {
