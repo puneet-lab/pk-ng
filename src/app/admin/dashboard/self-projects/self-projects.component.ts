@@ -1,42 +1,37 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import {
+  FormArray,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Subject, takeUntil, tap } from "rxjs";
-import {
-  FCollectionName,
-  ISelfProjects,
-  ITitlebarActions,
-  ITitlebarNotifyAction,
-  ITitlebarToggle,
-  OperationModes,
-} from "src/models";
+import { FCollectionName, ISelfProjects, OperationModes } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
-import {
-  SharedService,
-  getFormArraySharedButtons,
-  getOrderQueryAsc,
-  notifyCommonTitleBarActions,
-} from "src/shared";
+import { SharedService, getOrderQueryAsc } from "src/shared";
 
 @Component({
   selector: "pk-self-projects",
   templateUrl: "./self-projects.component.html",
   styleUrls: ["./self-projects.component.scss"],
 })
-export class SelfProjectsComponent implements OnInit, OnDestroy {
+export class SelfProjectsComponent implements OnInit {
   order = getOrderQueryAsc();
+  selfProjectsForm: FormGroup;
+  isShowForm = false;
+  currOperationMode: OperationModes = null;
   selfProjects$ = this.sharedService.getContentList<ISelfProjects>(
     FCollectionName.SELF_PROJECTS,
     this.order
   );
-  selfProjectsForm: FormGroup;
   operationMode = OperationModes.ADD;
-  OperationModes = OperationModes;
-  destroy$ = new Subject<void>();
+  isButtonDisabled = false;
 
-  get selfProjectsFormArray(): FormArray {
-    return this.selfProjectsForm.get("selfProjects") as FormArray;
+  get stackFormArray(): FormArray {
+    return this.selfProjectsForm.get("stack") as FormArray;
   }
+  @ViewChild("selfProjectLengthEle") selfProjectLengthEle: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -46,85 +41,123 @@ export class SelfProjectsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.selfProjects$
-      .pipe(
-        takeUntil(this.destroy$),
-        tap((selfProjects) => {
-          this.operationMode = selfProjects?.length
-            ? OperationModes.EDIT
-            : OperationModes.ADD;
-          if (this.operationMode === OperationModes.ADD) {
-            this.initAddSelfProjects();
-          } else {
-            this.initEditSelfProjects(selfProjects);
-          }
-        })
-      )
-      .subscribe();
-  }
-
-  initAddSelfProjects(): void {
-    const selfProjectsFormArray = this.fb.array([
-      this.getSelfProjectsFormGroup(),
-    ]);
-    this.selfProjectsForm = this.fb.group({
-      selfProjects: selfProjectsFormArray,
-    });
-  }
-
-  initEditSelfProjects(selfProjects: ISelfProjects[]): void {
-    const selfProjectsFormArray = this.fb.array([]);
-    this.selfProjectsForm = this.fb.group({
-      selfProjects: selfProjectsFormArray,
-    });
-    selfProjects.forEach((selfProject, index) => {
-      const selfProjectsFormGroup = this.getSelfProjectsFormGroup();
-      selfProjectsFormGroup.patchValue({
-        ...selfProject,
-        isOpen: index < selfProjects?.length - 1 ? false : true,
-      });
-      // this.editResponsibilities(selfProjectsFormGroup, selfProjects);
-      this.selfProjectsFormArray.push(selfProjectsFormGroup);
-    });
+    this.selfProjectsForm = this.getSelfProjectsFormGroup();
   }
 
   getSelfProjectsFormGroup(): FormGroup {
     return this.fb.group({
+      id: [""],
       title: ["", Validators.required],
       desc: ["", Validators.required],
       url: ["", Validators.required],
-      image: ["", Validators.required],
+      image: [""],
       order: [null, Validators.required],
-      stack: this.fb.array([], Validators.required),
-      isOpen: [true, Validators.required],
+      stack: this.fb.array([new FormControl("")], Validators.required),
     });
   }
 
-  getFormArraySharedButtons(index: number): ITitlebarActions[] {
-    return getFormArraySharedButtons(index, this.selfProjectsFormArray, {
-      add: this.add.bind(this),
-      remove: this.remove.bind(this),
+  addStack(): void {
+    this.stackFormArray.push(new FormControl());
+  }
+
+  removeStack(index: number): void {
+    this.stackFormArray.removeAt(index);
+  }
+
+  onAddSelfProjects(): void {
+    this.selfProjectsForm.reset();
+    const selfProjectsLength =
+      this.selfProjectLengthEle.nativeElement?.value || 0;
+    this.selfProjectsForm.get("order").setValue(+selfProjectsLength + 1);
+    this.isShowForm = !this.isShowForm;
+    this.currOperationMode = OperationModes.ADD;
+  }
+
+  onEditSelfProject(selfProject: ISelfProjects): void {
+    this.isShowForm = true;
+    this.currOperationMode = OperationModes.EDIT;
+    this.selfProjectsForm.patchValue({ ...selfProject });
+    this.stackFormArray.clear();
+    selfProject.stack.forEach((stack) => {
+      this.stackFormArray.push(new FormControl(stack));
     });
   }
 
-  add(): void {
-    this.selfProjectsFormArray.push(this.getSelfProjectsFormGroup());
+  async saveSelfProjects(): Promise<void> {
+    if (this.selfProjectsForm.invalid) {
+      this.snackBar.open("SelfProjects form is invalid");
+    } else {
+      try {
+        this.isButtonDisabled = true;
+        const selfProject = this.selfProjectsForm.value as ISelfProjects;
+        if (OperationModes.ADD === this.currOperationMode) {
+          await this.firebaseApi.addFirebaseDocument(
+            FCollectionName.SELF_PROJECTS,
+            selfProject
+          );
+        } else {
+          await this.firebaseApi.updateFirebaseDocumentByDocID(
+            FCollectionName.SELF_PROJECTS,
+            selfProject,
+            selfProject.id
+          );
+        }
+        this.snackBar.open("SelfProjects saved!, Upload image if needed");
+        this.selfProjectsForm.reset();
+        this.isShowForm = false;
+      } catch (error) {
+        this.snackBar.open("Error in saving selfProject");
+        console.error("Error in saving selfProject", error);
+      } finally {
+        this.isButtonDisabled = false;
+      }
+    }
   }
 
-  remove(index: number): void {
-    this.selfProjectsFormArray.removeAt(index);
+  async deleteSelfProject({ id, title }: ISelfProjects): Promise<void> {
+    try {
+      if (window.confirm(`Are you sure to delete a selfProject: ${title}`)) {
+        await this.firebaseApi.deleteFirebaseDocumentByDocID(
+          FCollectionName.SELF_PROJECTS,
+          id
+        );
+      }
+    } catch (error) {
+      this.snackBar.open("Error in deleting skill, try again later");
+      throw error;
+    }
   }
 
-  notifyToggle({ index, toggle }: ITitlebarToggle): void {
-    this.selfProjectsFormArray.at(index).patchValue({ isOpen: toggle });
+  async uploadImageAndUpdate(event: any, { id }: ISelfProjects): Promise<void> {
+    try {
+      if (event.target.files && event.target.files[0]) {
+        const file = event.target.files[0];
+        const fileName = file.name;
+        const storageName = "/self-project";
+        const { downloadLink, status } =
+          await this.firebaseApi.uploadFileToFirebaseStorage(
+            fileName,
+            storageName,
+            file
+          );
+
+        if (status) {
+          await this.updateImageUrl(downloadLink, id);
+        } else {
+          this.snackBar.open("Error in uploading image");
+        }
+      }
+    } catch (error) {
+      this.snackBar.open("Error in uploading image");
+      throw error;
+    }
   }
 
-  notifyAction(action: ITitlebarNotifyAction): void {
-    notifyCommonTitleBarActions(action);
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  async updateImageUrl(downloadLink: string, id: string): Promise<void> {
+    await this.firebaseApi.updateFirebaseDocumentByDocID(
+      FCollectionName.SELF_PROJECTS,
+      { image: downloadLink },
+      id
+    );
   }
 }

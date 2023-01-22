@@ -43,3 +43,8 @@ export interface IPrivacyPolicy {
   title: string;
   order: number;
 }
+
+export interface IDownloadResponse {
+  status: boolean;
+  downloadLink: string;
+}

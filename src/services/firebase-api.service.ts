@@ -4,16 +4,22 @@ import {
   DocumentReference,
 } from "@angular/fire/compat/firestore";
 import { AngularFireStorage } from "@angular/fire/compat/storage";
+import {
+  getBlob,
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 import {
   FCollectionName,
+  IDownloadResponse,
   IFirebaseOrder,
   IFirebaseStore,
-  IFirebaseUploadResponse,
   IFirebaseWhere,
 } from "../models";
-import { getStorage, ref, getBlob } from "firebase/storage";
 @Injectable({
   providedIn: "root",
 })
@@ -153,19 +159,28 @@ export class FirebaseApiService {
     }
   }
 
-  uploadImageToFireStorage(
+  async uploadFileToFirebaseStorage(
     fileName: string,
     storageName: string,
-    fileBlob: string
-  ): IFirebaseUploadResponse {
-    const storagePath = `${storageName}/${fileName}`;
-    const fileRef = this.afStorage.ref(storagePath);
-    const uploadTask = fileRef
-      .putString(fileBlob, "data_url", {
-        contentType: "image/png",
-      })
-      .snapshotChanges();
-    return { uploadTask, fileRef };
+    fileBlob: Blob
+  ): Promise<IDownloadResponse> {
+    try {
+      const storage = getStorage();
+      const storagePath = `${storageName}/${fileName}`;
+      const imagesRef = ref(storage, storagePath);
+      const uploadTask = await uploadBytes(imagesRef, fileBlob);
+      const downloadLink = await getDownloadURL(uploadTask.ref);
+      return {
+        downloadLink,
+        status: true,
+      };
+    } catch (error) {
+      console.log("Error in uploading file uploadFileToFirebaseStorage", error);
+      return {
+        downloadLink: null,
+        status: false,
+      };
+    }
   }
 
   async downloadFileFromURL(

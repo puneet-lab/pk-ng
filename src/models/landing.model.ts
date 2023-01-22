@@ -16,7 +16,6 @@ export interface IContact {
   href: string;
   type: string;
   order: number;
-  isOpen?: boolean;
 }
 
 export interface IEducation {
@@ -25,17 +24,16 @@ export interface IEducation {
   date: string;
   desc: string;
   order: number;
-  isOpen?: boolean;
 }
 
 export interface ISelfProjects {
+  id?: string;
   title: string;
   desc: string;
   image: string;
   url: string;
   stack: string[];
   order: number;
-  isOpen?: boolean;
 }
 
 export interface ICertificates {

@@ -7,35 +7,33 @@
 
   <div *ngIf="isShowForm">
     <div [formGroup]="educationForm">
-      <ng-container>
-        <div class="grid gap-2">
+      <div class="grid gap-2">
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" />
+          <mat-error></mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="desc" />
+          <mat-error></mat-error>
+        </mat-form-field>
+
+        <div class="grid gap-2 grid-cols-2">
           <mat-form-field appearance="fill">
-            <mat-label>Title</mat-label>
-            <input matInput formControlName="title" />
+            <mat-label>Date</mat-label>
+            <input matInput formControlName="date" />
             <mat-error></mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="fill">
-            <mat-label>Description</mat-label>
-            <input matInput formControlName="desc" />
+            <mat-label>Order</mat-label>
+            <input matInput formControlName="order" />
             <mat-error></mat-error>
           </mat-form-field>
-
-          <div class="grid gap-2 grid-cols-2">
-            <mat-form-field appearance="fill">
-              <mat-label>Date</mat-label>
-              <input matInput formControlName="date" />
-              <mat-error></mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="fill">
-              <mat-label>Order</mat-label>
-              <input matInput formControlName="order" />
-              <mat-error></mat-error>
-            </mat-form-field>
-          </div>
         </div>
-      </ng-container>
+      </div>
     </div>
     <pk-admin-save-btn
       [isButtonDisabled]="isButtonDisabled"
@@ -63,7 +61,7 @@
             <span class="text-slate-500 text-sm"> {{ education.date }} </span>
           </div>
 
-          <div class="text-sm">Desc : {{ education.desc }}</div>
+          <div>Desc : {{ education.desc }}</div>
 
           <div>Order : {{ education.order }}</div>
         </div>

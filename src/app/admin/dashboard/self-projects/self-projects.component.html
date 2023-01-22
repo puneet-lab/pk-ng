@@ -1,65 +1,144 @@
-<div *ngIf="selfProjectsForm">
-  <div [formGroup]="selfProjectsForm">
-    <ng-container formGroupName="selfProjects">
-      <ng-container
-        *ngFor="
-          let selfProject of selfProjectsFormArray.controls;
-          let index = index
-        "
-      >
-        <div [formArrayName]="index" class="grid gap-2">
-          <pk-titlebar
-            [title]="'Self-Projects'"
-            [index]="index"
-            [actionButtons]="getFormArraySharedButtons(index)"
-            [isOpen]="selfProject.get('isOpen').value"
-            (notifyToggle)="notifyToggle($event)"
-            (notifyAction)="notifyAction($event)"
-          ></pk-titlebar>
-          <ng-container *ngIf="selfProject.get('isOpen')?.value">
-            <div class="grid">
-              <mat-form-field appearance="fill">
-                <mat-label>Title</mat-label>
-                <input matInput formControlName="title" />
-                <mat-error></mat-error>
-              </mat-form-field>
+<div class="grid gap-2">
+  {{ selfProjectsForm?.value | json }}
+  <pk-admin-title
+    [title]="'Self Projects'"
+    [isShowForm]="isShowForm"
+    [addFunc]="onAddSelfProjects.bind(this)"
+  ></pk-admin-title>
 
-              <mat-form-field appearance="fill">
-                <mat-label>Description</mat-label>
-                <input matInput formControlName="desc" />
-                <mat-error></mat-error>
-              </mat-form-field>
+  <div *ngIf="isShowForm">
+    <div [formGroup]="selfProjectsForm">
+      <div class="grid">
+        <mat-form-field appearance="fill">
+          <mat-label>Title</mat-label>
+          <input matInput formControlName="title" />
+          <mat-error></mat-error>
+        </mat-form-field>
 
-              <mat-form-field appearance="fill">
-                <mat-label>Url</mat-label>
-                <input matInput formControlName="url" />
-                <mat-error></mat-error>
-              </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Description</mat-label>
+          <input matInput formControlName="desc" />
+          <mat-error></mat-error>
+        </mat-form-field>
 
-              <mat-form-field appearance="fill">
-                <mat-label>Order</mat-label>
-                <input matInput formControlName="order" [value]="index + 1" />
-                <mat-error></mat-error>
-              </mat-form-field>
-              <div>
-                <ng-container
-                  *ngIf="operationMode === OperationModes.EDIT; else addMode"
-                >
-                  <div class="sm:w-2/4 lg:w-2/4 flex-shrink-0">
-                    <img
-                      class="object-fill"
-                      [src]="selfProject.get('image').value"
-                      [alt]="'Self Projects ' + index"
-                    />
-                  </div>
-                </ng-container>
+        <mat-form-field appearance="fill">
+          <mat-label>Url</mat-label>
+          <input matInput formControlName="url" />
+          <mat-error></mat-error>
+        </mat-form-field>
 
-                <ng-template #addMode> </ng-template>
+        <mat-form-field appearance="fill">
+          <mat-label>Order</mat-label>
+          <input matInput formControlName="order" />
+          <mat-error></mat-error>
+        </mat-form-field>
+
+        <ng-container formArrayName="stack">
+          <mat-label>Stack</mat-label>
+          <div class="grid gap-2 grid-cols-3">
+            <div
+              *ngFor="let stack of stackFormArray.controls; let index = index"
+            >
+              <div class="flex gap-2 items-center">
+                <mat-form-field appearance="fill">
+                  <input matInput [formControlName]="index" />
+                  <button
+                    (click)="addStack()"
+                    *ngIf="index === stackFormArray.controls?.length - 1"
+                    class="p-2"
+                    matSuffix
+                    mat-icon-button
+                    aria-label="Clear"
+                  >
+                    <i class="fa-solid fa-plus fa-1x"></i>
+                  </button>
+
+                  <button
+                    (click)="removeStack(index)"
+                    *ngIf="index > 0"
+                    class="p-2"
+                    matSuffix
+                    mat-icon-button
+                    aria-label="Clear"
+                  >
+                    <i class="fa-solid fa-trash fa-1x"></i>
+                  </button>
+                </mat-form-field>
               </div>
             </div>
-          </ng-container>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <pk-admin-save-btn
+      [isButtonDisabled]="isButtonDisabled"
+      [saveFunc]="saveSelfProjects.bind(this)"
+    ></pk-admin-save-btn>
+  </div>
+
+  <div class="grid gap-2" *ngIf="selfProjects$ | async as selfProjects">
+    <ng-container *ngFor="let selfProject of selfProjects">
+      <mat-card class="p-4">
+        <div class="flex justify-end items-center">
+          <div class="flex gap-2">
+            <div
+              class="cursor-pointer"
+              (click)="onEditSelfProject(selfProject)"
+            >
+              <i class="fa-solid fa-pen-to-square text-slate-500"></i>
+            </div>
+            <div
+              class="cursor-pointer"
+              (click)="deleteSelfProject(selfProject)"
+            >
+              <i class="fa-solid fa-trash text-slate-500"></i>
+            </div>
+          </div>
         </div>
-      </ng-container>
+
+        <div class="grid gap-2 grid-cols">
+          <div>Title : {{ selfProject.title }}</div>
+
+          <div>Desc : {{ selfProject.desc }}</div>
+          <div>Url : {{ selfProject.url }}</div>
+          <div class="flex flex-wrap gap-2">
+            <div>Tech Stack :</div>
+            <div
+              class="text-white bg-blue-700 px-2 py-1 font-thin text-sm uppercase"
+              *ngFor="let stack of selfProject.stack"
+            >
+              {{ stack }}
+            </div>
+          </div>
+
+          <div>Order : {{ selfProject.order }}</div>
+          <div class="relative sm:w-1/3 lg:w-2/4 flex-shrink-0">
+            <div
+              class="absolute right-2 bottom-1 cursor-pointer"
+              (click)="imageInput.click()"
+            >
+              <i class="fa-solid fa-cloud-arrow-up text-blue-500 fa-1x">
+                <input
+                  #imageInput
+                  type="file"
+                  accept="image/*"
+                  (change)="uploadImageAndUpdate($event, selfProject)"
+                />
+              </i>
+            </div>
+            <img
+              class="object-fill"
+              [src]="selfProject.image"
+              [alt]="selfProject.title"
+            />
+          </div>
+        </div>
+      </mat-card>
     </ng-container>
+    <input
+      #selfProjectLengthEle
+      type="hidden"
+      [value]="selfProjects?.length || 0"
+    />
   </div>
 </div>
