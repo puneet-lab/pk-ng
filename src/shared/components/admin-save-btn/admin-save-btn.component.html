@@ -1,0 +1,10 @@
+<button
+  class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
+  [ngClass]="{
+    '!bg-blue-400 hover:bg-blue-400 border-blue-400 pointer-events-none':
+      isButtonDisabled
+  }"
+  (click)="saveFunc.call(this)"
+>
+  Save
+</button>

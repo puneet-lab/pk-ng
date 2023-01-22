@@ -1,0 +1,10 @@
+<div class="flex gap-2 items-center">
+  <div class="text-2xl">{{ title }}</div>
+  <div
+    [ngClass]="{ 'rotate-45': isShowForm }"
+    class="cursor-pointer"
+    (click)="addFunc.call(this)"
+  >
+    <i class="fa-solid fa-plus"></i>
+  </div>
+</div>
