@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject, combineLatest, takeUntil, tap } from "rxjs";
 import { FCollectionName, ISkillTypes, ISkills } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
-import { getOrderQueryAsc } from "src/shared";
+import { createSkillTypesMap, getOrderQueryAsc } from "src/shared";
 
 @Component({
   selector: "pk-about",
@@ -46,19 +46,13 @@ export class AboutComponent implements OnInit, OnDestroy {
         tap(([skillTypes, skills]) => {
           this.skillTypes = skillTypes;
           this.skills = skills;
-          this.createSkillTypesMap();
+          this.skillTypesMap = createSkillTypesMap(
+            this.skillTypes,
+            this.skills
+          );
         })
       )
       .subscribe();
-  }
-
-  createSkillTypesMap(): void {
-    for (let index = 0; index < this.skillTypes.length; index++) {
-      const { type } = this.skillTypes[index];
-      this.skillTypesMap[type] = this.skills.filter(
-        ({ group }) => group === type
-      );
-    }
   }
 
   ngOnDestroy(): void {

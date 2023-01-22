@@ -1,123 +1,134 @@
-<div class="grid gap-3">
-  <div class="text-2xl">
-    Skill Types
-    <span class="cursor-pointer" (click)="showSkillTypesForm()"
-      ><i class="fa-solid fa-plus"></i
-    ></span>
-  </div>
-  <div *ngIf="isShowAddSkillTypes" class="flex gap-2 items-center">
-    <ng-container [formGroup]="skillTypeForm">
-      <mat-form-field appearance="fill">
-        <mat-label>Skill type</mat-label>
-        <input matInput formControlName="type" />
-        <mat-error></mat-error>
-      </mat-form-field>
-      <mat-form-field appearance="fill">
-        <mat-label>Skill title</mat-label>
-        <input matInput formControlName="title" />
-        <button
-          (click)="saveNewSkillType()"
-          *ngIf="skillTypeForm.valid"
-          class="p-2"
-          matSuffix
-          mat-icon-button
-          aria-label="Clear"
-        >
-          <i class="fa-solid fa-floppy-disk fa-2x text-blue-500"></i>
-        </button>
-        <mat-error></mat-error>
-      </mat-form-field>
-    </ng-container>
-  </div>
-  <div
-    class="flex gap-2"
-    cdkDropList
-    cdkDropListOrientation="horizontal"
-    #skillTypesList="cdkDropList"
-    (cdkDropListDropped)="dropSkillTypes($event)"
-  >
-    <div
-      class="bg-blue-500 text-sm text-white py-2 px-4 border-r-2 cursor-pointer"
-      *ngFor="let skillType of skillTypes"
-      cdkDrag
-    >
-      {{ skillType.title }}
-    </div>
-  </div>
+<div class="grid gap-2">
+  <mat-card class="p-4">
+    <div class="grid gap-2">
+      <pk-admin-title
+        [title]="'Skill Types'"
+        [isShowForm]="isShowAddSkillTypes"
+        [addFunc]="showSkillTypesForm.bind(this)"
+      ></pk-admin-title>
 
-  <div class="text-2xl mt-4">
-    Skills
-    <span class="cursor-pointer" (click)="showSkillForm()"
-      ><i class="fa-solid fa-plus"></i
-    ></span>
-
-    <a class="ml-2" target="_blank" href="https://worldvectorlogo.com/"
-      ><i class="fa-solid fa-arrow-up-right-from-square"></i
-    ></a>
-  </div>
-
-  <div class="flex gap-2" *ngIf="isShowAddSkill">
-    <ng-container [formGroup]="skillsForm">
-      <mat-form-field appearance="fill">
-        <mat-label>Skill Type</mat-label>
-        <mat-select formControlName="group">
-          <mat-option
-            *ngFor="let skillType of skillTypes"
-            [value]="skillType.type"
-          >
-            {{ skillType.title }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Logo</mat-label>
-        <input matInput formControlName="logo" />
-        <mat-error></mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Skill</mat-label>
-        <input matInput formControlName="skill" />
-        <button
-          (click)="saveNewSkill()"
-          *ngIf="skillsForm.valid"
-          class="p-2"
-          matSuffix
-          mat-icon-button
-          aria-label="Clear"
-        >
-          <i class="fa-solid fa-floppy-disk fa-2x text-blue-500"></i>
-        </button>
-        <mat-error></mat-error>
-      </mat-form-field>
-    </ng-container>
-  </div>
-  <div class="text-slate-500">
-    <div class="mb-2" *ngFor="let skillType of skillTypes">
-      {{ skillType.title }}:
+      <div *ngIf="isShowAddSkillTypes" class="flex gap-2 items-center">
+        <ng-container [formGroup]="skillTypeForm">
+          <mat-form-field appearance="fill">
+            <mat-label>Skill type</mat-label>
+            <input matInput formControlName="type" />
+            <mat-error></mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Skill title</mat-label>
+            <input matInput formControlName="title" />
+            <button
+              (click)="saveNewSkillType()"
+              *ngIf="skillTypeForm.valid"
+              class="p-2"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+            >
+              <i class="fa-solid fa-floppy-disk fa-2x text-blue-500"></i>
+            </button>
+            <mat-error></mat-error>
+          </mat-form-field>
+        </ng-container>
+      </div>
       <div
-        class="flex gap-2 flex-wrap"
+        class="flex gap-2"
         cdkDropList
         cdkDropListOrientation="horizontal"
-        (cdkDropListDropped)="dropSkill($event, skillType.type)"
+        #skillTypesList="cdkDropList"
+        (cdkDropListDropped)="dropSkillTypes($event)"
       >
         <div
+          class="bg-blue-500 text-sm text-white py-2 px-4 border-r-2 cursor-pointer"
+          *ngFor="let skillType of skillTypes"
           cdkDrag
-          class="cursor-pointer"
-          *ngFor="let skill of skillTypesMap[skillType.type]"
         >
+          {{ skillType.title }}
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="p-4">
+    <div class="grid gap-2">
+      <pk-admin-title
+        [title]="'Skills'"
+        [isShowForm]="isShowAddSkill"
+        [addFunc]="showSkillForm.bind(this)"
+      ></pk-admin-title>
+
+      <div class="flex gap-2" *ngIf="isShowAddSkill">
+        <ng-container [formGroup]="skillsForm">
+          <mat-form-field appearance="fill">
+            <mat-label>Skill Type</mat-label>
+            <mat-select formControlName="group">
+              <mat-option
+                *ngFor="let skillType of skillTypes"
+                [value]="skillType.type"
+              >
+                {{ skillType.title }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Logo</mat-label>
+            <input matInput formControlName="logo" />
+            <button class="p-2" matSuffix mat-icon-button aria-label="Clear">
+              <a
+                class="ml-2"
+                target="_blank"
+                href="https://worldvectorlogo.com/"
+                ><i class="fa-solid fa-arrow-up-right-from-square"></i
+              ></a>
+            </button>
+            <mat-error></mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Skill</mat-label>
+            <input matInput formControlName="skill" />
+            <button
+              (click)="saveNewSkill()"
+              *ngIf="skillsForm.valid"
+              class="p-2"
+              matSuffix
+              mat-icon-button
+              aria-label="Clear"
+            >
+              <i class="fa-solid fa-floppy-disk fa-2x text-blue-500"></i>
+            </button>
+            <mat-error></mat-error>
+          </mat-form-field>
+        </ng-container>
+      </div>
+      <div class="text-slate-500">
+        <div class="mb-2" *ngFor="let skillType of skillTypes">
+          {{ skillType.title }}:
           <div
-            class="flex gap-2 items-center border border-rose-800 px-2 py-1 font-thin text-sm"
+            class="flex gap-2 flex-wrap"
+            cdkDropList
+            cdkDropListOrientation="horizontal"
+            (cdkDropListDropped)="dropSkill($event, skillType.type)"
           >
-            <img class="h-5" [src]="skill.logo" alt="" />
-            <div>{{ skill.skill }}</div>
-            <div class="cursor-pointer" (click)="deleteSkill(skill)">
-              <i class="fa-solid fa-trash"></i>
+            <div
+              cdkDrag
+              class="cursor-pointer"
+              *ngFor="let skill of skillTypesMap[skillType.type]"
+            >
+              <div
+                class="flex gap-2 items-center border border-rose-800 px-2 py-1 font-thin text-sm"
+              >
+                <img class="h-5" [src]="skill.logo" alt="" />
+                <div>{{ skill.skill }}</div>
+                <div class="cursor-pointer" (click)="deleteSkill(skill)">
+                  <i class="fa-solid fa-trash"></i>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
+  </mat-card>
 </div>

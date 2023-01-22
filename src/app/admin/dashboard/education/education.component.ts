@@ -1,40 +1,27 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { Subject, takeUntil, tap } from "rxjs";
-import {
-  FCollectionName,
-  IEducation,
-  ITitlebarActions,
-  ITitlebarNotifyAction,
-  ITitlebarToggle,
-  OperationModes,
-} from "src/models";
+import { FCollectionName, IEducation, OperationModes } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
-import {
-  SharedService,
-  getFormArraySharedButtons,
-  getOrderQueryAsc,
-  notifyCommonTitleBarActions,
-} from "src/shared";
+import { SharedService, getOrderQueryAsc } from "src/shared";
 
 @Component({
   selector: "pk-education",
   templateUrl: "./education.component.html",
   styleUrls: ["./education.component.scss"],
 })
-export class EducationComponent implements OnInit, OnDestroy {
-  educationForm: FormGroup;
+export class EducationComponent implements OnInit {
   order = getOrderQueryAsc();
-  operationMode = OperationModes.ADD;
+  educationForm: FormGroup;
+  isShowForm = false;
+  currOperationMode: OperationModes = null;
   education$ = this.sharedService.getContentList<IEducation>(
     FCollectionName.EDUCATION,
     this.order
   );
-  destroy$ = new Subject<void>();
-  get educationFormArray(): FormArray {
-    return this.educationForm.get("education") as FormArray;
-  }
+  operationMode = OperationModes.ADD;
+  isButtonDisabled = false;
+  @ViewChild("educationLengthEle") educationLengthEle: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -44,76 +31,31 @@ export class EducationComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.education$
-      .pipe(
-        takeUntil(this.destroy$),
-        tap((education) => {
-          this.operationMode = education?.length
-            ? OperationModes.EDIT
-            : OperationModes.ADD;
-          if (this.operationMode === OperationModes.ADD) {
-            this.initAddEducation();
-          } else {
-            this.initEditEducation(education);
-          }
-        })
-      )
-      .subscribe();
-  }
-
-  initEditEducation(educations: IEducation[]): void {
-    const educationFormArray = this.fb.array([]);
-    this.educationForm = this.fb.group({
-      education: educationFormArray,
-    });
-
-    educations.forEach((education, index) => {
-      const educationFormGroup = this.getEducationFormGroup();
-      educationFormGroup.patchValue({
-        ...education,
-        isOpen: index < educations?.length - 1 ? false : true,
-      });
-      this.educationFormArray.push(educationFormGroup);
-    });
-  }
-
-  initAddEducation(): void {
-    this.educationForm = this.fb.group({
-      education: this.fb.array([this.getEducationFormGroup()]),
-    });
+    this.educationForm = this.getEducationFormGroup();
   }
 
   getEducationFormGroup(): FormGroup {
     return this.fb.group({
+      id: [""],
       title: ["", Validators.required],
       date: ["", Validators.required],
       desc: ["", Validators.required],
       order: [null, Validators.required],
-      isOpen: [true, Validators.required],
     });
   }
 
-  getFormArraySharedButtons(index: number): ITitlebarActions[] {
-    return getFormArraySharedButtons(index, this.educationFormArray, {
-      add: this.add.bind(this),
-      remove: this.remove.bind(this),
-    });
+  onAddEducation(): void {
+    this.educationForm.reset();
+    const contactLength = this.educationLengthEle.nativeElement?.value || 0;
+    this.educationForm.get("order").setValue(+contactLength + 1);
+    this.isShowForm = !this.isShowForm;
+    this.currOperationMode = OperationModes.ADD;
   }
 
-  notifyToggle({ index, toggle }: ITitlebarToggle): void {
-    this.educationFormArray.at(index).patchValue({ isOpen: toggle });
-  }
-
-  add(): void {
-    this.educationFormArray.push(this.getEducationFormGroup());
-  }
-
-  remove(index: number): void {
-    this.educationFormArray.removeAt(index);
-  }
-
-  notifyAction(action: ITitlebarNotifyAction): void {
-    notifyCommonTitleBarActions(action);
+  onEditEducation(education: IEducation): void {
+    this.isShowForm = true;
+    this.currOperationMode = OperationModes.EDIT;
+    this.educationForm.patchValue({ ...education });
   }
 
   async saveEducation(): Promise<void> {
@@ -121,24 +63,43 @@ export class EducationComponent implements OnInit, OnDestroy {
       this.snackBar.open("Education form is invalid");
     } else {
       try {
-        const educations = this.educationForm.value.educations as IEducation[];
-        for (let index = 0; index < educations.length; index++) {
-          const education = educations[index];
+        this.isButtonDisabled = true;
+        const education = this.educationForm.value as IEducation;
+        if (OperationModes.ADD === this.currOperationMode) {
           await this.firebaseApi.addFirebaseDocument(
-            FCollectionName.SKILLS,
+            FCollectionName.EDUCATION,
             education
           );
+        } else {
+          await this.firebaseApi.updateFirebaseDocumentByDocID(
+            FCollectionName.EDUCATION,
+            education,
+            education.id
+          );
         }
-        this.snackBar.open("Education(s) saved!");
+        this.snackBar.open("Education saved!");
+        this.educationForm.reset();
+        this.isShowForm = false;
       } catch (error) {
-        this.snackBar.open("Error in saving Education(s)");
-        console.error("Error in saving Education(s) ", error);
+        this.snackBar.open("Error in saving education");
+        console.error("Error in saving education", error);
+      } finally {
+        this.isButtonDisabled = false;
       }
     }
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  async deleteEducation({ id, title }: IEducation): Promise<void> {
+    try {
+      if (window.confirm(`Are you sure to delete a education: ${title}`)) {
+        await this.firebaseApi.deleteFirebaseDocumentByDocID(
+          FCollectionName.EDUCATION,
+          id
+        );
+      }
+    } catch (error) {
+      this.snackBar.open("Error in deleting skill, try again later");
+      throw error;
+    }
   }
 }

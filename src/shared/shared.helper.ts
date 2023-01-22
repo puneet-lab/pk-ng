@@ -2,6 +2,8 @@ import { FormArray } from "@angular/forms";
 import {
   FirebaseOrderTypes,
   IFirebaseOrder,
+  ISkillTypes,
+  ISkills,
   ITitlebarActionFunc,
   ITitlebarActions,
   ITitlebarNotifyAction,
@@ -59,4 +61,19 @@ export const getOrderQueryAsc = (): IFirebaseOrder => {
     order: "order",
     direction: FirebaseOrderTypes.asc,
   };
+};
+
+export const createSkillTypesMap = (
+  skillTypes: ISkillTypes[],
+  skills: ISkills[]
+): {
+  [key: string]: ISkills[];
+} => {
+  const skillTypesMap: { [key: string]: ISkills[] } = {};
+  for (let index = 0; index < skillTypes.length; index++) {
+    const { type } = skillTypes[index];
+    skillTypesMap[type] = skills.filter(({ group }) => group === type);
+  }
+
+  return skillTypesMap;
 };

@@ -1,12 +1,14 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { LoginComponent } from "./login/login.component";
 import { PageUrlTypes } from "src/models";
-import { ExperienceComponent } from "./dashboard/experience/experience.component";
-import { DashboardComponent } from "./dashboard/dashboard.component";
-import { ContactComponent } from "./dashboard/contact/contact.component";
-import { EducationComponent } from "./dashboard/education/education.component";
 import { AuthGuard } from "../auth.guard";
+import { ContactComponent } from "./dashboard/contact/contact.component";
+import { DashboardComponent } from "./dashboard/dashboard.component";
+import { EducationComponent } from "./dashboard/education/education.component";
+import { ExperienceComponent } from "./dashboard/experience/experience.component";
+import { SelfProjectsComponent } from "./dashboard/self-projects/self-projects.component";
+import { SkillsComponent } from "./dashboard/skills/skills.component";
+import { LoginComponent } from "./login/login.component";
 
 const routes: Routes = [
   {
@@ -20,6 +22,8 @@ const routes: Routes = [
     children: [
       { path: "experience", component: ExperienceComponent },
       { path: "education", component: EducationComponent },
+      { path: "self-projects", component: SelfProjectsComponent },
+      { path: "skills", component: SkillsComponent },
       { path: "contact", component: ContactComponent },
     ],
   },

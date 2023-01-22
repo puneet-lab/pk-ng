@@ -3,12 +3,8 @@ export interface IAdminListItem {
   title: string;
   route?: string;
 }
-
-export interface IAdminSideNavSubItems extends IAdminListItem {}
-
 export interface IAdminSideNavItems extends IAdminListItem {
   showSubItems?: boolean;
-  subItems?: IAdminSideNavSubItems[];
 }
 
 export interface IExperience {

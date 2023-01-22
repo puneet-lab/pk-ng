@@ -1,70 +1,82 @@
-<div>
-  <div [formGroup]="contactForm">
-    <ng-container formGroupName="contacts">
-      <ng-container
-        *ngFor="let contact of contactFormArray.controls; let index = index"
-      >
-        <div [formArrayName]="index" class="grid gap-2">
-          <pk-titlebar
-            [title]="'Contact'"
-            [index]="index"
-            [isOpen]="contact.get('isOpen')?.value"
-            [actionButtons]="getFormArraySharedButtons(index)"
-            (notifyToggle)="notifyToggle($event)"
-            (notifyAction)="notifyAction($event)"
-          ></pk-titlebar>
+<div class="grid gap-2">
+  <pk-admin-title
+    [title]="'Contacts'"
+    [isShowForm]="isShowForm"
+    [addFunc]="onAddContact.bind(this)"
+  ></pk-admin-title>
 
-          <ng-container *ngIf="contact.get('isOpen')?.value">
-            <div class="grid grid-cols-2 gap-2">
-              <mat-form-field appearance="fill">
-                <mat-label>Id</mat-label>
-                <input matInput formControlName="id" />
-                <mat-error></mat-error>
-              </mat-form-field>
+  <div *ngIf="isShowForm">
+    <div [formGroup]="contactForm">
+      <ng-container>
+        <div class="grid grid-cols-1 gap-2">
+          <mat-form-field appearance="fill">
+            <mat-label>Type</mat-label>
+            <input matInput formControlName="type" />
+            <mat-error></mat-error>
+          </mat-form-field>
+        </div>
 
-              <mat-form-field appearance="fill">
-                <mat-label>Type</mat-label>
-                <input matInput formControlName="type" />
-                <mat-error></mat-error>
-              </mat-form-field>
-            </div>
+        <div class="grid grid-cols-2 gap-2">
+          <mat-form-field appearance="fill">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title" />
+            <mat-error></mat-error>
+          </mat-form-field>
 
-            <div class="grid grid-cols-2 gap-2">
-              <mat-form-field appearance="fill">
-                <mat-label>Title</mat-label>
-                <input matInput formControlName="title" />
-                <mat-error></mat-error>
-              </mat-form-field>
+          <mat-form-field appearance="fill">
+            <mat-label>Icon</mat-label>
+            <input matInput formControlName="icon" />
+            <mat-error></mat-error>
+          </mat-form-field>
+        </div>
 
-              <mat-form-field appearance="fill">
-                <mat-label>Icon</mat-label>
-                <input matInput formControlName="icon" />
-                <mat-error></mat-error>
-              </mat-form-field>
-            </div>
+        <div class="grid grid-cols-2 gap-2">
+          <mat-form-field appearance="fill">
+            <mat-label>href</mat-label>
+            <input matInput formControlName="href" />
+            <mat-error></mat-error>
+          </mat-form-field>
 
-            <div class="grid grid-cols-2 gap-2">
-              <mat-form-field appearance="fill">
-                <mat-label>HREF</mat-label>
-                <input matInput formControlName="href" />
-                <mat-error></mat-error>
-              </mat-form-field>
-
-              <mat-form-field appearance="fill">
-                <mat-label>Order</mat-label>
-                <input matInput formControlName="order" [value]="index + 1" />
-                <mat-error></mat-error>
-              </mat-form-field>
-            </div>
-          </ng-container>
+          <mat-form-field appearance="fill">
+            <mat-label>Order</mat-label>
+            <input matInput formControlName="order" />
+            <mat-error></mat-error>
+          </mat-form-field>
         </div>
       </ng-container>
-    </ng-container>
+    </div>
+    <pk-admin-save-btn
+      [isButtonDisabled]="isButtonDisabled"
+      [saveFunc]="saveContact.bind(this)"
+    ></pk-admin-save-btn>
   </div>
-  <button
-    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded"
-    (click)="saveContact()"
-  >
-    Save
-  </button>
+
+  <div class="grid gap-2 grid-cols-2" *ngIf="contacts$ | async as contacts">
+    <ng-container *ngFor="let contact of contacts">
+      <mat-card class="p-4">
+        <div class="flex justify-end items-center">
+          <div class="flex gap-2">
+            <div class="cursor-pointer" (click)="onEditContact(contact)">
+              <i class="fa-solid fa-pen-to-square text-slate-500"></i>
+            </div>
+            <div class="cursor-pointer" (click)="deleteContact(contact)">
+              <i class="fa-solid fa-trash text-slate-500"></i>
+            </div>
+          </div>
+        </div>
+        <div class="grid gap-2 grid-cols-1">
+          <div>Type : {{ contact.type }}</div>
+
+          <div>Title : {{ contact.title }}</div>
+
+          <div>Icon : {{ contact.icon }}</div>
+
+          <div>href : {{ contact.href }}</div>
+
+          <div>order : {{ contact.order }}</div>
+        </div>
+      </mat-card>
+    </ng-container>
+    <input #contactLengthEle type="hidden" [value]="contacts?.length || 0" />
+  </div>
 </div>

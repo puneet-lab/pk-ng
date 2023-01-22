@@ -10,7 +10,7 @@ export interface ISideBarMenu {
 }
 
 export interface IContact {
-  id: string;
+  id?: string;
   title: string;
   icon: string;
   href: string;
@@ -20,6 +20,7 @@ export interface IContact {
 }
 
 export interface IEducation {
+  id?: string;
   title: string;
   date: string;
   desc: string;
@@ -34,6 +35,7 @@ export interface ISelfProjects {
   url: string;
   stack: string[];
   order: number;
+  isOpen?: boolean;
 }
 
 export interface ICertificates {
@@ -43,6 +45,7 @@ export interface ICertificates {
 }
 
 export interface ISkills {
+  id?: string;
   skill: string;
   logo: string;
   group: string;
@@ -50,6 +53,7 @@ export interface ISkills {
 }
 
 export interface ISkillTypes {
+  id?: string;
   type: string;
   title: string;
   order: number;

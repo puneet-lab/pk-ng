@@ -3,7 +3,7 @@ import { FCollectionName, ISelfProjects } from "src/models";
 import { SharedService, getOrderQueryDesc } from "src/shared";
 
 @Component({
-  selector: "pk-self-project-list",
+  selector: "pk-self-projects",
   templateUrl: "./self-projects-list.component.html",
   styleUrls: ["./self-projects-list.component.scss"],
 })

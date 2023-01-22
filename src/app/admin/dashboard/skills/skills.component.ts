@@ -151,11 +151,11 @@ export class SkillsComponent implements OnInit, OnDestroy {
   }
 
   showSkillTypesForm(): void {
-    this.isShowAddSkillTypes = true;
+    this.isShowAddSkillTypes = !this.isShowAddSkillTypes;
   }
 
   showSkillForm(): void {
-    this.isShowAddSkill = true;
+    this.isShowAddSkill = !this.isShowAddSkill;
   }
 
   async saveNewSkillType(): Promise<void> {
