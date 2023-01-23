@@ -1,6 +1,9 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { PrivacyPolicyComponent } from "src/shared/components";
+import {
+  PageNotFoundComponent,
+  PrivacyPolicyComponent,
+} from "src/shared/components";
 
 const routes: Routes = [
   {
@@ -25,7 +28,7 @@ const routes: Routes = [
     redirectTo: "landing/portfolio",
     pathMatch: "full",
   },
-  // { path: "**", component: PageNotFoundComponent },
+  { path: "**", component: PageNotFoundComponent },
 ];
 
 @NgModule({
