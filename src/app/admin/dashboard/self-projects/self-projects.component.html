@@ -79,20 +79,12 @@
     <ng-container *ngFor="let selfProject of selfProjects">
       <mat-card class="p-4">
         <div class="flex justify-end items-center">
-          <div class="flex gap-2">
-            <div
-              class="cursor-pointer"
-              (click)="onEditSelfProject(selfProject)"
-            >
-              <i class="fa-solid fa-pen-to-square text-slate-500"></i>
-            </div>
-            <div
-              class="cursor-pointer"
-              (click)="deleteSelfProject(selfProject)"
-            >
-              <i class="fa-solid fa-trash text-slate-500"></i>
-            </div>
-          </div>
+          <pk-admin-action-btn
+            [adminActionBtns]="{
+              edit: this.onEditSelfProject.bind(this, selfProject),
+              delete: this.deleteSelfProject.bind(this, selfProject)
+            }"
+          ></pk-admin-action-btn>
         </div>
 
         <div class="grid gap-2 grid-cols">

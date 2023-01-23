@@ -44,16 +44,12 @@
   <div class="grid gap-2" *ngIf="education$ | async as educations">
     <ng-container *ngFor="let education of educations">
       <mat-card class="p-4">
-        <div class="flex justify-end items-center">
-          <div class="flex gap-2">
-            <div class="cursor-pointer" (click)="onEditEducation(education)">
-              <i class="fa-solid fa-pen-to-square text-slate-500"></i>
-            </div>
-            <div class="cursor-pointer" (click)="deleteEducation(education)">
-              <i class="fa-solid fa-trash text-slate-500"></i>
-            </div>
-          </div>
-        </div>
+        <pk-admin-action-btn
+          [adminActionBtns]="{
+            edit: this.onEditEducation.bind(this, education),
+            delete: this.deleteEducation.bind(this, education)
+          }"
+        ></pk-admin-action-btn>
 
         <div class="grid gap-2 grid-cols-1">
           <div>

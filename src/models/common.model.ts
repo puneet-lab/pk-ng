@@ -6,37 +6,9 @@ export enum PageUrlTypes {
   ADMIN_EXPERIENCE = "admin/dashboard/experience",
 }
 
-export enum TitlebarActionTypes {
-  ADD = "add",
-  DELETE = "delete",
-  EXP_RES = "exp_res",
-}
-
 export enum OperationModes {
   ADD = "ADD",
   EDIT = "EDIT",
-}
-
-export interface ITitlebarToggle {
-  toggle: boolean;
-  index: number;
-}
-export interface ITitlebarNotifyAction {
-  id: TitlebarActionTypes;
-  index: number;
-  actionFunc?: Function;
-}
-
-export interface ITitlebarActions {
-  id: TitlebarActionTypes;
-  icon: string;
-  isShow: boolean;
-  actionFunc?: Function;
-}
-
-export interface ITitlebarActionFunc {
-  add: Function;
-  remove: Function;
 }
 
 export interface IPrivacyPolicy {
@@ -47,4 +19,9 @@ export interface IPrivacyPolicy {
 export interface IDownloadResponse {
   status: boolean;
   downloadLink: string;
+}
+
+export interface IAdminActionBtns {
+  edit: Function;
+  delete: Function;
 }

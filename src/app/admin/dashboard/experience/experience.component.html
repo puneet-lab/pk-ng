@@ -101,22 +101,12 @@
     <ng-container *ngFor="let experience of experiences">
       <mat-expansion-panel>
         <mat-expansion-panel-header [expandedHeight]="'150px'">
-          <div class="flex justify-end items-center">
-            <div class="flex gap-2 mr-2">
-              <div
-                class="cursor-pointer"
-                (click)="onEditExperience(experience)"
-              >
-                <i class="fa-solid fa-pen-to-square text-slate-500"></i>
-              </div>
-              <div
-                class="cursor-pointer"
-                (click)="deleteExperience(experience)"
-              >
-                <i class="fa-solid fa-trash text-slate-500"></i>
-              </div>
-            </div>
-          </div>
+          <pk-admin-action-btn
+            [adminActionBtns]="{
+              edit: this.onEditExperience.bind(this, experience),
+              delete: this.deleteExperience.bind(this, experience)
+            }"
+          ></pk-admin-action-btn>
           <mat-panel-title>
             <div class="grid gap-2">
               <div class="text-2xl">

@@ -10,7 +10,10 @@ import { MatInputModule } from "@angular/material/input";
 import { MatListModule } from "@angular/material/list";
 import { MatSelectModule } from "@angular/material/select";
 import { MatSidenavModule } from "@angular/material/sidenav";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
+import {
+  MAT_SNACK_BAR_DEFAULT_OPTIONS,
+  MatSnackBarModule,
+} from "@angular/material/snack-bar";
 import { SharedModule } from "src/shared/shared.module";
 import { AdminRoutingModule } from "./admin-routing.module";
 import { ContactComponent } from "./dashboard/contact/contact.component";
@@ -45,6 +48,9 @@ import { LoginComponent } from "./login/login.component";
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+  ],
+  providers: [
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 4000 } },
   ],
   exports: [LoginComponent],
 })

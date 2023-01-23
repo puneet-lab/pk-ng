@@ -25,6 +25,7 @@ export class ExperienceComponent implements OnInit {
   operationMode = OperationModes.ADD;
   isButtonDisabled = false;
   responsibilitiesFormArray = this.fb.array([]);
+
   @ViewChild("experienceLengthEle") experienceLengthEle: ElementRef;
 
   get resFormArray(): FormArray {

@@ -54,16 +54,13 @@
   <div class="grid gap-2 grid-cols-2" *ngIf="contacts$ | async as contacts">
     <ng-container *ngFor="let contact of contacts">
       <mat-card class="p-4">
-        <div class="flex justify-end items-center">
-          <div class="flex gap-2">
-            <div class="cursor-pointer" (click)="onEditContact(contact)">
-              <i class="fa-solid fa-pen-to-square text-slate-500"></i>
-            </div>
-            <div class="cursor-pointer" (click)="deleteContact(contact)">
-              <i class="fa-solid fa-trash text-slate-500"></i>
-            </div>
-          </div>
-        </div>
+        <pk-admin-action-btn
+          [adminActionBtns]="{
+            edit: this.onEditContact.bind(this, contact),
+            delete: this.deleteContact.bind(this, contact)
+          }"
+        ></pk-admin-action-btn>
+
         <div class="grid gap-2 grid-cols-1">
           <div>Type : {{ contact.type }}</div>
 

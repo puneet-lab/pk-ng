@@ -16,15 +16,6 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  // onSideMainItem(sideNav: IAdminSideNavItems): void {
-  //   const sideNavItem = dashboardSideNavItems.find(
-  //     (navItem) => navItem.id === sideNav.id
-  //   );
-  //   if (sideNavItem?.subItems?.length)
-  //     sideNavItem.showSubItems = !sideNav.showSubItems;
-  //   else this.navigateToMainRoute(sideNav);
-  // }
-
   navigateToMainRoute({ route }: IAdminSideNavItems): void {
     void this.router.navigate([route]);
   }
