@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
@@ -143,6 +144,35 @@ export class ExperienceComponent implements OnInit {
       } finally {
         this.isButtonDisabled = false;
       }
+    }
+  }
+
+  drop(
+    event: CdkDragDrop<IOrderText[]>,
+    { responsibilities, id }: IExperience
+  ) {
+    const { previousIndex, currentIndex } = event;
+    moveItemInArray(responsibilities, previousIndex, currentIndex);
+    this.updateOrderResponsibility(id, responsibilities);
+  }
+
+  async updateOrderResponsibility(
+    id: string,
+    responsibilityList: IOrderText[]
+  ): Promise<void> {
+    try {
+      const responsibilities = responsibilityList.map((res, index) => ({
+        ...res,
+        order: index + 1,
+      }));
+      await this.firebaseApi.updateFirebaseDocumentByDocID(
+        FCollectionName.EXPERIENCE,
+        { responsibilities },
+        id
+      );
+    } catch (error) {
+      this.snackBar.open("Error in updating order of responsibilities");
+      throw error;
     }
   }
 

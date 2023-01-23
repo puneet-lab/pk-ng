@@ -1,29 +1,5 @@
-
 mat-expansion-panel-header{
-    height: inherit;
-    padding-top: 20px;
-    padding-bottom: 20px;
+  height: inherit;
+  padding-top: 20px;
+  padding-bottom: 20px;
 }
-
-.expand-headers-align .mat-expansion-panel-header-description {
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .expand-headers-align .mat-mdc-form-field + .mat-mdc-form-field {
-    margin-left: 8px;
-  }
-
-  .mat-expansion-panel-header-description,
-  .mat-expansion-indicator::after {
-    fill:red;
-    }
-
-    .h-unset{
-      height: initial;
-    }
-
-    ul {
-      list-style: circle outside none;
-      margin-left: 10px;
-    }

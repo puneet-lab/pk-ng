@@ -99,41 +99,66 @@
 
   <div class="grid gap-2" *ngIf="experiences$ | async as experiences">
     <ng-container *ngFor="let experience of experiences">
-      <mat-card class="p-4">
-        <div class="flex justify-end items-center">
-          <div class="flex gap-2">
-            <div class="cursor-pointer" (click)="onEditExperience(experience)">
-              <i class="fa-solid fa-pen-to-square text-slate-500"></i>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header [expandedHeight]="'150px'">
+          <div class="flex justify-end items-center">
+            <div class="flex gap-2 mr-2">
+              <div
+                class="cursor-pointer"
+                (click)="onEditExperience(experience)"
+              >
+                <i class="fa-solid fa-pen-to-square text-slate-500"></i>
+              </div>
+              <div
+                class="cursor-pointer"
+                (click)="deleteExperience(experience)"
+              >
+                <i class="fa-solid fa-trash text-slate-500"></i>
+              </div>
             </div>
-            <div class="cursor-pointer" (click)="deleteExperience(experience)">
-              <i class="fa-solid fa-trash text-slate-500"></i>
+          </div>
+          <mat-panel-title>
+            <div class="grid gap-2">
+              <div class="text-2xl">
+                {{ experience.position }}
+              </div>
+              <div class="text-lg">
+                {{ experience.companyName }} {{ experience.country }}
+                <span class="text-slate-400 text-sm italic">
+                  {{ experience.startDate }} - {{ experience.endDate }}
+
+                  <span
+                    *ngIf="experience.durationMonth + experience.durationYear"
+                    >(
+                    <span *ngIf="experience.durationYear">
+                      {{ experience.durationYear }} YEARS</span
+                    >
+                    <span *ngIf="experience.durationMonth">
+                      {{ experience.durationMonth }} MONTHS</span
+                    >
+                    )
+                  </span>
+                </span>
+              </div>
             </div>
-          </div>
-        </div>
-
-        <div class="grid gap-2">
-          <div class="text-xl">
-            {{ experience.position }}
-          </div>
-          <div class="text-lg">
-            {{ experience.companyName }} {{ experience.country }}
-            <span class="text-slate-400 text-sm italic">
-              {{ experience.startDate }} - {{ experience.endDate }}
-
-              <span *ngIf="experience.durationMonth + experience.durationYear"
-                >(
-                <span *ngIf="experience.durationYear">
-                  {{ experience.durationYear }} YEARS</span
-                >
-                <span *ngIf="experience.durationMonth">
-                  {{ experience.durationMonth }} MONTHS</span
-                >
-                )
-              </span>
-            </span>
-          </div>
-        </div>
-      </mat-card>
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <ul
+          class="responsibility-list"
+          cdkDropList
+          cdkDropListOrientation="vertical"
+          #skillTypesList="cdkDropList"
+          (cdkDropListDropped)="drop($event, experience)"
+        >
+          <li
+            cdkDrag
+            class="h-unset cursor-pointer"
+            *ngFor="let res of experience.responsibilities; let i = index"
+          >
+            <div class="text-sm mb-1">{{ res.text }}</div>
+          </li>
+        </ul>
+      </mat-expansion-panel>
     </ng-container>
     <input
       #experienceLengthEle

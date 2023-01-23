@@ -50,3 +50,17 @@ body {
     padding: 0;
 }
 html, body { height: 100%; }
+
+
+
+
+
+
+  .h-unset{
+    height: initial;
+  }
+
+  .responsibility-list {
+    list-style: circle outside none;
+    margin-left: 10px;
+  }
