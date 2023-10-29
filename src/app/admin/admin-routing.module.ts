@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { PageUrlTypes } from "src/models";
 import { AuthGuard } from "../auth.guard";
+import { BlogComponent } from "./dashboard/blog/blog.component";
 import { ContactComponent } from "./dashboard/contact/contact.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { EducationComponent } from "./dashboard/education/education.component";
@@ -25,6 +26,7 @@ const routes: Routes = [
       { path: "self-projects", component: SelfProjectsComponent },
       { path: "skills", component: SkillsComponent },
       { path: "contact", component: ContactComponent },
+      { path: "blog", component: BlogComponent },
     ],
   },
 ];

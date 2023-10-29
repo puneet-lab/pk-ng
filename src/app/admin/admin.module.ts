@@ -23,6 +23,7 @@ import { ExperienceComponent } from "./dashboard/experience/experience.component
 import { SelfProjectsComponent } from "./dashboard/self-projects/self-projects.component";
 import { SkillsComponent } from "./dashboard/skills/skills.component";
 import { LoginComponent } from "./login/login.component";
+import { BlogComponent } from './dashboard/blog/blog.component';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -32,6 +33,7 @@ import { LoginComponent } from "./login/login.component";
     EducationComponent,
     SelfProjectsComponent,
     SkillsComponent,
+    BlogComponent,
   ],
   imports: [
     CommonModule,
