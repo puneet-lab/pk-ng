@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subject, combineLatest, takeUntil, tap } from "rxjs";
+import { Subject, concatMap, takeUntil, tap } from "rxjs";
 import { FCollectionName, ISkillTypes, ISkills } from "src/models";
 import { FirebaseApiService } from "src/services/firebase-api.service";
 import { createSkillTypesMap, getOrderQueryAsc } from "src/shared";
@@ -40,11 +40,14 @@ export class AboutComponent implements OnInit, OnDestroy {
   constructor(private firebaseApi: FirebaseApiService) {}
 
   ngOnInit(): void {
-    combineLatest([this.skillTypes$, this.skills$])
+    this.skillTypes$
       .pipe(
         takeUntil(this.destroy$),
-        tap(([skillTypes, skills]) => {
+        concatMap((skillTypes) => {
           this.skillTypes = skillTypes;
+          return this.skills$;
+        }),
+        tap((skills) => {
           this.skills = skills;
           this.skillTypesMap = createSkillTypesMap(
             this.skillTypes,

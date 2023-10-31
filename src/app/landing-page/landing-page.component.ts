@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { ISideBarMenu } from "src/models";
 import { SharedService } from "src/shared";
 
@@ -10,7 +10,8 @@ import { SharedService } from "src/shared";
 export class LandingPageComponent {
   contacts$ = this.sharedService.getContactList();
   name = "Puneet Kushwah";
-  title = "Full Stack Software Engineer";
+  title = "Lead Full Stack Engineer";
+  title2 = "Senior Software Engineer";
 
   constructor(private sharedService: SharedService) {}
 
