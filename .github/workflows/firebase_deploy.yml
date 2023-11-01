@@ -20,7 +20,7 @@ jobs:
         run: npm ci
 
       - name: Build Angular Project
-        run: ng build --configuration=production
+        run: npx ng build --configuration=production # Use npx here
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
