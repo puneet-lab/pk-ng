@@ -21,9 +21,12 @@ jobs:
 
       - name: Build Angular Project
         run: npx ng build --configuration=production
+
       - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          args: deploy --only hosting --project 613287352707
+          repoToken: "${{ secrets.GITHUB_TOKEN }}"
+          firebaseServiceAccount: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}"
+          projectId: "613287352707"
         env:
-          FIREBASE_TOKEN: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}
+          FIREBASE_CLI_PREVIEWS: hostingchannels
