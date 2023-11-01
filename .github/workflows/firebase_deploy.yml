@@ -28,5 +28,6 @@ jobs:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"
           firebaseServiceAccount: "${{ secrets.GOOGLE_APPLICATION_CREDENTIALS_JSON }}"
           projectId: "613287352707"
+          channelId: "live"
         env:
           FIREBASE_CLI_PREVIEWS: hostingchannels
