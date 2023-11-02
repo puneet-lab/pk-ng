@@ -1,36 +1,58 @@
 import {
-  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
-  HostListener,
-  NgZone,
   OnDestroy,
+  OnInit,
   ViewChild,
 } from "@angular/core";
+import { Subscription } from "rxjs";
+import { ScrollService } from "src/services/scroll.service";
 
 @Component({
   selector: "pk-portfolio",
   templateUrl: "./portfolio.component.html",
   styleUrls: ["./portfolio.component.scss"],
 })
-export class PortfolioComponent implements AfterViewInit, OnDestroy {
-  @ViewChild("selfProjectsRef", { static: false }) selfProjectsRef: ElementRef;
+export class PortfolioComponent implements OnInit, OnDestroy {
+  isComeInView = false;
+  private scrollSubscription: Subscription;
 
-  constructor(private zone: NgZone) {}
+  @ViewChild("initialLoadComponents", { static: false })
+  initialLoadComponents: ElementRef;
 
-  isScrollUntilSelfProject = false;
+  constructor(
+    private scrollService: ScrollService,
+    private cdRef: ChangeDetectorRef
+  ) {}
 
-  ngAfterViewInit(): void {
-    console.log("ngAfterViewInit called");
+  ngOnInit(): void {
+    this.scrollSubscription = this.scrollService.scrollObservable.subscribe(
+      (event: Event) => {
+        this.checkIfShouldLoadMore(event);
+      }
+    );
+  }
+
+  checkIfShouldLoadMore(event: Event): void {
+    const { scrollTop, clientHeight: eventClientHeight } =
+      event.target as Element;
+    const { clientHeight, offsetTop } =
+      this.initialLoadComponents.nativeElement;
+
+    const triggerOffset = 50;
+    const scrollPosition = scrollTop + eventClientHeight;
+    const triggerPosition = offsetTop + clientHeight - triggerOffset;
+
+    if (scrollPosition >= triggerPosition && !this.isComeInView) {
+      this.isComeInView = true;
+      this.cdRef.detectChanges();
+    }
   }
 
   ngOnDestroy(): void {
-    // window.removeEventListener("scroll", this.onScroll);
-  }
-
-  @HostListener("window:scroll", ["$event"])
-  onScroll(event: any): void {
-    console.log("Scrolling...");
-    // Your logic here
+    if (this.scrollSubscription) {
+      this.scrollSubscription.unsubscribe();
+    }
   }
 }

@@ -1,16 +1,17 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { PageUrlTypes } from "src/models";
 import { AuthService } from "src/services/auth.service";
+import { SeoService } from "src/services/seo.service";
 
 @Component({
   selector: "pk-login",
   templateUrl: "./login.component.html",
   styleUrls: ["./login.component.scss"],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   loginForm = this.formBuilder.group({
     email: ["", [Validators.required, Validators.email]],
     password: ["", Validators.required],
@@ -21,10 +22,12 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private snackBarService: MatSnackBar
+    private snackBarService: MatSnackBar,
+    private seoService: SeoService
   ) {}
 
   ngOnInit(): void {
+    this.seoService.addNoIndexMetaTags();
     this.authService.isSignedIn$.subscribe((isLoggedIn) => {
       if (isLoggedIn) {
         this.router.navigate([PageUrlTypes.ADMIN_EXPERIENCE]);
@@ -60,5 +63,9 @@ export class LoginComponent implements OnInit {
 
   openSnackBar(text: string) {
     this.snackBarService.open(text);
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.removeNoIndexMetaTags();
   }
 }

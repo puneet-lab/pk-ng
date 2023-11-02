@@ -12,17 +12,19 @@ const routes: Routes = [
       import("../app/landing-page/landing-page.module").then(
         (m) => m.LandingPageModule
       ),
+    data: { name: "portfolio" },
   },
   {
     path: "admin",
     loadChildren: () =>
       import("../app/admin/admin.module").then((m) => m.AdminModule),
+    data: { name: "admin" },
   },
   {
     path: "privacy-policy",
     component: PrivacyPolicyComponent,
+    data: { name: "privacy-policy" },
   },
-
   {
     path: "",
     redirectTo: "landing/portfolio",

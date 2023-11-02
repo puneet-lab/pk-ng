@@ -15,6 +15,7 @@ export class AboutComponent implements OnInit, OnDestroy {
   skillTypesMap = {} as { [key: string]: ISkills[] };
   skillTypes: ISkillTypes[];
   skills: ISkills[];
+  expYears = this.getTotalYearsSince2014();
 
   orderQueryAsc = getOrderQueryAsc();
 
@@ -28,13 +29,16 @@ export class AboutComponent implements OnInit, OnDestroy {
   );
 
   responsibilities = [
-    "verifying good UI/UX design,",
-    "leading/co-developing the back-end and front-end,",
-    "setting up the CI/CD,",
-    "mentoring the team,",
-    "estimating tasks,",
-    "researching possible techs,",
-    "leading, launching and monitoring the project.",
+    "Ensuring a seamless and visually appealing UI/UX design,",
+    "Spearheading and co-engineering robust solutions for both back-end and front-end,",
+    "Establishing and optimizing CI/CD pipelines for efficient development workflows,",
+    "Leading and mentoring the team through effective coaching and guidance,",
+    "Precisely estimating and allocating tasks aligned with project timelines,",
+    "Conducting comprehensive research to explore and integrate suitable technologies,",
+    "Facilitating Agile methodologies for iterative and responsive project development,",
+    "Playing a pivotal role in launching and vigilantly monitoring the project's performance,",
+    "Leading cross-functional teams and ensuring timely delivery with Agile practices,",
+    "Implementing strategic planning and prioritization for team tasks and sprints.",
   ];
 
   constructor(private firebaseApi: FirebaseApiService) {}
@@ -56,6 +60,12 @@ export class AboutComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe();
+  }
+
+  getTotalYearsSince2014(): number {
+    const startYear = 2014;
+    const currentYear = new Date().getFullYear();
+    return currentYear - startYear;
   }
 
   ngOnDestroy(): void {

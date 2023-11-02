@@ -1,7 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { IAdminSideNavItems, PageUrlTypes } from "src/models";
 import { AuthService } from "src/services/auth.service";
+import { SeoService } from "src/services/seo.service";
 import { dashboardSideNavItems } from "./side-items";
 
 @Component({
@@ -9,12 +10,18 @@ import { dashboardSideNavItems } from "./side-items";
   templateUrl: "./dashboard.component.html",
   styleUrls: ["./dashboard.component.scss"],
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
   dashboardSideNavItems = dashboardSideNavItems;
 
-  constructor(private router: Router, private auth: AuthService) {}
+  constructor(
+    private router: Router,
+    private auth: AuthService,
+    private seoService: SeoService
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.seoService.addNoIndexMetaTags();
+  }
 
   navigateToMainRoute({ route }: IAdminSideNavItems): void {
     void this.router.navigate([route]);
@@ -23,5 +30,9 @@ export class DashboardComponent implements OnInit {
   async logout(): Promise<void> {
     await this.auth.logout();
     this.router.navigate([PageUrlTypes.ADMIN]);
+  }
+
+  ngOnDestroy(): void {
+    this.seoService.removeNoIndexMetaTags();
   }
 }

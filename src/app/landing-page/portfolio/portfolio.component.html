@@ -1,11 +1,11 @@
-<pk-about></pk-about>
+<div #initialLoadComponents>
+  <pk-about></pk-about>
+  <pk-self-projects></pk-self-projects>
+</div>
 
-<pk-self-projects></pk-self-projects>
-
-<pk-experience-list></pk-experience-list>
-
-<pk-education-list></pk-education-list>
-
-<pk-certificates></pk-certificates>
-
-<pk-cv-list></pk-cv-list>
+<div *ngIf="isComeInView">
+  <pk-experience-list></pk-experience-list>
+  <pk-education-list></pk-education-list>
+  <pk-certificates></pk-certificates>
+  <pk-cv-list></pk-cv-list>
+</div>

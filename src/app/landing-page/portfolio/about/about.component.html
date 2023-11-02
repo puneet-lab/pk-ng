@@ -1,40 +1,45 @@
 <div>
   <pk-landing-title class="hidden md:block" [title]="title"></pk-landing-title>
   <mat-card>
-    <div class="p-5 grid gap-4 text-lg">
-      <div class="font-extrabold">
-        A <span class="text-rose-700">full-stack software engineer</span> with
-        over <span class="text-rose-700">7+ years of experience.</span>
-      </div>
+    <section class="p-5 grid gap-4 text-lg">
+      <h1 class="font-extrabold">
+        A
+        <span class="text-rose-700">seasoned full-stack software engineer</span
+        >, I bring to the table over
+        <span class="text-rose-700"
+          >{{ expYears }} years of rich experience</span
+        >.
+      </h1>
 
-      <div>
-        <span class="font-extrabold">
-          I have maintained, developed and launched multiple projects from
-          scratch,
-        </span>
+      <p>
+        <strong>
+          In my career, I have successfully architected, developed, and deployed
+          a myriad of projects from conception to completion,
+        </strong>
         <span class="text-slate-500">
-          carrying the development of its' back-end and front-end codebases.
+          meticulously handling both back-end and front-end aspects.
         </span>
-      </div>
-      <div class="text-slate-500">
-        My current toolset includes
+      </p>
+
+      <p class="text-slate-500">
+        My proficiency extends to a diverse toolkit that includes
         <span class="text-black">
-          JavaScript & TypeScript (Node.js as well), Angular, Vue, Vuex,
-          Kubernetes, Docker
+          JavaScript, TypeScript, Node.js, Angular, Vue, Vuex, React, Next.js,
+          Kubernetes, Docker,
         </span>
-        and all the other various frameworks, libraries and technologies related
-        to them.
-      </div>
-      <div class="text-slate-500">
-        I can help you with all the sides of your project:
-      </div>
+        and various other associated frameworks and libraries.
+      </p>
+
+      <p class="text-slate-500">
+        I am adept at contributing comprehensively to your project, ensuring:
+      </p>
 
       <div class="pl-2 text-slate-500">
         <ul>
           <li *ngFor="let res of responsibilities">&#x2022; {{ res }}</li>
         </ul>
       </div>
-    </div>
+    </section>
 
     <div class="p-5 text-slate-500">
       <div class="mb-2" *ngFor="let skillType of skillTypes">
