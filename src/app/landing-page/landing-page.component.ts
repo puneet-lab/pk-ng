@@ -15,8 +15,6 @@ export class LandingPageComponent implements AfterViewInit, OnDestroy {
   name = "Puneet Kushwah";
   title = "Lead Full Stack Engineer";
   title2 = "Senior Software Engineer";
-  images =
-    "https://firebasestorage.googleapis.com/v0/b/puneeetkushwah.appspot.com/o/assets%2Flanding-bg.jpg?alt=media&token=81fcae2a-0dd2-4d9a-9f14-b14ddf3a1370&_gl=1*1wivrf6*_ga*MjExOTgzNjY3NS4xNjc1NDk1MzA3*_ga_CW55HF8NVT*MTY5OTAyNTQ0Ny40LjEuMTY5OTAyNTUyNy41NC4wLjA.";
 
   sideBarMenu: ISideBarMenu[] = [
     {
