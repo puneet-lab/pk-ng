@@ -1,12 +1,5 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subject, takeUntil, tap } from "rxjs";
-import {
-  IEducation,
-  IFirebaseOrder,
-  FirebaseOrderTypes,
-  FCollectionName,
-} from "src/models";
-import { FirebaseApiService } from "src/services/firebase-api.service";
+import { Component } from "@angular/core";
+import { FCollectionName, IEducation } from "src/models";
 import { SharedService, getOrderQueryDesc } from "src/shared";
 
 @Component({

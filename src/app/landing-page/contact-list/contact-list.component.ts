@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subject, takeUntil, tap } from "rxjs";
-import { FCollectionName, IContact } from "src/models";
-import { FirebaseApiService } from "src/services/firebase-api.service";
+import { IContact } from "src/models";
 import { SharedService } from "src/shared";
 
 @Component({
@@ -18,12 +17,14 @@ export class ContactListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.sharedService.contacts) {
       this.contacts = this.sharedService.contacts;
+      console.log("this.contacts", this.contacts);
     } else {
       this.sharedService
         .getContactList()
         .pipe(
           takeUntil(this.destroy$),
           tap((contacts) => {
+            console.log("contacts", contacts);
             this.contacts = contacts;
           })
         )

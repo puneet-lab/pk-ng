@@ -38,7 +38,11 @@
                 [title]="contact.title"
                 target="_blank"
               >
-                <i class="social-icon fa-xl" [class]="contact.icon"></i>
+                <img
+                  [src]="'assets/images/contact/' + contact.icon + '.svg'"
+                  [alt]="contact.type"
+                  class="w-6 opacity-50"
+                />
               </a>
             </ng-container>
           </div>
@@ -77,7 +81,11 @@
             [title]="contact.title"
             target="_blank"
           >
-            <i class="text-white fa-xl" [class]="contact.icon"></i>
+            <img
+              [src]="'assets/images/contact/' + contact.icon + '.svg'"
+              [alt]="contact.type"
+              class=" opacity-50"
+            />
           </a>
         </ng-container>
       </div>

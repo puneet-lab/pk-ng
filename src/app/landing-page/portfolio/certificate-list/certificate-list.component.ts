@@ -1,7 +1,5 @@
-import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subject, takeUntil, tap } from "rxjs";
+import { Component } from "@angular/core";
 import { FCollectionName, ICertificates } from "src/models";
-import { FirebaseApiService } from "src/services/firebase-api.service";
 import { SharedService, getOrderQueryDesc } from "src/shared";
 
 @Component({
