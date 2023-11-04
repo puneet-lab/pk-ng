@@ -1,50 +1,59 @@
 <div class="hidden md:block">
   <mat-drawer-container class="drawer-container">
     <mat-drawer class="drawer" mode="side" opened>
-      <div class="mt-12">
-        <div class="flex items-center flex-col gap-2">
-          <img
-            class="w-40 h-40 rounded-full object-cover"
-            src="assets/images/puneet.jpeg"
-            alt="puneet"
-          />
-          <h1 class="text-2xl text-white">{{ name }}</h1>
-          <h2 class="text-lg font-thin text-slate-200">
-            {{ title }}
-          </h2>
-          <h3 class="text-md font-thin text-slate-200">& {{ title2 }}</h3>
+      <img
+        [src]="images"
+        alt="Background"
+        class="lazy-background"
+        loading="lazy"
+      />
+      <div class="color-overlay"></div>
+      <div class="drawer-content">
+        <div class="mt-12">
+          <div class="flex items-center flex-col gap-2">
+            <img
+              class="w-40 h-40 rounded-full object-cover"
+              src="assets/images/puneet.jpeg"
+              alt="puneet"
+            />
+            <h1 class="text-2xl text-white">{{ name }}</h1>
+            <h2 class="text-lg font-thin text-slate-200">
+              {{ title }}
+            </h2>
+            <h3 class="text-md font-thin text-slate-200">& {{ title2 }}</h3>
+          </div>
         </div>
-      </div>
 
-      <div>
-        <mat-list>
-          <mat-list-item *ngFor="let menu of sideBarMenu">
-            <div
-              [routerLinkActive]="'active-link font-bold'"
-              [routerLink]="menu.route"
-            >
-              {{ menu.name }}
-            </div>
-          </mat-list-item>
-        </mat-list>
-
-        <div class="contact mt-20">
-          <div class="flex justify-center">Get in touch</div>
-          <div class="flex gap-2 justify-center">
-            <ng-container *ngFor="let contact of contacts$ | async">
-              <a
-                class="hover:text-white"
-                [href]="contact.href"
-                [title]="contact.title"
-                target="_blank"
+        <div>
+          <mat-list>
+            <mat-list-item *ngFor="let menu of sideBarMenu">
+              <div
+                [routerLinkActive]="'active-link font-bold'"
+                [routerLink]="menu.route"
               >
-                <img
-                  [src]="'assets/images/contact/' + contact.icon + '.svg'"
-                  [alt]="contact.type"
-                  class="w-6 opacity-50"
-                />
-              </a>
-            </ng-container>
+                {{ menu.name }}
+              </div>
+            </mat-list-item>
+          </mat-list>
+
+          <div class="contact mt-20">
+            <div class="flex justify-center">Get in touch</div>
+            <div class="flex gap-2 justify-center">
+              <ng-container *ngFor="let contact of contacts$ | async">
+                <a
+                  class="hover:text-white"
+                  [href]="contact.href"
+                  [title]="contact.title"
+                  target="_blank"
+                >
+                  <img
+                    [src]="'assets/images/contact/' + contact.icon + '.svg'"
+                    [alt]="contact.type"
+                    class="w-6 opacity-50"
+                  />
+                </a>
+              </ng-container>
+            </div>
           </div>
         </div>
       </div>
@@ -84,7 +93,7 @@
             <img
               [src]="'assets/images/contact/' + contact.icon + '.svg'"
               [alt]="contact.type"
-              class=" opacity-50"
+              class="opacity-50"
             />
           </a>
         </ng-container>
