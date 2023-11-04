@@ -1,7 +1,12 @@
 <div class="hidden md:block">
   <mat-drawer-container class="drawer-container">
     <mat-drawer class="drawer" mode="side" opened>
-      <img [src]="images" alt="Background" class="lazy-background" />
+      <img
+        [src]="images"
+        alt="Background"
+        class="lazy-background"
+        loading="lazy"
+      />
       <div class="color-overlay"></div>
       <div class="drawer-content">
         <div class="mt-12">
