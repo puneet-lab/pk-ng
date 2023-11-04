@@ -1,12 +1,7 @@
 <div class="hidden md:block">
   <mat-drawer-container class="drawer-container">
     <mat-drawer class="drawer" mode="side" opened>
-      <img
-        [src]="images"
-        alt="Background"
-        class="lazy-background"
-        loading="lazy"
-      />
+      <img [src]="images" alt="Background" class="lazy-background" />
       <div class="color-overlay"></div>
       <div class="drawer-content">
         <div class="mt-12">
@@ -49,7 +44,7 @@
                   <img
                     [src]="'assets/images/contact/' + contact.icon + '.svg'"
                     [alt]="contact.type"
-                    class="w-6 opacity-50"
+                    class="w-6 h-6 opacity-50"
                   />
                 </a>
               </ng-container>
@@ -93,7 +88,7 @@
             <img
               [src]="'assets/images/contact/' + contact.icon + '.svg'"
               [alt]="contact.type"
-              class="opacity-50"
+              class="opacity-50 w-6 h-6"
             />
           </a>
         </ng-container>
