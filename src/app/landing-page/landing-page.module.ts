@@ -2,11 +2,10 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { MatCardModule } from "@angular/material/card";
 import { MatExpansionModule } from "@angular/material/expansion";
-import { MatIconModule } from "@angular/material/icon";
 import { MatListModule } from "@angular/material/list";
 import { MatSidenavModule } from "@angular/material/sidenav";
 
-import { SharedModule } from "../../shared/shared.module";
+import { LandingTitleComponent } from "../../shared/components";
 import { ContactListComponent } from "./contact-list/contact-list.component";
 import { LandingPageRoutingModule } from "./landing-page-routing.module";
 import { LandingPageComponent } from "./landing-page.component";
@@ -19,6 +18,7 @@ import { SelfProjectsListComponent } from "./portfolio/self-projects-list/self-p
 
 @NgModule({
   declarations: [
+    LandingTitleComponent,
     LandingPageComponent,
     PortfolioComponent,
     ContactListComponent,
@@ -31,12 +31,10 @@ import { SelfProjectsListComponent } from "./portfolio/self-projects-list/self-p
   imports: [
     CommonModule,
     MatSidenavModule,
-    LandingPageRoutingModule,
     MatListModule,
     MatExpansionModule,
     MatCardModule,
-    MatIconModule,
-    SharedModule,
+    LandingPageRoutingModule,
   ],
   exports: [LandingPageComponent],
 })

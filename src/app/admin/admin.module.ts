@@ -1,6 +1,7 @@
 import { DragDropModule } from "@angular/cdk/drag-drop";
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatCardModule } from "@angular/material/card";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatExpansionModule } from "@angular/material/expansion";
@@ -19,7 +20,6 @@ import {
   AdminSaveBtnComponent,
   AdminTitleComponent,
 } from "../../shared/components";
-import { SharedModule } from "../../shared/shared.module";
 import { AdminRoutingModule } from "./admin-routing.module";
 import { BlogComponent } from "./dashboard/blog/blog.component";
 import { ContactComponent } from "./dashboard/contact/contact.component";
@@ -46,7 +46,6 @@ import { LoginComponent } from "./login/login.component";
   imports: [
     CommonModule,
     AdminRoutingModule,
-    SharedModule,
     MatSelectModule,
     MatSnackBarModule,
     MatExpansionModule,
@@ -58,6 +57,8 @@ import { LoginComponent } from "./login/login.component";
     MatDialogModule,
     MatFormFieldModule,
     MatInputModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 4000 } },

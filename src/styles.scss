@@ -33,11 +33,23 @@ $pk-angular-theme: mat.define-light-theme((
     warn: $pk-angular-warn,
   )
 ));
-
+// @include mat.all-component-themes($pk-angular-theme);
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($pk-angular-theme);
+
+@include mat.card-color($pk-angular-theme);
+@include mat.expansion-color($pk-angular-theme);
+@include mat.icon-color($pk-angular-theme);
+@include mat.list-color($pk-angular-theme);
+@include mat.sidenav-color($pk-angular-theme);
+@include mat.snack-bar-color($pk-angular-theme);
+@include mat.tabs-color($pk-angular-theme);
+@include mat.dialog-color($pk-angular-theme);
+@include mat.form-field-color($pk-angular-theme);
+@include mat.input-color($pk-angular-theme);
+@include mat.select-color($pk-angular-theme);
+@include mat.form-field-theme($pk-angular-theme);
+@include mat.input-theme($pk-angular-theme);
 
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Quicksand:wght@300;500&display=swap');

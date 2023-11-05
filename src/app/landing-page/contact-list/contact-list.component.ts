@@ -19,7 +19,6 @@ export class ContactListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.sharedService.contacts) {
       this.contacts = this.sharedService.contacts;
-      console.log("this.contacts", this.contacts);
     } else {
       this.sharedService
         .getContactList()

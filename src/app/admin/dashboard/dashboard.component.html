@@ -7,7 +7,7 @@
       <ng-container *ngFor="let sideNavItems of dashboardSideNavItems">
         <mat-list-item>
           <div
-            class="flex justify-between"
+            class="flex justify-between mt-5"
             [routerLinkActive]="'active-link font-bold'"
             [routerLink]="[sideNavItems.route]"
           >
@@ -15,7 +15,7 @@
           </div>
         </mat-list-item>
       </ng-container>
-      <mat-list-item (click)="logout()">Logout</mat-list-item>
+      <mat-list-item class="mt-5" (click)="logout()">Logout</mat-list-item>
     </mat-list>
   </mat-sidenav>
   <mat-sidenav-content>
