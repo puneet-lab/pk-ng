@@ -27,11 +27,16 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.scrollSubscription = this.scrollService.scrollObservable.subscribe(
-      (event: Event) => {
-        this.checkIfShouldLoadMore(event);
-      }
-    );
+    const isMobile = window.innerWidth < 768;
+    if (isMobile) {
+      this.isComeInView = true;
+    } else {
+      this.scrollSubscription = this.scrollService.scrollObservable.subscribe(
+        (event: Event) => {
+          this.checkIfShouldLoadMore(event);
+        }
+      );
+    }
   }
 
   checkIfShouldLoadMore(event: Event): void {
