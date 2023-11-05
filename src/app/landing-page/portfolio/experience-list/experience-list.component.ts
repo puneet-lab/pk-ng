@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
-import { FCollectionName, IExperience } from "src/models";
-import { SharedService, getOrderQueryDesc } from "src/shared";
+import { FCollectionName, IExperience } from "../../../../models";
+import { SharedService, getOrderQueryDesc } from "../../../../shared";
 
 @Component({
   selector: "pk-experience-list",

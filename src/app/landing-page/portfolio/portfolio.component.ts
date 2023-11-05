@@ -6,8 +6,8 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { Subscription } from "rxjs";
-import { ScrollService } from "src/services/scroll.service";
+import { Subscription } from "rxjs/internal/Subscription";
+import { ScrollService } from "../../../services/scroll.service";
 
 @Component({
   selector: "pk-portfolio",

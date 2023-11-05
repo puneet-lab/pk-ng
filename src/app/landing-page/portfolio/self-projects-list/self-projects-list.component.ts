@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
-import { FCollectionName, ISelfProjects } from "src/models";
-import { SharedService, getOrderQueryDesc } from "src/shared";
+import { FCollectionName, ISelfProjects } from "../../../../models";
+import { SharedService, getOrderQueryDesc } from "../../../../shared";
 
 @Component({
   selector: "pk-self-projects",

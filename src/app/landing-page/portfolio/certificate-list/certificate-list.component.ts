@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
-import { FCollectionName, ICertificates } from "src/models";
-import { SharedService, getOrderQueryDesc } from "src/shared";
+import { FCollectionName, ICertificates } from "../../../../models";
+import { SharedService, getOrderQueryDesc } from "../../../../shared";
 
 @Component({
   selector: "pk-certificates",

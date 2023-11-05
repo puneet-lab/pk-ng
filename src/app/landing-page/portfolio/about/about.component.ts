@@ -1,8 +1,11 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subject, concatMap, takeUntil, tap } from "rxjs";
-import { FCollectionName, ISkillTypes, ISkills } from "src/models";
-import { FirebaseApiService } from "src/services/firebase-api.service";
-import { createSkillTypesMap, getOrderQueryAsc } from "src/shared";
+import { Subject } from "rxjs/internal/Subject";
+import { concatMap } from "rxjs/internal/operators/concatMap";
+import { takeUntil } from "rxjs/internal/operators/takeUntil";
+import { tap } from "rxjs/internal/operators/tap";
+import { FCollectionName, ISkillTypes, ISkills } from "../../../../models";
+import { FirebaseApiService } from "../../../../services/firebase-api.service";
+import { createSkillTypesMap, getOrderQueryAsc } from "../../../../shared";
 
 @Component({
   selector: "pk-about",

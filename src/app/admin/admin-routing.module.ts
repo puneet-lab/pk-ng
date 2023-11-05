@@ -1,6 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
-import { PageUrlTypes } from "src/models";
+import { PageUrlTypes } from "../../models";
 import { AuthGuard } from "../auth.guard";
 import { BlogComponent } from "./dashboard/blog/blog.component";
 import { ContactComponent } from "./dashboard/contact/contact.component";

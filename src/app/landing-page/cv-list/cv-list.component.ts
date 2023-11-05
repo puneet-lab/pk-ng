@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import { Subject, takeUntil, tap } from "rxjs";
-import { CVTypes, FCollectionName, ICV } from "src/models";
-import { FirebaseApiService } from "src/services/firebase-api.service";
-import { getOrderQueryDesc } from "src/shared";
+import { Subject } from "rxjs/internal/Subject";
+import { takeUntil } from "rxjs/internal/operators/takeUntil";
+import { tap } from "rxjs/internal/operators/tap";
+import { CVTypes, FCollectionName, ICV } from "../../../models";
+import { FirebaseApiService } from "../../../services/firebase-api.service";
+import { getOrderQueryDesc } from "../../../shared";
 @Component({
   selector: "pk-cv-list",
   templateUrl: "./cv-list.component.html",

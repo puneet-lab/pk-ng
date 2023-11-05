@@ -1,9 +1,8 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { ContactListComponent } from "./contact-list/contact-list.component";
 import { LandingPageComponent } from "./landing-page.component";
 import { PortfolioComponent } from "./portfolio/portfolio.component";
-import { CvListComponent } from "./cv-list/cv-list.component";
-import { ContactListComponent } from "./contact-list/contact-list.component";
 
 const routes: Routes = [
   {
@@ -12,7 +11,14 @@ const routes: Routes = [
     children: [
       { path: "portfolio", component: PortfolioComponent },
       { path: "contact", component: ContactListComponent },
-      { path: "cv", component: CvListComponent },
+      {
+        path: "cv",
+        loadChildren: () =>
+          import("../landing-page/cv-list/cv-list.module").then(
+            (m) => m.CvListModule
+          ),
+        data: { name: "cv" },
+      },
     ],
   },
 ];

@@ -9,7 +9,6 @@ import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { initializeApp } from "firebase/app";
 import { environment } from "src/environments/environment";
-import { SharedModule } from "../shared/shared.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 const firebaseSetting = environment.firebase;
@@ -25,7 +24,6 @@ const app = initializeApp(firebaseSetting);
     provideAuth(() => getAuth()),
     provideDatabase(() => getDatabase()),
     provideFirestore(() => getFirestore()),
-    SharedModule,
   ],
   providers: [
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: { duration: 4000 } },

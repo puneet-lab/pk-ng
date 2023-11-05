@@ -14,8 +14,14 @@ import {
   MAT_SNACK_BAR_DEFAULT_OPTIONS,
   MatSnackBarModule,
 } from "@angular/material/snack-bar";
-import { SharedModule } from "src/shared/shared.module";
+import {
+  AdminActionBtnComponent,
+  AdminSaveBtnComponent,
+  AdminTitleComponent,
+} from "../../shared/components";
+import { SharedModule } from "../../shared/shared.module";
 import { AdminRoutingModule } from "./admin-routing.module";
+import { BlogComponent } from "./dashboard/blog/blog.component";
 import { ContactComponent } from "./dashboard/contact/contact.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { EducationComponent } from "./dashboard/education/education.component";
@@ -23,7 +29,6 @@ import { ExperienceComponent } from "./dashboard/experience/experience.component
 import { SelfProjectsComponent } from "./dashboard/self-projects/self-projects.component";
 import { SkillsComponent } from "./dashboard/skills/skills.component";
 import { LoginComponent } from "./login/login.component";
-import { BlogComponent } from './dashboard/blog/blog.component';
 @NgModule({
   declarations: [
     LoginComponent,
@@ -34,6 +39,9 @@ import { BlogComponent } from './dashboard/blog/blog.component';
     SelfProjectsComponent,
     SkillsComponent,
     BlogComponent,
+    AdminTitleComponent,
+    AdminSaveBtnComponent,
+    AdminActionBtnComponent,
   ],
   imports: [
     CommonModule,

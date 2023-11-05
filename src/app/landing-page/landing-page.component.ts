@@ -1,9 +1,10 @@
 import { AfterViewInit, Component, OnDestroy, ViewChild } from "@angular/core";
 import { MatDrawerContent } from "@angular/material/sidenav";
-import { Subscription, tap } from "rxjs";
-import { ISideBarMenu } from "src/models";
-import { ScrollService } from "src/services/scroll.service";
-import { SharedService } from "src/shared";
+import { Subscription } from "rxjs/internal/Subscription";
+import { tap } from "rxjs/internal/operators/tap";
+import { ISideBarMenu } from "../../models";
+import { ScrollService } from "../../services/scroll.service";
+import { SharedService } from "../../shared";
 
 @Component({
   selector: "pk-landing-page",

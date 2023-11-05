@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
-import { FCollectionName, IEducation } from "src/models";
-import { SharedService, getOrderQueryDesc } from "src/shared";
+import { FCollectionName, IEducation } from "../../../../models";
+import { SharedService, getOrderQueryDesc } from "../../../../shared";
 
 @Component({
   selector: "pk-education-list",

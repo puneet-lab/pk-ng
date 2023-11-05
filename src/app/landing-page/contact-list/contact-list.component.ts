@@ -1,7 +1,9 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subject, takeUntil, tap } from "rxjs";
-import { IContact } from "src/models";
-import { SharedService } from "src/shared";
+import { Subject } from "rxjs/internal/Subject";
+import { takeUntil } from "rxjs/internal/operators/takeUntil";
+import { tap } from "rxjs/internal/operators/tap";
+import { IContact } from "../../../models";
+import { SharedService } from "../../../shared";
 
 @Component({
   selector: "pk-contact-list",
