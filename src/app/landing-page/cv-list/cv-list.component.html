@@ -6,7 +6,11 @@
           (click)="downloadCV(cvType.type)"
           class="bg-rose-800 hover:bg-rose-900 text-white font-bold py-2 px-4 my-10 border-rose-700 rounded"
         >
-          <i class="fa-solid fa-download"></i> {{ cvType.title }}
+          <img
+            src="assets/images/download.svg"
+            alt="Download Icon"
+            class="w-6 h-6 cursor-pointer"
+          />
         </button>
       </ng-container>
     </div>
@@ -19,16 +23,18 @@
       <mat-tab *ngFor="let cvType of cv">
         <div class="absolute right-1 top-1">
           <div title="Download CV" (click)="downloadCV(cvType.type)">
-            <i
-              class="fa-solid cursor-pointer fa-download fa-2xl text-rose-800"
-            ></i>
+            <img
+              src="assets/images/download.svg"
+              alt="Download Icon"
+              class="w-6 h-6 cursor-pointer"
+            />
           </div>
         </div>
         <ng-template mat-tab-label>
           {{ cvType.title }}
         </ng-template>
         <ng-container *ngFor="let img of cvType.images">
-          <img [src]="img" [alt]="cvType.title" />
+          <img [src]="img" [alt]="cvType.title" loading="lazy" />
         </ng-container>
       </mat-tab>
     </mat-tab-group>

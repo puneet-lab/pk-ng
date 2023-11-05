@@ -1,13 +1,21 @@
 <div class="flex justify-end items-center">
   <div class="flex gap-2">
     <div class="cursor-pointer" (click)="this.adminActionBtns.edit.call(this)">
-      <i class="fa-solid fa-pen-to-square text-slate-500"></i>
+      <img
+        src="assets/images/edit.svg"
+        alt="Edit Icon"
+        class="w-6 h-6 cursor-pointer"
+      />
     </div>
     <div
       class="cursor-pointer"
       (click)="this.adminActionBtns.delete.call(this)"
     >
-      <i class="fa-solid fa-trash text-slate-500"></i>
+      <img
+        src="assets/images/trash.svg"
+        alt="Delete Icon"
+        class="w-6 h-6 cursor-pointer"
+      />
     </div>
   </div>
 </div>

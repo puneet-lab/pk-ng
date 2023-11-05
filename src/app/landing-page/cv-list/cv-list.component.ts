@@ -39,8 +39,9 @@ export class CvListComponent implements OnInit, OnDestroy {
 
   async downloadCV(cvType: CVTypes): Promise<void> {
     const fileType = "application/pdf";
-    const fileName = "PuneetKushwahCV.pdf";
-    const url = this.cv.find(({ type }) => type === cvType)?.pdf;
+    const { pdf: url, title: fileName } = this.cv.find(
+      ({ type }) => type === cvType
+    );
     if (url) {
       const result = await this.firebaseApi.downloadFileFromURL(
         url,
