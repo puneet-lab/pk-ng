@@ -6,7 +6,8 @@ import {
   OnInit,
   ViewChild,
 } from "@angular/core";
-import { Subscription } from "rxjs/internal/Subscription";
+import { Subject } from "rxjs";
+import { takeUntil, tap } from "rxjs/operators";
 import { ScrollService } from "../../../services/scroll.service";
 
 @Component({
@@ -16,8 +17,7 @@ import { ScrollService } from "../../../services/scroll.service";
 })
 export class PortfolioComponent implements OnInit, OnDestroy {
   isComeInView = false;
-  private scrollSubscription: Subscription;
-
+  private destroy$ = new Subject<void>();
   @ViewChild("initialLoadComponents", { static: false })
   initialLoadComponents: ElementRef;
 
@@ -31,11 +31,14 @@ export class PortfolioComponent implements OnInit, OnDestroy {
     if (isMobile) {
       this.isComeInView = true;
     } else {
-      this.scrollSubscription = this.scrollService.scrollObservable.subscribe(
-        (event: Event) => {
-          this.checkIfShouldLoadMore(event);
-        }
-      );
+      this.scrollService.scrollObservable
+        .pipe(
+          tap((event: Event) => {
+            this.checkIfShouldLoadMore(event);
+          }),
+          takeUntil(this.destroy$)
+        )
+        .subscribe();
     }
   }
 
@@ -56,8 +59,7 @@ export class PortfolioComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.scrollSubscription) {
-      this.scrollSubscription.unsubscribe();
-    }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

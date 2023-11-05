@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subject } from "rxjs/internal/Subject";
-import { takeUntil } from "rxjs/internal/operators/takeUntil";
-import { tap } from "rxjs/internal/operators/tap";
+import { Subject } from "rxjs";
+import { takeUntil, tap } from "rxjs/operators";
 import { IContact } from "../../../models";
 import { SharedService } from "../../../shared";
 

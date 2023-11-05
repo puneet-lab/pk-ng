@@ -1,9 +1,8 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import { Subject } from "rxjs/internal/Subject";
-import { takeUntil } from "rxjs/internal/operators/takeUntil";
-import { tap } from "rxjs/internal/operators/tap";
+import { Subject } from "rxjs";
+import { takeUntil, tap } from "rxjs/operators";
 import { CVTypes, FCollectionName, ICV } from "../../../models";
 import { FirebaseApiService } from "../../../services/firebase-api.service";
 import { getOrderQueryDesc } from "../../../shared";

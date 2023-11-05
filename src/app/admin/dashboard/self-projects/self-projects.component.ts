@@ -7,9 +7,13 @@ import {
   Validators,
 } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { FCollectionName, ISelfProjects, OperationModes } from "src/models";
-import { FirebaseApiService } from "src/services/firebase-api.service";
-import { SharedService, getOrderQueryAsc } from "src/shared";
+import {
+  FCollectionName,
+  ISelfProjects,
+  OperationModes,
+} from "../../../../models";
+import { FirebaseApiService } from "../../../../services/firebase-api.service";
+import { SharedService, getOrderQueryAsc } from "../../../../shared";
 
 @Component({
   selector: "pk-self-projects",

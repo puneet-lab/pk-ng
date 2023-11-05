@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { IAdminSideNavItems, PageUrlTypes } from "src/models";
-import { AuthService } from "src/services/auth.service";
-import { SeoService } from "src/services/seo.service";
+import { AuthService } from "../../../services/auth.service";
+import { SeoService } from "../../../services/seo.service";
 import { dashboardSideNavItems } from "./side-items";
 
 @Component({

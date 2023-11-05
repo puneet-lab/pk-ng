@@ -1,7 +1,13 @@
-import { AfterViewInit, Component, OnDestroy, ViewChild } from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+} from "@angular/core";
 import { MatDrawerContent } from "@angular/material/sidenav";
-import { Subscription } from "rxjs/internal/Subscription";
-import { tap } from "rxjs/internal/operators/tap";
+import { Subject, fromEvent } from "rxjs";
+import { takeUntil, tap } from "rxjs/operators";
 import { ISideBarMenu } from "../../models";
 import { ScrollService } from "../../services/scroll.service";
 import { SharedService } from "../../shared";
@@ -35,9 +41,11 @@ export class LandingPageComponent implements AfterViewInit, OnDestroy {
     },
   ];
 
+  private destroy$ = new Subject<void>();
+
   @ViewChild("drawerContent", { static: false })
   drawerContent: MatDrawerContent;
-  drawerSubscription: Subscription;
+  @ViewChild("mobileContent", { static: false }) mobileContent: ElementRef;
 
   constructor(
     private sharedService: SharedService,
@@ -45,17 +53,24 @@ export class LandingPageComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit(): void {
-    this.drawerSubscription = this.drawerContent
+    this.drawerContent
       .elementScrolled()
       .pipe(
-        tap((event) => {
-          this.scrollService.triggerScroll(event);
-        })
+        tap((event) => this.scrollService.triggerScroll(event)),
+        takeUntil(this.destroy$)
+      )
+      .subscribe();
+
+    fromEvent<Event>(this.mobileContent.nativeElement, "scroll")
+      .pipe(
+        tap((event) => this.scrollService.triggerScroll(event)),
+        takeUntil(this.destroy$)
       )
       .subscribe();
   }
 
   ngOnDestroy(): void {
-    this.drawerSubscription && this.drawerSubscription.unsubscribe();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

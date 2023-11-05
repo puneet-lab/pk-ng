@@ -2,26 +2,20 @@ import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import {
-  Subject,
-  catchError,
-  combineLatest,
-  merge,
-  takeUntil,
-  tap,
-} from "rxjs";
+import { Subject, combineLatest, merge } from "rxjs";
+import { catchError, takeUntil, tap } from "rxjs/operators";
 import {
   FCollectionName,
   ISkillTypes,
   ISkills,
   OperationModes,
-} from "src/models";
-import { FirebaseApiService } from "src/services/firebase-api.service";
+} from "../../../../models";
+import { FirebaseApiService } from "../../../../services/firebase-api.service";
 import {
   SharedService,
   createSkillTypesMap,
   getOrderQueryAsc,
-} from "src/shared";
+} from "../../../../shared";
 
 @Component({
   selector: "pk-skills",

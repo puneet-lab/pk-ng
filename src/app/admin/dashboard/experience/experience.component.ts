@@ -3,10 +3,10 @@ import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
 import { FormArray, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { FCollectionName, OperationModes } from "src/models";
-import { IExperience, IOrderText } from "src/models/admin.model";
-import { FirebaseApiService } from "src/services/firebase-api.service";
-import { SharedService, getOrderQueryAsc } from "src/shared";
+import { FCollectionName, OperationModes } from "../../../../models";
+import { IExperience, IOrderText } from "../../../../models/admin.model";
+import { FirebaseApiService } from "../../../../services/firebase-api.service";
+import { SharedService, getOrderQueryAsc } from "../../../../shared";
 
 @Component({
   selector: "pk-experience",

@@ -1,8 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
-import { Subject } from "rxjs/internal/Subject";
-import { concatMap } from "rxjs/internal/operators/concatMap";
-import { takeUntil } from "rxjs/internal/operators/takeUntil";
-import { tap } from "rxjs/internal/operators/tap";
+import { Subject } from "rxjs";
+import { concatMap, takeUntil, tap } from "rxjs/operators";
 import { FCollectionName, ISkillTypes, ISkills } from "../../../../models";
 import { FirebaseApiService } from "../../../../services/firebase-api.service";
 import { createSkillTypesMap, getOrderQueryAsc } from "../../../../shared";

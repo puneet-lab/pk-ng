@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import { PageUrlTypes } from "src/models";
-import { AuthService } from "src/services/auth.service";
-import { SeoService } from "src/services/seo.service";
+import { PageUrlTypes } from "../../../models";
+import { AuthService } from "../../../services/auth.service";
+import { SeoService } from "../../../services/seo.service";
 
 @Component({
   selector: "pk-login",

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
-import { SharedService } from "src/shared";
+import { SharedService } from "../../../../shared";
 
 @Component({
   selector: "pk-blog",
